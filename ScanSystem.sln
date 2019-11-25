@@ -3,9 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29025.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScanSystem.Hardwares.Interfaces", "ScanSystem.Hardwares.Interfaces\ScanSystem.Hardwares.Interfaces.csproj", "{34D18B20-8952-45E2-A0BC-FCF06FB217F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScanSystem.Hardwares.Interfaces", "ScanSystem.Hardwares.Interfaces\ScanSystem.Hardwares.Interfaces.csproj", "{34D18B20-8952-45E2-A0BC-FCF06FB217F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScanSystem.Hardwares.Implementations", "ScanSystem.Hardwares.Implementations\ScanSystem.Hardwares.Implementations.csproj", "{E96A0B5E-41BC-4A12-9F9E-2D35F0293CEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScanSystem.Hardwares.Implementations", "ScanSystem.Hardwares.Implementations\ScanSystem.Hardwares.Implementations.csproj", "{E96A0B5E-41BC-4A12-9F9E-2D35F0293CEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScanSystem.Logger.Interfaces", "ScanSystem.Logger.Interfaces\ScanSystem.Logger.Interfaces.csproj", "{7D19C332-5F92-4C72-8E8E-8C9978776AFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScanSystem.Logger.Implementations", "ScanSystem.Logger.Implementations\ScanSystem.Logger.Implementations.csproj", "{8B7BB4AF-17F1-4161-82EC-FF275049A185}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{6D8B0D85-F747-44C5-B627-D34F089E5A93}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hardwares", "Hardwares", "{34F0386E-7A45-42A5-82C5-975991DD03F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAppConsole", "TestAppConsole\TestAppConsole.csproj", "{33C0B396-EA59-4636-A19A-F268503167F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +31,26 @@ Global
 		{E96A0B5E-41BC-4A12-9F9E-2D35F0293CEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E96A0B5E-41BC-4A12-9F9E-2D35F0293CEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E96A0B5E-41BC-4A12-9F9E-2D35F0293CEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D19C332-5F92-4C72-8E8E-8C9978776AFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D19C332-5F92-4C72-8E8E-8C9978776AFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D19C332-5F92-4C72-8E8E-8C9978776AFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D19C332-5F92-4C72-8E8E-8C9978776AFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B7BB4AF-17F1-4161-82EC-FF275049A185}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B7BB4AF-17F1-4161-82EC-FF275049A185}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B7BB4AF-17F1-4161-82EC-FF275049A185}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B7BB4AF-17F1-4161-82EC-FF275049A185}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33C0B396-EA59-4636-A19A-F268503167F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33C0B396-EA59-4636-A19A-F268503167F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33C0B396-EA59-4636-A19A-F268503167F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33C0B396-EA59-4636-A19A-F268503167F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{34D18B20-8952-45E2-A0BC-FCF06FB217F6} = {34F0386E-7A45-42A5-82C5-975991DD03F0}
+		{E96A0B5E-41BC-4A12-9F9E-2D35F0293CEA} = {34F0386E-7A45-42A5-82C5-975991DD03F0}
+		{33C0B396-EA59-4636-A19A-F268503167F3} = {6D8B0D85-F747-44C5-B627-D34F089E5A93}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D2634E16-1660-4E20-8204-AA094C9E1402}
