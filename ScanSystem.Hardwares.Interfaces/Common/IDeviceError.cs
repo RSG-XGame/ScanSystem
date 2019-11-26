@@ -9,5 +9,7 @@ namespace ScanSystem.Hardwares.Interfaces.Common
         DateTime ExceptionCreateDate { get; }
         Exception FullException { get; }
         string Message { get; }
+
+        bool Disconnect { get; set; }
     }
 }

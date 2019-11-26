@@ -13,10 +13,10 @@ namespace ScanSystem.Hardwares.Implementations.Common
     {
         private CancellationTokenSource cancelListen;
         private ManualResetEvent resetWait;
-        private TcpClient client;
 
-        public Guid DeviceId { get; private set; }
-        public bool Connected => client?.Connected ?? false;
+        public TcpClient Client { get; protected set; }
+        public Guid DeviceId { get; protected set; }
+        public bool Connected => Client?.Connected ?? false;
         public bool Busy => !resetWait.WaitOne(0);
 
         public abstract event DeviceMessageRecivedHandle DeviceMessageRecived;
@@ -29,11 +29,6 @@ namespace ScanSystem.Hardwares.Implementations.Common
         public CommonDeviceClient()
         {
             resetWait = new ManualResetEvent(true);
-        }
-
-        public void Initialize(TcpClient client)
-        {
-            this.client = client;
         }
 
         public bool StartListen()

@@ -14,23 +14,24 @@ namespace ScanSystem.Hardwares.Implementations.Scaners
     {
         public override event DeviceMessageRecivedHandle DeviceMessageRecived;
 
-        public string BeginSplitter { get; set; }
-        public string EndSplitter { get; set; }
+        public ScanerSettings Settings { get; private set; }
 
         public ScanerClient()
         {
-            Initialization();
         }
 
-        private void Initialization()
+        public void Initialization(ScanerSettings settings, TcpClient client)
         {
             DeviceRecivedData += ScanerClient_DeviceRecivedData;
+            DeviceId = settings.ScanerId;
+            Settings = settings;
+            Client = client;
         }
 
-        private void ScanerClient_DeviceRecivedData(IDeviceClient device, byte[] data, int length)
+        private void ScanerClient_DeviceRecivedData(IDevice device, byte[] data, int length)
         {
             string message = Encoding.UTF8.GetString(data, 0, length);
-            string[] messages = message.Split(new string[] { BeginSplitter ?? "", EndSplitter ?? "" }, StringSplitOptions.RemoveEmptyEntries);
+            string[] messages = message.Split(new string[] { Settings.BeginSplitter ?? "", Settings.EndSplitter ?? "" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var msg in messages)
             {
                 CommonDeviceMessage rm = new CommonDeviceMessage { Message = msg };

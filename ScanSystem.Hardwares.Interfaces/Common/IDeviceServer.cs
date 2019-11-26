@@ -11,7 +11,9 @@ namespace ScanSystem.Hardwares.Interfaces.Common
         event DeviceDisconnectedHandle DeviceDisconnected;
         event DeviceErrorHandle DeviceError;
 
-        bool StartListen();
+        bool StartListen(Func<string, IDeviceSettings> getDevice);
         bool StopListen();
+
+        bool DisconnectClientByIP(string ipAddress);
     }
 }
