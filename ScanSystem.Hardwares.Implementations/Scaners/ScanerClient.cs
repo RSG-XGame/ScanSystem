@@ -1,118 +1,41 @@
-﻿using ScanSystem.Hardwares.Interfaces;
+﻿using ScanSystem.Hardwares.Implementations.Common;
+using ScanSystem.Hardwares.Interfaces;
 using ScanSystem.Hardwares.Interfaces.Common;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ScanSystem.Hardwares.Implementations.Scaners
 {
-    public class ScanerClient : IDeviceClient
+    public class ScanerClient : CommonDeviceClient
     {
-        private CancellationTokenSource cancelListen;
-        private ManualResetEvent resetWait;
-        private TcpClient client;
+        public override event DeviceMessageRecivedHandle DeviceMessageRecived;
 
-        public Guid DeviceId { get; private set; }
-        public bool Connected => client?.Connected ?? false;
-        public bool Busy => !resetWait.WaitOne(0);
-
-        public event DeviceMessageRecivedHandle DeviceMessageRecived;
-        public event DeviceConnectedHandle DeviceConnected;
-        public event DeviceDisconnectedHandle DeviceDisconnected;
-        public event DeviceErrorHandle DeviceError;
+        public string BeginSplitter { get; set; }
+        public string EndSplitter { get; set; }
 
         public ScanerClient()
         {
-            resetWait = new ManualResetEvent(true);
+            Initialization();
         }
 
-        public void Initialize(TcpClient client)
+        private void Initialization()
         {
-            this.client = client;
+            DeviceRecivedData += ScanerClient_DeviceRecivedData;
         }
 
-        public bool StartListen()
+        private void ScanerClient_DeviceRecivedData(IDeviceClient device, byte[] data, int length)
         {
-            bool result = false;
-            if (!Busy)
+            string message = Encoding.UTF8.GetString(data, 0, length);
+            string[] messages = message.Split(new string[] { BeginSplitter ?? "", EndSplitter ?? "" }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var msg in messages)
             {
-                cancelListen = new CancellationTokenSource();
-                DeviceConnected?.Invoke(this);
-            }
-            return result;
-        }
-
-        public bool StopListen()
-        {
-            cancelListen?.Cancel();
-            bool result = resetWait?.WaitOne() ?? true;
-            return result;
-        }
-
-        private void Listen(CancellationToken token)
-        {
-            try
-            {
-                resetWait.Reset();
-                NetworkStream stream = client.GetStream();
-                while (!token.IsCancellationRequested)
-                {
-                    if (stream.DataAvailable)
-                    {
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-            }
-            finally
-            {
-                client?.Close();
-                DeviceDisconnected?.Invoke(this);
-                resetWait.Set();
+                CommonDeviceMessage rm = new CommonDeviceMessage { Message = msg };
+                DeviceMessageRecived?.Invoke(device, rm);
             }
         }
-
-        #region IDisposable Support
-        private bool disposedValue = false; // Для определения избыточных вызовов
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    StopListen();
-                    resetWait.WaitOne();
-                    cancelListen.Dispose();
-
-                }
-
-                // TODO: освободить неуправляемые ресурсы (неуправляемые объекты) и переопределить ниже метод завершения.
-                // TODO: задать большим полям значение NULL.
-
-                cancelListen = null;
-                disposedValue = true;
-            }
-        }
-
-        // TODO: переопределить метод завершения, только если Dispose(bool disposing) выше включает код для освобождения неуправляемых ресурсов.
-        // ~ScanerClient()
-        // {
-        //   // Не изменяйте этот код. Разместите код очистки выше, в методе Dispose(bool disposing).
-        //   Dispose(false);
-        // }
-
-        // Этот код добавлен для правильной реализации шаблона высвобождаемого класса.
-        public void Dispose()
-        {
-            // Не изменяйте этот код. Разместите код очистки выше, в методе Dispose(bool disposing).
-            Dispose(true);
-            // TODO: раскомментировать следующую строку, если метод завершения переопределен выше.
-            // GC.SuppressFinalize(this);
-        }
-        #endregion
     }
 }

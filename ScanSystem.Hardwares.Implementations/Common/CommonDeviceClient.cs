@@ -2,51 +2,56 @@
 using ScanSystem.Hardwares.Interfaces.Common;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
-namespace ScanSystem.Hardwares.Implementations.Scaners
+namespace ScanSystem.Hardwares.Implementations.Common
 {
-    public class ScanerServer : IDeviceServer
+    public abstract class CommonDeviceClient : IDeviceClient
     {
         private CancellationTokenSource cancelListen;
-        private TcpListener listener;
-        private List<ScanerClient> clients;
         private ManualResetEvent resetWait;
+        private TcpClient client;
 
-        public event DeviceMessageRecivedHandle DeviceMessageRecived;
+        public Guid DeviceId { get; private set; }
+        public bool Connected => client?.Connected ?? false;
+        public bool Busy => !resetWait.WaitOne(0);
+
+        public abstract event DeviceMessageRecivedHandle DeviceMessageRecived;
         public event DeviceConnectedHandle DeviceConnected;
         public event DeviceDisconnectedHandle DeviceDisconnected;
         public event DeviceErrorHandle DeviceError;
 
-        public string IPAddress { get; set; }
-        public int Port { get; set; }
-        public bool Busy => !resetWait.WaitOne(0);
+        protected event DeviceRecivedDataHandle DeviceRecivedData;
 
-        public ScanerServer()
+        public CommonDeviceClient()
         {
-            Initialization();
-        }
-
-        private void Initialization()
-        {
-            clients = new List<ScanerClient>();
             resetWait = new ManualResetEvent(true);
         }
 
-        public bool StartListen(Func<)
+        public void Initialize(TcpClient client)
+        {
+            this.client = client;
+        }
+
+        public bool StartListen()
         {
             bool result = false;
-
+            if (!Busy)
+            {
+                cancelListen = new CancellationTokenSource();
+                Task.Run(() => { Listen(cancelListen.Token); });
+                DeviceConnected?.Invoke(this);
+            }
             return result;
         }
 
         public bool StopListen()
         {
-            bool result = false;
             cancelListen?.Cancel();
+            bool result = resetWait?.WaitOne() ?? true;
             return result;
         }
 
@@ -55,10 +60,15 @@ namespace ScanSystem.Hardwares.Implementations.Scaners
             try
             {
                 resetWait.Reset();
-                listener = new TcpListener(System.Net.IPAddress.Parse(IPAddress), Port);
-                listener.Start();
+                NetworkStream stream = client.GetStream();
                 while (!token.IsCancellationRequested)
                 {
+                    if (stream.DataAvailable)
+                    {
+                        byte[] buffer = new byte[client.ReceiveBufferSize];
+                        int length = stream.Read(buffer, 0, buffer.Length);
+                        DeviceRecivedData?.Invoke(this, buffer, length);
+                    }
                 }
             }
             catch (Exception ex)
@@ -67,35 +77,10 @@ namespace ScanSystem.Hardwares.Implementations.Scaners
             }
             finally
             {
-                DisconnectAllClients();
-                listener?.Stop();
+                client?.Close();
+                DeviceDisconnected?.Invoke(this);
                 resetWait.Set();
             }
-        }
-
-        private void AcceptNewClient()
-        {
-            try
-            {
-                TcpClient tcpClient = listener.AcceptTcpClient();
-                string ipAddress = (tcpClient.Client.RemoteEndPoint as IPEndPoint).Address.ToString();
-
-
-            }
-            catch (Exception ex)
-            {
-                DeviceError?.Invoke(this, new CommonDeviceError { FullException = ex, ExceptionCreateDate = DateTime.Now });
-            }
-        }
-
-        private void DisconnectAllClients()
-        {
-            foreach (var client in clients)
-            {
-                client.StopListen();
-                client.Dispose();
-            }
-            clients.Clear();
         }
 
         #region IDisposable Support
@@ -108,17 +93,23 @@ namespace ScanSystem.Hardwares.Implementations.Scaners
                 if (disposing)
                 {
                     StopListen();
+                    resetWait.WaitOne();
+                    cancelListen.Dispose();
+                    client.Dispose();
+
                 }
 
                 // TODO: освободить неуправляемые ресурсы (неуправляемые объекты) и переопределить ниже метод завершения.
                 // TODO: задать большим полям значение NULL.
 
+                client = null;
+                cancelListen = null;
                 disposedValue = true;
             }
         }
 
         // TODO: переопределить метод завершения, только если Dispose(bool disposing) выше включает код для освобождения неуправляемых ресурсов.
-        // ~ScanerServer()
+        // ~ScanerClient()
         // {
         //   // Не изменяйте этот код. Разместите код очистки выше, в методе Dispose(bool disposing).
         //   Dispose(false);

@@ -4,8 +4,7 @@ using System.Text;
 
 namespace ScanSystem.Hardwares.Interfaces.Common
 {
-    public interface IDeviceMessage
+    public interface IDevice
     {
-        string Message { get; }
     }
 }

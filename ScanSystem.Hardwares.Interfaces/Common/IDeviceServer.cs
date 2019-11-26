@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ScanSystem.Hardwares.Interfaces.Common
 {
-    public interface IDeviceServer : IDisposable
+    public interface IDeviceServer : IDevice, IDisposable
     {
         event DeviceMessageRecivedHandle DeviceMessageRecived;
         event DeviceConnectedHandle DeviceConnected;
