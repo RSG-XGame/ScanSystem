@@ -33,7 +33,7 @@ namespace ScanSystem.Hardwares.Interfaces
     /// </summary>
     /// <param name="device">Определение устройства</param>
     /// <param name="message">Отфармотированное сообщение после чтения данных</param>
-    public delegate void DeviceRecivedMessageHandle(IDevice device, IDeviceMessage message);
+    public delegate void DeviceRecivedMessageHandle(IDevice device, IDeviceEventArgs args);
 
 
 
@@ -42,7 +42,7 @@ namespace ScanSystem.Hardwares.Interfaces
     /// </summary>
     /// <param name="device">Определение устройства</param>
     /// <param name="error">Данные об ошибке</param>
-    public delegate void DeviceErrorHandle(IDevice device, IDeviceError error);
+    public delegate void DeviceErrorHandle(IDevice device, IDeviceEventArgs args);
 
     /// <summary>
     /// Проверка состояния устройства

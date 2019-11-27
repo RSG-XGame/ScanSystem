@@ -1,7 +1,9 @@
-﻿using ScanSystem.Hardwares.Interfaces;
+﻿using ScanSystem.Hardwares.Implementations.Arguments;
+using ScanSystem.Hardwares.Interfaces;
 using ScanSystem.Hardwares.Interfaces.CommonDevice;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -35,7 +37,44 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
 
         public abstract bool SendRequest(IDeviceRequest request);
 
-        public bool StartListen()
+        public bool Connect()
+        {
+            bool result = false;
+            try
+            {
+                if (!Busy)
+                {
+                    DeviceConnecting?.Invoke(new DeviceConnectingEventArgs { IPAddress = Settings.IPAddress });
+                    if (client == null)
+                    {
+                        client = new TcpClient();
+                    }
+                    if (!client.Connected)
+                    {
+                        client.Connect(IPAddress.Parse(Settings.IPAddress), Settings.Port);
+                    }
+                    result = StartListen();
+                }
+            }
+            catch (Exception ex)
+            {
+                DeviceError?.Invoke(this, new DeviceErrorEventArgs { Ex = ex });
+            }
+            return result;
+        }
+        public bool Disconnect()
+        {
+            DeviceDisconnecting?.Invoke(this, );
+            bool result = false;
+            if (Busy)
+            {
+                client?.Close();
+                StopListen();
+            }
+            return result;
+        }
+
+        private bool StartListen()
         {
             bool result = false;
             if (!Busy)
@@ -47,7 +86,7 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
             return result;
         }
 
-        public bool StopListen()
+        private bool StopListen()
         {
             bool result = false;
             if (Busy)
@@ -70,16 +109,18 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
                     {
                         byte[] buffer = new byte[client.ReceiveBufferSize];
                         int length = stream.Read(buffer, 0, buffer.Length);
-                        IDeviceMessage message = RecivedData(buffer, length);
-
+                        IDeviceEventArgs message = RecivedData(buffer, length);
+                        DeviceRecivedMessage?.Invoke(this, message);
                     }
                 }
             }
             catch(Exception ex)
             {
+                DeviceError?.Invoke(this, new DeviceErrorEventArgs { Ex = ex });
             }
             finally
             {
+                Disconnect();
                 cancelToken.Dispose();
                 cancelToken = null;
                 resetWait.Set();
@@ -91,7 +132,7 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
         /// </summary>
         /// <param name="data">Массив считанных байт</param>
         /// <param name="args"></param>
-        protected abstract IDeviceMessage RecivedData(byte[] data, int length);
+        protected abstract IDeviceEventArgs RecivedData(byte[] data, int length);
 
         #region IDisposable Support
         private bool disposedValue = false; // Для определения избыточных вызовов

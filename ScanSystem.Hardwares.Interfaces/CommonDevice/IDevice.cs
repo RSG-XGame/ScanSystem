@@ -25,15 +25,15 @@ namespace ScanSystem.Hardwares.Interfaces.CommonDevice
         void Initialization(IDeviceInitializationParams initParams);
 
         /// <summary>
-        /// Запуск прослушивания устройства
+        /// Отключиться от устройства
         /// </summary>
-        /// <returns>True - если удалось запустить, иначе False</returns>
-        bool StartListen();
+        /// <returns></returns>
+        bool Connect();
         /// <summary>
-        /// остановить прослушивание устройства
+        /// Подключиться к устройству
         /// </summary>
-        /// <returns>True - если удалось остановить, иначе False</returns>
-        bool StopListen();
+        /// <returns></returns>
+        bool Disconnect();
 
         /// <summary>
         /// Отправить запрос на устройство

@@ -8,4 +8,9 @@
     <ProjectReference Include="..\ScanSystem.Hardwares.Interfaces\ScanSystem.Hardwares.Interfaces.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TcpDataLogic\" />
+    <Folder Include="ModbusTCPSE\" />
+  </ItemGroup>
+
 </Project>
