@@ -20,8 +20,7 @@ namespace ScanSystem.Hardwares.Interfaces
     /// Устройство отключается
     /// </summary>
     /// <param name="device">Определение устройства</param>
-    /// <param name="args">аргументы отключения</param>
-    public delegate void DeviceDisconnectingHandle(IDevice device, IDeviceEventArgs args);
+    public delegate void DeviceDisconnectingHandle(IDevice device);
     /// <summary>
     /// Устройство отключено
     /// </summary>
@@ -32,7 +31,7 @@ namespace ScanSystem.Hardwares.Interfaces
     /// Получено сообщение от устройства
     /// </summary>
     /// <param name="device">Определение устройства</param>
-    /// <param name="message">Отфармотированное сообщение после чтения данных</param>
+    /// <param name="args">Отфармотированное сообщение после чтения данных</param>
     public delegate void DeviceRecivedMessageHandle(IDevice device, IDeviceEventArgs args);
 
 

@@ -64,12 +64,13 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
         }
         public bool Disconnect()
         {
-            DeviceDisconnecting?.Invoke(this, );
             bool result = false;
             if (Busy)
             {
+                DeviceDisconnecting?.Invoke(this);
                 client?.Close();
                 StopListen();
+                DeviceDisconnected?.Invoke(this);
             }
             return result;
         }
