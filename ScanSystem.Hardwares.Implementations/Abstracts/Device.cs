@@ -1,5 +1,5 @@
 ﻿using ScanSystem.Hardwares.Interfaces;
-using ScanSystem.Hardwares.Interfaces.Common;
+using ScanSystem.Hardwares.Interfaces.CommonDevice;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -7,46 +7,54 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ScanSystem.Hardwares.Implementations.Common
+namespace ScanSystem.Hardwares.Implementations.Abstracts
 {
-    public abstract class CommonDeviceClient : IDeviceClient
+    public abstract class Device : IDevice
     {
-        private CancellationTokenSource cancelListen;
         private ManualResetEvent resetWait;
+        private CancellationTokenSource cancelToken;
+        protected TcpClient client;
 
-        public TcpClient Client { get; protected set; }
-        public Guid DeviceId { get; protected set; }
-        public bool Connected => Client?.Connected ?? false;
+        public Guid DeviceId { get; private set; }
+        public IDeviceSettings Settings { get; private set; }
         public bool Busy => !resetWait.WaitOne(0);
 
-        public abstract event DeviceMessageRecivedHandle DeviceMessageRecived;
+        public event DeviceConnectingHandle DeviceConnecting;
         public event DeviceConnectedHandle DeviceConnected;
+        public event DeviceDisconnectingHandle DeviceDisconnecting;
         public event DeviceDisconnectedHandle DeviceDisconnected;
+        public event DeviceRecivedMessageHandle DeviceRecivedMessage;
         public event DeviceErrorHandle DeviceError;
+        public event DeviceCheckStateHandle DeviceCheckState;
 
-        protected event DeviceRecivedDataHandle DeviceRecivedData;
-
-        public CommonDeviceClient()
+        public virtual void Initialization(IDeviceInitializationParams initParams)
         {
+            Settings = initParams.Settings;
             resetWait = new ManualResetEvent(true);
         }
+
+        public abstract bool SendRequest(IDeviceRequest request);
 
         public bool StartListen()
         {
             bool result = false;
             if (!Busy)
             {
-                cancelListen = new CancellationTokenSource();
-                Task.Run(() => { Listen(cancelListen.Token); });
-                DeviceConnected?.Invoke(this);
+                cancelToken = new CancellationTokenSource();
+                Task.Run(() => { Listen(cancelToken.Token); });
+                result = true;
             }
             return result;
         }
 
         public bool StopListen()
         {
-            cancelListen?.Cancel();
-            bool result = resetWait?.WaitOne() ?? true;
+            bool result = false;
+            if (Busy)
+            {
+                cancelToken.Cancel();
+                resetWait.WaitOne();
+            }
             return result;
         }
 
@@ -62,21 +70,28 @@ namespace ScanSystem.Hardwares.Implementations.Common
                     {
                         byte[] buffer = new byte[client.ReceiveBufferSize];
                         int length = stream.Read(buffer, 0, buffer.Length);
-                        DeviceRecivedData?.Invoke(this, buffer, length);
+                        IDeviceMessage message = RecivedData(buffer, length);
+
                     }
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                DeviceError?.Invoke(this, new CommonDeviceError { FullException = ex, ExceptionCreateDate = DateTime.Now });
             }
             finally
             {
-                client?.Close();
-                DeviceDisconnected?.Invoke(this);
+                cancelToken.Dispose();
+                cancelToken = null;
                 resetWait.Set();
             }
         }
+
+        /// <summary>
+        /// Считаны данные из потока
+        /// </summary>
+        /// <param name="data">Массив считанных байт</param>
+        /// <param name="args"></param>
+        protected abstract IDeviceMessage RecivedData(byte[] data, int length);
 
         #region IDisposable Support
         private bool disposedValue = false; // Для определения избыточных вызовов
@@ -87,24 +102,18 @@ namespace ScanSystem.Hardwares.Implementations.Common
             {
                 if (disposing)
                 {
-                    StopListen();
-                    resetWait.WaitOne();
-                    cancelListen.Dispose();
-                    client.Dispose();
-
+                    // TODO: освободить управляемое состояние (управляемые объекты).
                 }
 
                 // TODO: освободить неуправляемые ресурсы (неуправляемые объекты) и переопределить ниже метод завершения.
                 // TODO: задать большим полям значение NULL.
 
-                client = null;
-                cancelListen = null;
                 disposedValue = true;
             }
         }
 
         // TODO: переопределить метод завершения, только если Dispose(bool disposing) выше включает код для освобождения неуправляемых ресурсов.
-        // ~ScanerClient()
+        // ~Device()
         // {
         //   // Не изменяйте этот код. Разместите код очистки выше, в методе Dispose(bool disposing).
         //   Dispose(false);

@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScanSystem.Hardwares.Interfaces.Common
+namespace ScanSystem.Hardwares.Interfaces.CommonDevice
 {
     public interface IDeviceMessage
     {
-        string Message { get; }
     }
 }

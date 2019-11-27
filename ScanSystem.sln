@@ -7,15 +7,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScanSystem.Hardwares.Interf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScanSystem.Hardwares.Implementations", "ScanSystem.Hardwares.Implementations\ScanSystem.Hardwares.Implementations.csproj", "{E96A0B5E-41BC-4A12-9F9E-2D35F0293CEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScanSystem.Logger.Interfaces", "ScanSystem.Logger.Interfaces\ScanSystem.Logger.Interfaces.csproj", "{7D19C332-5F92-4C72-8E8E-8C9978776AFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScanSystem.Logger.Interfaces", "ScanSystem.Logger.Interfaces\ScanSystem.Logger.Interfaces.csproj", "{7D19C332-5F92-4C72-8E8E-8C9978776AFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScanSystem.Logger.Implementations", "ScanSystem.Logger.Implementations\ScanSystem.Logger.Implementations.csproj", "{8B7BB4AF-17F1-4161-82EC-FF275049A185}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScanSystem.Logger.Implementations", "ScanSystem.Logger.Implementations\ScanSystem.Logger.Implementations.csproj", "{8B7BB4AF-17F1-4161-82EC-FF275049A185}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{6D8B0D85-F747-44C5-B627-D34F089E5A93}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hardwares", "Hardwares", "{34F0386E-7A45-42A5-82C5-975991DD03F0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAppConsole", "TestAppConsole\TestAppConsole.csproj", "{33C0B396-EA59-4636-A19A-F268503167F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Protocols", "Protocols", "{C370AF34-79EF-4159-B38B-61FFC89B07F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,7 @@ Global
 		{34D18B20-8952-45E2-A0BC-FCF06FB217F6} = {34F0386E-7A45-42A5-82C5-975991DD03F0}
 		{E96A0B5E-41BC-4A12-9F9E-2D35F0293CEA} = {34F0386E-7A45-42A5-82C5-975991DD03F0}
 		{33C0B396-EA59-4636-A19A-F268503167F3} = {6D8B0D85-F747-44C5-B627-D34F089E5A93}
+		{C370AF34-79EF-4159-B38B-61FFC89B07F4} = {34F0386E-7A45-42A5-82C5-975991DD03F0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D2634E16-1660-4E20-8204-AA094C9E1402}
