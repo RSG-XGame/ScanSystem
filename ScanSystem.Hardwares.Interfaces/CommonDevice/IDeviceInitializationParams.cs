@@ -6,6 +6,7 @@ namespace ScanSystem.Hardwares.Interfaces.CommonDevice
 {
     public interface IDeviceInitializationParams
     {
+        Guid DeviceId { get; }
         IDeviceSettings Settings { get; }
     }
 }

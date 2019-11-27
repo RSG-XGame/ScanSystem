@@ -28,12 +28,12 @@ namespace ScanSystem.Hardwares.Interfaces.CommonDevice
         /// Отключиться от устройства
         /// </summary>
         /// <returns></returns>
-        bool Connect();
+        bool Open();
         /// <summary>
         /// Подключиться к устройству
         /// </summary>
         /// <returns></returns>
-        bool Disconnect();
+        bool Close();
 
         /// <summary>
         /// Отправить запрос на устройство

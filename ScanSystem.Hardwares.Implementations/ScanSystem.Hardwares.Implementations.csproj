@@ -6,11 +6,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ScanSystem.Hardwares.Interfaces\ScanSystem.Hardwares.Interfaces.csproj" />
+    <ProjectReference Include="..\ScanSystems.Protocols.Modbus\ScanSystems.Protocols.Modbus.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="TcpDataLogic\" />
-    <Folder Include="ModbusTCPSE\" />
+    <Folder Include="SchneiderElectric\" />
   </ItemGroup>
 
 </Project>

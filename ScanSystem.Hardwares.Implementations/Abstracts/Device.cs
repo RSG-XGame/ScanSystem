@@ -34,26 +34,30 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
             Settings = initParams.Settings;
             resetWait = new ManualResetEvent(true);
         }
-
         public abstract bool SendRequest(IDeviceRequest request);
 
-        public bool Connect()
+        public bool Open()
         {
             bool result = false;
             try
             {
                 if (!Busy)
                 {
-                    DeviceConnecting?.Invoke(new DeviceConnectingEventArgs { IPAddress = Settings.IPAddress });
-                    if (client == null)
+                    DeviceConnectingEventArgs args = new DeviceConnectingEventArgs { IPAddress = Settings.IPAddress, AcceptConnection = true };
+                    DeviceConnecting?.Invoke(args);
+                    if (args.AcceptConnection)
                     {
-                        client = new TcpClient();
+                        if (client == null)
+                        {
+                            client = new TcpClient();
+                        }
+                        if (!client.Connected)
+                        {
+                            client.Connect(IPAddress.Parse(Settings.IPAddress), Settings.Port);
+                        }
+                        result = StartListen();
+                        DeviceConnected?.Invoke(this);
                     }
-                    if (!client.Connected)
-                    {
-                        client.Connect(IPAddress.Parse(Settings.IPAddress), Settings.Port);
-                    }
-                    result = StartListen();
                 }
             }
             catch (Exception ex)
@@ -62,44 +66,45 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
             }
             return result;
         }
-        public bool Disconnect()
+        public bool Close()
         {
             bool result = false;
             if (Busy)
             {
-                DeviceDisconnecting?.Invoke(this);
-                client?.Close();
-                StopListen();
-                DeviceDisconnected?.Invoke(this);
+                Disconnect();
             }
             return result;
+        }
+
+        private void Disconnect()
+        {
+            DeviceDisconnecting?.Invoke(this);
+            client?.Close();
+            StopListen();
+            DeviceDisconnected?.Invoke(this);
         }
 
         private bool StartListen()
         {
             bool result = false;
-            if (!Busy)
-            {
-                cancelToken = new CancellationTokenSource();
-                Task.Run(() => { Listen(cancelToken.Token); });
-                result = true;
-            }
+            cancelToken = new CancellationTokenSource();
+            Task.Run(() => { Listen(cancelToken.Token); });
+            result = true;
             return result;
         }
-
         private bool StopListen()
         {
             bool result = false;
-            if (Busy)
-            {
-                cancelToken.Cancel();
-                resetWait.WaitOne();
-            }
+            cancelToken?.Cancel();
+            resetWait.WaitOne();
+            cancelToken?.Dispose();
+            cancelToken = null;
             return result;
         }
 
         private void Listen(CancellationToken token)
         {
+            DeviceStateEventArgs state = new DeviceStateEventArgs { IsEnabled = true };
             try
             {
                 resetWait.Reset();
@@ -110,8 +115,22 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
                     {
                         byte[] buffer = new byte[client.ReceiveBufferSize];
                         int length = stream.Read(buffer, 0, buffer.Length);
-                        IDeviceEventArgs message = RecivedData(buffer, length);
-                        DeviceRecivedMessage?.Invoke(this, message);
+                        try
+                        {
+                            IDeviceEventArgs message = RecivedData(buffer, length);
+                            if (message != null)
+                                DeviceRecivedMessage?.Invoke(this, message);
+                        }
+                        catch (Exception ex)
+                        {
+                            DeviceError?.Invoke(this, new DeviceErrorEventArgs { Ex = ex });
+                        }
+                    }
+
+                    DeviceCheckState?.Invoke(this, state);
+                    if (!state.IsEnabled)
+                    {
+                        break;
                     }
                 }
             }
@@ -121,10 +140,11 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
             }
             finally
             {
-                Disconnect();
-                cancelToken.Dispose();
-                cancelToken = null;
                 resetWait.Set();
+            }
+            if (state.IsEnabled)
+            {
+                Disconnect();
             }
         }
 

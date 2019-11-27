@@ -5,9 +5,8 @@ using System.Text;
 
 namespace ScanSystem.Hardwares.Implementations.Arguments
 {
-    public class DeviceConnectingEventArgs : IDeviceEventArgs
+    public class DeviceStateEventArgs : IDeviceEventArgs
     {
-        public string IPAddress { get; internal set; }
-        public bool AcceptConnection { get; set; }
+        public bool IsEnabled { get; internal set; }
     }
 }

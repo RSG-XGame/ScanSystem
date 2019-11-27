@@ -49,15 +49,5 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ScanSystem.Hardwares.Implementations\ScanSystem.Hardwares.Implementations.csproj">
-      <Project>{e96a0b5e-41bc-4a12-9f9e-2d35f0293cea}</Project>
-      <Name>ScanSystem.Hardwares.Implementations</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ScanSystem.Hardwares.Interfaces\ScanSystem.Hardwares.Interfaces.csproj">
-      <Project>{34D18B20-8952-45E2-A0BC-FCF06FB217F6}</Project>
-      <Name>ScanSystem.Hardwares.Interfaces</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
