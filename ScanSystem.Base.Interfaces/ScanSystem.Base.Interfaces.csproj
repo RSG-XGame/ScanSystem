@@ -4,8 +4,4 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ScanSystem.Base.Interfaces\ScanSystem.Base.Interfaces.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScanSystem.Hardwares.Interfaces.CommonDevice
+namespace ScanSystems.Protocols.Modbus
 {
-    public interface IDeviceResponse : IResponse
+    public class ModbusResponse : IResponse
     {
     }
 }
