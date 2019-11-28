@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ScanSystem.Base.Interfaces\ScanSystem.Base.Interfaces.csproj" />
+    <ProjectReference Include="..\ScanSystem.Hardwares.Interfaces\ScanSystem.Hardwares.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>
