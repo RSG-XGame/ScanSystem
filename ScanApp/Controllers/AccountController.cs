@@ -27,7 +27,7 @@ namespace ScanApp.Controllers
             var username = Request.Form["username"];
             var password = Request.Form["password"];
 
-            var identity = GetIdentity(username, password);
+            var identity = await GetIdentity(username, password);
             if (identity == null)
             {
                 Response.StatusCode = 400;
@@ -57,11 +57,12 @@ namespace ScanApp.Controllers
             await Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented }));
         }
 
-        private ClaimsIdentity GetIdentity(string username, string password)
+        private async Task<ClaimsIdentity> GetIdentity(string username, string password)
         {
-            var person = _context.GetFirst<User>(x => x.Login == username && x.Password == password);
-            //User person = _context.Include(r => r.Role).FirstOrDefault(x => x.Email == username && x.Password == password);
+            var person = await _context.GetFirstAsync<User>(x => x.Login == username && x.Password == password);
             if (person == null) return null;
+            person.Role = await _context.GetFirstAsync<Role>(x => x.Id == person.RoleId);
+            if (person.Role == null) return null;
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, person.Login),

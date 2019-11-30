@@ -15,4 +15,8 @@
     <ProjectReference Include="..\OnionApp.Infrastructure.Data\OnionApp.Infrastructure.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\js\" />
+  </ItemGroup>
+
 </Project>
