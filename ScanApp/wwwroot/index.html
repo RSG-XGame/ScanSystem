@@ -8,7 +8,7 @@
     <div id="loginBlock">
         Введите логин:<br />
         <input id="userName" type="text" />
-        <input id="userPassword" type="text" />
+        <input id="userPassword" type="password" />
         <input id="loginBtn" type="button" value="Войти" />
     </div><br />
 
@@ -25,8 +25,11 @@
         let token;      // токен
         let username;   // имя пользователя
         const hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl("/chat", { accessTokenFactory: () => token})
+            .withUrl("/chat", { accessTokenFactory: () => token })
+            .configureLogging(signalR.LogLevel.Trace)
             .build();
+
+        hubConnection.serverTimeoutInMilliseconds = 1000 * 60;
 
         hubConnection.on("Receive", function (message, userName) {
 
@@ -39,6 +42,17 @@
             elem.appendChild(userNameElem);
             elem.appendChild(document.createTextNode(message));
 
+            var firstElem = document.getElementById("chatroom").firstChild;
+            document.getElementById("chatroom").insertBefore(elem, firstElem);
+        });
+
+        hubConnection.on('Notify', function (message) {
+             
+            // добавляет элемент для диагностического сообщения
+            let notifyElem = document.createElement("b");
+            notifyElem.appendChild(document.createTextNode(message));
+            let elem = document.createElement("p");
+            elem.appendChild(notifyElem);
             var firstElem = document.getElementById("chatroom").firstChild;
             document.getElementById("chatroom").insertBefore(elem, firstElem);
         });
@@ -65,6 +79,11 @@
                         document.getElementById("loginBtn").disabled = true;
                         document.getElementById("sendBtn").disabled = true;
                     });
+                }
+                else
+                {
+                    console.log("Status", request.status);
+                    console.log(request.responseText);
                 }
             });
             // отправляем запрос на аутентификацию
