@@ -19,9 +19,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAppConsole", "TestAppCo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Protocols", "Protocols", "{C370AF34-79EF-4159-B38B-61FFC89B07F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScanSystems.Protocols.Modbus", "ScanSystems.Protocols.Modbus\ScanSystems.Protocols.Modbus.csproj", "{9C1712F5-E991-4F70-B44E-F8F270DDF743}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScanSystems.Protocols.Modbus", "ScanSystems.Protocols.Modbus\ScanSystems.Protocols.Modbus.csproj", "{9C1712F5-E991-4F70-B44E-F8F270DDF743}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScanSystem.Base.Interfaces", "ScanSystem.Base.Interfaces\ScanSystem.Base.Interfaces.csproj", "{415A7E87-7436-4820-8C1B-DFC644589216}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScanSystem.Base.Interfaces", "ScanSystem.Base.Interfaces\ScanSystem.Base.Interfaces.csproj", "{415A7E87-7436-4820-8C1B-DFC644589216}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestCommit", "TestCommit", "{9E6A094D-9434-4CD3-AE94-C44C02742C68}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
