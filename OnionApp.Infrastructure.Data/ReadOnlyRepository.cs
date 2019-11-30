@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace OnionApp.Infrastructure.Data
 {
-    public class ReadOnlyRepository<TContext> : IReadOnlyRepository
-        where TContext : DbContext
+    public class ReadOnlyRepository : IReadOnlyRepository
+        //where TContext : DbContext
     {
-        protected readonly TContext Context;
+        protected readonly DbContext Context;
 
-        public ReadOnlyRepository(TContext context)
+        public ReadOnlyRepository()
         {
-            Context = context;
+            Context = new ScanContext();
         }
 
         protected virtual IQueryable<TEntity> GetQueryable<TEntity>(
@@ -35,11 +35,14 @@ namespace OnionApp.Infrastructure.Data
                 query = query.Where(filter);
             }
 
-            foreach (var includeProperty in includeProperties.Split
-                (new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
+            //foreach (var includeProperty in includeProperties.Split
+            //    (new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            //{
+            //    query = query.Include(includeProperty);
+            //}
+
+            query = includeProperties.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
+                .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
 
             if (orderBy != null)
             {
@@ -170,5 +173,40 @@ namespace OnionApp.Infrastructure.Data
         {
             return GetQueryable(filter).AnyAsync();
         }
+
+        #region IDisposable Support
+        private bool _disposedValue; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposedValue) return;
+            if (disposing)
+            {
+                Context?.Dispose();
+                // TODO: dispose managed state (managed objects).
+            }
+
+            // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+            // TODO: set large fields to null.
+
+            _disposedValue = true;
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        ~ReadOnlyRepository()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(false);
+        } 
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

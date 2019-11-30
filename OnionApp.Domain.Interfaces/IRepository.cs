@@ -5,10 +5,10 @@ namespace OnionApp.Domain.Interfaces
 {
     public interface IRepository
     {
-        void Create<TEntity>(TEntity entity, string createdBy = null)
+        void Create<TEntity>(TEntity entity, int createdBy = 1)
             where TEntity : class, IEntity;
 
-        void Update<TEntity>(TEntity entity, string modifiedBy = null)
+        void Update<TEntity>(TEntity entity, int? modifiedBy = null)
             where TEntity : class, IEntity;
 
         void Delete<TEntity>(object id)

@@ -7,7 +7,7 @@ using OnionApp.Domain.Core.IEntities;
 
 namespace OnionApp.Domain.Interfaces
 {
-    public interface IReadOnlyRepository
+    public interface IReadOnlyRepository: IDisposable
     {
         IEnumerable<TEntity> GetAll<TEntity>(
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
