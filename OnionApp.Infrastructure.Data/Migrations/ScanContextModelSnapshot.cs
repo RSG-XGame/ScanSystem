@@ -36,7 +36,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
 
                     b.Property<string>("RoleName");
 
-                    b.Property<byte[]>("Version")
+                    b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
@@ -49,7 +49,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
                         {
                             Id = 1,
                             CreatedBy = 1,
-                            CreatedDate = new DateTime(2019, 11, 30, 21, 2, 11, 353, DateTimeKind.Local).AddTicks(7795),
+                            CreatedDate = new DateTime(2019, 12, 1, 1, 47, 55, 349, DateTimeKind.Local).AddTicks(4971),
                             IsEnabled = true,
                             RoleName = "admin"
                         },
@@ -57,7 +57,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
                         {
                             Id = 2,
                             CreatedBy = 1,
-                            CreatedDate = new DateTime(2019, 11, 30, 21, 2, 11, 354, DateTimeKind.Local).AddTicks(6974),
+                            CreatedDate = new DateTime(2019, 12, 1, 1, 47, 55, 350, DateTimeKind.Local).AddTicks(8475),
                             IsEnabled = true,
                             RoleName = "user"
                         });
@@ -84,11 +84,11 @@ namespace OnionApp.Infrastructure.Data.Migrations
 
                     b.Property<int?>("RoleId");
 
-                    b.Property<string>("UserName");
-
-                    b.Property<byte[]>("Version")
+                    b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("UserName");
 
                     b.HasKey("Id");
 
@@ -101,7 +101,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
                         {
                             Id = 1,
                             CreatedBy = 1,
-                            CreatedDate = new DateTime(2019, 11, 30, 21, 2, 11, 354, DateTimeKind.Local).AddTicks(7451),
+                            CreatedDate = new DateTime(2019, 12, 1, 1, 47, 55, 350, DateTimeKind.Local).AddTicks(9278),
                             IsEnabled = true,
                             Login = "admin@mail.ru",
                             Password = "123456",
@@ -111,7 +111,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
                         {
                             Id = 2,
                             CreatedBy = 1,
-                            CreatedDate = new DateTime(2019, 11, 30, 21, 2, 11, 354, DateTimeKind.Local).AddTicks(9023),
+                            CreatedDate = new DateTime(2019, 12, 1, 1, 47, 55, 351, DateTimeKind.Local).AddTicks(2110),
                             IsEnabled = true,
                             Login = "tom@mail.ru",
                             Password = "123456",
@@ -121,7 +121,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
                         {
                             Id = 3,
                             CreatedBy = 1,
-                            CreatedDate = new DateTime(2019, 11, 30, 21, 2, 11, 354, DateTimeKind.Local).AddTicks(9049),
+                            CreatedDate = new DateTime(2019, 12, 1, 1, 47, 55, 351, DateTimeKind.Local).AddTicks(2142),
                             IsEnabled = true,
                             Login = "bob@mail.ru",
                             Password = "123456",
@@ -131,7 +131,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
                         {
                             Id = 4,
                             CreatedBy = 1,
-                            CreatedDate = new DateTime(2019, 11, 30, 21, 2, 11, 354, DateTimeKind.Local).AddTicks(9052),
+                            CreatedDate = new DateTime(2019, 12, 1, 1, 47, 55, 351, DateTimeKind.Local).AddTicks(2144),
                             IsEnabled = true,
                             Login = "sam@mail.ru",
                             Password = "123456",

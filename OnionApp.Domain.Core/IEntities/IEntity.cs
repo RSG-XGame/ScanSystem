@@ -14,7 +14,7 @@ namespace OnionApp.Domain.Core.IEntities
         int CreatedBy { get; set; }
         DateTime? ModifiedDate { get; set; }
         int? ModifiedBy { get; set; }
-        byte[] Version { get; set; }
+        byte[] RowVersion { get; set; }
         bool IsEnabled { get; set; }
     }
 

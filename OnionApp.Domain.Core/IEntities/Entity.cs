@@ -27,7 +27,9 @@ namespace OnionApp.Domain.Core.IEntities
         public int? ModifiedBy { get; set; }
 
         [Timestamp]
-        public byte[] Version { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [ConcurrencyCheck]
+        public byte[] RowVersion { get; set; }
 
         public bool IsEnabled { get; set; } = true;
 
