@@ -7,5 +7,7 @@ namespace ScanSystems.Protocols.Modbus
 {
     public class ModbusRequest : IRequest
     {
+        public ModbusMBAPHeader MBAPHeader { get; set; }
+        public ModbusPDU PDU { get; set; }
     }
 }

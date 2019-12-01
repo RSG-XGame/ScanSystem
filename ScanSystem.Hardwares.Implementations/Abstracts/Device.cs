@@ -17,6 +17,8 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
         private CancellationTokenSource cancelToken;
         protected TcpClient client;
 
+        public bool Disposed => disposedValue;
+
         public Guid DeviceId { get; private set; }
         public IDeviceSettings Settings { get; private set; }
         public bool Busy => !resetWait.WaitOne(0);

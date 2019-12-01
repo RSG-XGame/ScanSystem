@@ -9,8 +9,4 @@
     <ProjectReference Include="..\ScanSystems.Protocols.Modbus\ScanSystems.Protocols.Modbus.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="SchneiderElectric\" />
-  </ItemGroup>
-
 </Project>

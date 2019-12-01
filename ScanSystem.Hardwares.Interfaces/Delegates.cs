@@ -1,4 +1,5 @@
 ﻿using ScanSystem.Hardwares.Interfaces.CommonDevice;
+using ScanSystem.Hardwares.Interfaces.Variables;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,8 +34,6 @@ namespace ScanSystem.Hardwares.Interfaces
     /// <param name="device">Определение устройства</param>
     /// <param name="args">Отфармотированное сообщение после чтения данных</param>
     public delegate void DeviceRecivedMessageHandle(IDevice device, IDeviceEventArgs args);
-
-
 
     /// <summary>
     /// При работе с устройством возникла ошибка

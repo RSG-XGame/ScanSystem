@@ -10,6 +10,8 @@ namespace ScanSystem.Hardwares.Interfaces.CommonDevice
         IDeviceSettings Settings { get; }
         bool Busy { get; }
 
+        bool Disposed { get; }
+
         event DeviceConnectingHandle DeviceConnecting;
         event DeviceConnectedHandle DeviceConnected;
 

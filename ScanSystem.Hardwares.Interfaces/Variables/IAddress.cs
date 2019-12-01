@@ -4,8 +4,7 @@ using System.Text;
 
 namespace ScanSystem.Hardwares.Interfaces.Variables
 {
-    public interface IAddress
+    public interface IAddress : IComparable
     {
-
     }
 }
