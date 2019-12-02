@@ -66,15 +66,15 @@ namespace ScanSystems.Protocols.Modbus.Common
             }
             return result;
         }
-        public bool Write<TType>(IVariable<TType> variable) 
+        public bool Write<TType>(IVariable<TType> variable)
             where TType : IComparable, IComparable<TType>, IConvertible, IEquatable<TType>
         {
-
+            return false;
         }
-        public TType Read<TType>(IVariable<TType> variable) 
+        public TType Read<TType>(IVariable<TType> variable)
             where TType : IComparable, IComparable<TType>, IConvertible, IEquatable<TType>
         {
-
+            return (TType)variable;
         }
         IEnumerator IEnumerable.GetEnumerator()
         {

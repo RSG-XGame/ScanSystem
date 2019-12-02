@@ -20,10 +20,12 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
 
         public override bool SendRequest(IDeviceRequest request)
         {
+            return false;
         }
 
         protected override IDeviceEventArgs RecivedData(byte[] data, int length)
         {
+            return null;
         }
 
         protected override void Dispose(bool disposing)
