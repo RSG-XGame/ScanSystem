@@ -69,12 +69,12 @@ namespace ScanSystems.Protocols.Modbus.Common
         public bool Write<TType>(IVariable<TType> variable) 
             where TType : IComparable, IComparable<TType>, IConvertible, IEquatable<TType>
         {
-
+            throw new NotImplementedException();
         }
         public TType Read<TType>(IVariable<TType> variable) 
             where TType : IComparable, IComparable<TType>, IConvertible, IEquatable<TType>
         {
-
+            throw new NotImplementedException();
         }
         IEnumerator IEnumerable.GetEnumerator()
         {

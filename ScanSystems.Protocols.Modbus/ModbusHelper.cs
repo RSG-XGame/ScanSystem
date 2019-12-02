@@ -60,44 +60,56 @@ namespace ScanSystems.Protocols.Modbus
             converterDictionary.Add(typeof(ulong), ULongToBytes);
             converterDictionary.Add(typeof(float), FloatToBytes);
             converterDictionary.Add(typeof(double), DoubleToBytes);
-            converterDictionary.Add(typeof(string), StringToBytes)
+            converterDictionary.Add(typeof(string), StringToBytes);
         }
 
         private byte[] BooleanToBytes(IVariable variable, ConvertingFormats convertingFormat)
         {
+            throw new NotImplementedException();
         }
         private byte[] ByteToBytes(IVariable variable, ConvertingFormats convertingFormat)
         {
+            throw new NotImplementedException();
         }
         private byte[] SByteToBytes(IVariable variable, ConvertingFormats convertingFormat)
         {
+            throw new NotImplementedException();
         }
         private byte[] ShortToBytes(IVariable variable, ConvertingFormats convertingFormat)
         {
+            throw new NotImplementedException();
         }
         private byte[] UShortToBytes(IVariable variable, ConvertingFormats convertingFormat)
         {
+            throw new NotImplementedException();
         }
         private byte[] IntToBytes(IVariable variable, ConvertingFormats convertingFormat)
         {
+            throw new NotImplementedException();
         }
         private byte[] UIntToBytes(IVariable variable, ConvertingFormats convertingFormat)
         {
+            throw new NotImplementedException();
         }
         private byte[] LongToBytes(IVariable variable, ConvertingFormats convertingFormat)
         {
+            throw new NotImplementedException();
         }
         private byte[] ULongToBytes(IVariable variable, ConvertingFormats convertingFormat)
         {
+            throw new NotImplementedException();
         }
         private byte[] FloatToBytes(IVariable variable, ConvertingFormats convertingFormat)
         {
+            throw new NotImplementedException();
         }
         private byte[] DoubleToBytes(IVariable variable, ConvertingFormats convertingFormat)
         {
+            throw new NotImplementedException();
         }
         private byte[] StringToBytes(IVariable variable, ConvertingFormats convertingFormat)
         {
+            throw new NotImplementedException();
         }
         #endregion
 
