@@ -16,7 +16,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("OnionApp.Domain.Core.Entities.Role", b =>
@@ -36,9 +36,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
 
                     b.Property<string>("RoleName");
 
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<byte[]>("RowVersion");
 
                     b.HasKey("Id");
 
@@ -49,7 +47,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
                         {
                             Id = 1,
                             CreatedBy = 1,
-                            CreatedDate = new DateTime(2019, 12, 1, 1, 47, 55, 349, DateTimeKind.Local).AddTicks(4971),
+                            CreatedDate = new DateTime(2019, 12, 2, 12, 23, 2, 102, DateTimeKind.Local).AddTicks(5466),
                             IsEnabled = true,
                             RoleName = "admin"
                         },
@@ -57,7 +55,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
                         {
                             Id = 2,
                             CreatedBy = 1,
-                            CreatedDate = new DateTime(2019, 12, 1, 1, 47, 55, 350, DateTimeKind.Local).AddTicks(8475),
+                            CreatedDate = new DateTime(2019, 12, 2, 12, 23, 2, 104, DateTimeKind.Local).AddTicks(6964),
                             IsEnabled = true,
                             RoleName = "user"
                         });
@@ -84,9 +82,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
 
                     b.Property<int?>("RoleId");
 
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<byte[]>("RowVersion");
 
                     b.Property<string>("UserName");
 
@@ -101,7 +97,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
                         {
                             Id = 1,
                             CreatedBy = 1,
-                            CreatedDate = new DateTime(2019, 12, 1, 1, 47, 55, 350, DateTimeKind.Local).AddTicks(9278),
+                            CreatedDate = new DateTime(2019, 12, 2, 12, 23, 2, 104, DateTimeKind.Local).AddTicks(7763),
                             IsEnabled = true,
                             Login = "admin@mail.ru",
                             Password = "123456",
@@ -111,7 +107,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
                         {
                             Id = 2,
                             CreatedBy = 1,
-                            CreatedDate = new DateTime(2019, 12, 1, 1, 47, 55, 351, DateTimeKind.Local).AddTicks(2110),
+                            CreatedDate = new DateTime(2019, 12, 2, 12, 23, 2, 105, DateTimeKind.Local).AddTicks(4670),
                             IsEnabled = true,
                             Login = "tom@mail.ru",
                             Password = "123456",
@@ -121,7 +117,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
                         {
                             Id = 3,
                             CreatedBy = 1,
-                            CreatedDate = new DateTime(2019, 12, 1, 1, 47, 55, 351, DateTimeKind.Local).AddTicks(2142),
+                            CreatedDate = new DateTime(2019, 12, 2, 12, 23, 2, 105, DateTimeKind.Local).AddTicks(4706),
                             IsEnabled = true,
                             Login = "bob@mail.ru",
                             Password = "123456",
@@ -131,7 +127,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
                         {
                             Id = 4,
                             CreatedBy = 1,
-                            CreatedDate = new DateTime(2019, 12, 1, 1, 47, 55, 351, DateTimeKind.Local).AddTicks(2144),
+                            CreatedDate = new DateTime(2019, 12, 2, 12, 23, 2, 105, DateTimeKind.Local).AddTicks(4708),
                             IsEnabled = true,
                             Login = "sam@mail.ru",
                             Password = "123456",

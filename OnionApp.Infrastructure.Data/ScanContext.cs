@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using OnionApp.Domain.Core.Entities;
-using OnionApp.Domain.Core.IEntities;
 
 namespace OnionApp.Infrastructure.Data
 {
@@ -28,7 +27,7 @@ namespace OnionApp.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Entity<int>>().ForNpgsqlUseXminAsConcurrencyToken();
+            //modelBuilder.Entity<Entity<int>>().ForNpgsqlUseXminAsConcurrencyToken();
 
             var adminRole = new Role {Id = 1, RoleName = "admin"};
             var userRole = new Role {Id = 2, RoleName = "user"};
