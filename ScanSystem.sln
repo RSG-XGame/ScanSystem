@@ -41,7 +41,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnionApp.Infrastructure.Dat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnionApp.Infrastructure.Business", "OnionApp.Infrastructure.Business\OnionApp.Infrastructure.Business.csproj", "{9080389F-DE69-4D0A-9A21-44CDE7B88DA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScanApp", "ScanApp\ScanApp.csproj", "{E6D75309-63EA-45C1-AD6E-CD3B3C53EA5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScanApp", "ScanApp\ScanApp.csproj", "{E6D75309-63EA-45C1-AD6E-CD3B3C53EA5D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

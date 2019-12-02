@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using OnionApp.Domain.Core.Entities;
+using OnionApp.Domain.Core.Entities.Accounts;
+using OnionApp.Domain.Core.Entities.Devices;
+using OnionApp.Domain.Core.Entities.Processing;
 
 namespace OnionApp.Infrastructure.Data
 {
@@ -10,6 +13,16 @@ namespace OnionApp.Infrastructure.Data
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Rule> Rules { get; set; }
+        public DbSet<SysFunction> SysFunctions { get; set; }
+        public DbSet<UserMessage> UserMessages { get; set; }
+        public DbSet<Device> Devices { get; set; }
+        public DbSet<DeviceType> DeviceTypes { get; set; }
+        public DbSet<Change> Changes { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderPosition> OrderPositions { get; set; }
+        public DbSet<OrderStatus> OrderStatuses { get; set; }
+        public DbSet<SAPBarcode> SAPBarcodes { get; set; }
 
         //public ScanContext()
         //{
