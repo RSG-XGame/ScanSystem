@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using OnionApp.Domain.Core.Entities;
+using OnionApp.Domain.Core.Entities.Accounts;
 using OnionApp.Domain.Interfaces;
 using ScanApp.Token;
 

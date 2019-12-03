@@ -6,10 +6,11 @@ using OnionApp.Domain.Core.Entities;
 using OnionApp.Domain.Core.Entities.Accounts;
 using OnionApp.Domain.Core.Entities.Devices;
 using OnionApp.Domain.Core.Entities.Processing;
+using OnionApp.Domain.Core.IEntities;
 
 namespace OnionApp.Infrastructure.Data
 {
-    internal sealed class ScanContext : DbContext
+    public sealed class ScanContext : DbContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -32,7 +33,7 @@ namespace OnionApp.Infrastructure.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
         #if DEBUG
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=ScanDb;Username=postgres;Password=123456");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=ScanDb;Username=postgres;Password=Jgbpl.kznjh666");
         #else
             optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=ScanDb;Username=postgres;Password=123456");
         #endif
@@ -40,8 +41,6 @@ namespace OnionApp.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Entity<int>>().ForNpgsqlUseXminAsConcurrencyToken();
-
             var adminRole = new Role {Id = 1, RoleName = "admin"};
             var userRole = new Role {Id = 2, RoleName = "user"};
             var adminUser1 = new User {Id = 1, Login = "admin@mail.ru", Password = "123456", RoleId = adminRole.Id};

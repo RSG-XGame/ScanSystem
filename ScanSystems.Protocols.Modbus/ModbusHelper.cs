@@ -22,7 +22,7 @@ namespace ScanSystems.Protocols.Modbus
         public byte UnitId { get; set; }
 
         private void InitializeTransactionId()
-        { 
+        {
             transactionId = 0;
             lockerTransaction = new object();
         }
@@ -63,9 +63,40 @@ namespace ScanSystems.Protocols.Modbus
             converterDictionary.Add(typeof(string), StringToBytes);
         }
 
+        private int GetResultSize(ConvertingFormats convertingFormat)
+        {
+            int result = 0;
+            if (convertingFormat == ConvertingFormats.Address)
+            {
+                result += 2;
+            }
+            if (convertingFormat == ConvertingFormats.Value)
+            {
+                result += 2;
+            }
+            return result;
+        }
+        
         private byte[] BooleanToBytes(IVariable variable, ConvertingFormats convertingFormat)
         {
-            throw new NotImplementedException();
+            int resultSize = GetResultSize(convertingFormat);
+            int index = 0;
+            byte[] result = new byte[resultSize];
+            bool variableValue = (bool)variable.GetValue();
+            ModbusAddress addr = variable.Address as ModbusAddress;
+
+            if (convertingFormat == ConvertingFormats.Address)
+            {
+                string temp = addr.WordNum.ToString("X4");
+                result[index++] = byte.Parse(temp.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+                result[index++] = byte.Parse(temp.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+            }
+            if (convertingFormat == ConvertingFormats.Value)
+            {
+                int value = 0 | (1 << addr.BitNum);
+            }
+
+            return result;
         }
         private byte[] ByteToBytes(IVariable variable, ConvertingFormats convertingFormat)
         {
