@@ -1,4 +1,5 @@
 ﻿using ScanSystem.Hardwares.Interfaces.Variables;
+using ScanSystems.Protocols.Modbus.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,7 +14,7 @@ namespace ScanSystems.Protocols.Modbus
             Address = 1,
             Value = 2,
         }
-        private delegate byte[] ConvertToBytesHandle(IVariable variable, ConvertingFormats convertingFormat);
+        private delegate int[] ConvertToIntsHandle(IVariable variable, ConvertingFormats convertingFormat);
 
         #region transaction id
         private ushort transactionId;
@@ -43,104 +44,214 @@ namespace ScanSystems.Protocols.Modbus
         #endregion
 
         #region supported data types
-        private Dictionary<Type, ConvertToBytesHandle> converterDictionary;
+        private Dictionary<Type, ConvertToIntsHandle> converterDictionary;
 
         private void InitializeConverterDictionary()
         {
-            converterDictionary = new Dictionary<Type, ConvertToBytesHandle>();
+            converterDictionary = new Dictionary<Type, ConvertToIntsHandle>();
 
-            converterDictionary.Add(typeof(bool), BooleanToBytes);
-            converterDictionary.Add(typeof(byte), ByteToBytes);
-            converterDictionary.Add(typeof(sbyte), SByteToBytes);
-            converterDictionary.Add(typeof(short), ShortToBytes);
-            converterDictionary.Add(typeof(ushort), UShortToBytes);
-            converterDictionary.Add(typeof(int), IntToBytes);
-            converterDictionary.Add(typeof(uint), UIntToBytes);
-            converterDictionary.Add(typeof(long), LongToBytes);
-            converterDictionary.Add(typeof(ulong), ULongToBytes);
-            converterDictionary.Add(typeof(float), FloatToBytes);
-            converterDictionary.Add(typeof(double), DoubleToBytes);
-            converterDictionary.Add(typeof(string), StringToBytes);
-        }
-
-        private int GetResultSize(ConvertingFormats convertingFormat)
-        {
-            int result = 0;
-            if (convertingFormat == ConvertingFormats.Address)
-            {
-                result += 2;
-            }
-            if (convertingFormat == ConvertingFormats.Value)
-            {
-                result += 2;
-            }
-            return result;
+            //converterDictionary.Add(typeof(bool), BooleanToInts);
+            //converterDictionary.Add(typeof(byte), ByteToInts);
+            //converterDictionary.Add(typeof(sbyte), SByteToInts);
+            converterDictionary.Add(typeof(short), ShortToInts);
+            converterDictionary.Add(typeof(ushort), UShortToInts);
+            converterDictionary.Add(typeof(int), IntToInts);
+            converterDictionary.Add(typeof(uint), UIntToInts);
+            converterDictionary.Add(typeof(long), LongToInts);
+            converterDictionary.Add(typeof(ulong), ULongToInts);
+            converterDictionary.Add(typeof(float), FloatToInts);
+            converterDictionary.Add(typeof(double), DoubleToInts);
+            converterDictionary.Add(typeof(string), StringToInts);
         }
         
-        private byte[] BooleanToBytes(IVariable variable, ConvertingFormats convertingFormat)
+        private int[] ToInts<T>(IVariable<T> variable, ConvertingFormats convertingFormat)
+            where T : IComparable, IComparable<T>, IConvertible, IEquatable<T>
         {
-            int resultSize = GetResultSize(convertingFormat);
-            int index = 0;
-            byte[] result = new byte[resultSize];
-            bool variableValue = (bool)variable.GetValue();
-            ModbusAddress addr = variable.Address as ModbusAddress;
+            return null;
+        }
+        
+        private int[] BooleanToInts(IVariable[] variables, ConvertingFormats convertingFormat)
+        {
+            List<int> result = new List<int>();
+
+            if (variables.Length > 16)
+                throw new ArgumentException("Количество бит больше, чем может поместиться в слове!");
+
+            int wordNum = -1;
+            int value = 0;
+            foreach (var variable in variables)
+            {
+                if (wordNum == -1)
+                {
+                    wordNum = (variable as ModbusAddress).WordNum;
+                }
+                else
+                {
+                    if (wordNum != (variable as ModbusAddress).WordNum)
+                    {
+                        throw new InvalidOperationException("Невозможно компоновать биты из разных слов.");
+                    }
+                }
+                if ((bool)variable.GetValue())
+                    value |= (1 << (variable as ModbusAddress).BitNum);
+            }
 
             if (convertingFormat == ConvertingFormats.Address)
             {
-                string temp = addr.WordNum.ToString("X4");
-                result[index++] = byte.Parse(temp.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
-                result[index++] = byte.Parse(temp.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+                result.Add(wordNum);
             }
             if (convertingFormat == ConvertingFormats.Value)
             {
-                int value = 0 | (1 << addr.BitNum);
+                result.Add(value);
             }
 
-            return result;
+            return result.ToArray();
         }
-        private byte[] ByteToBytes(IVariable variable, ConvertingFormats convertingFormat)
+        private int[] ByteToInts(IVariable[] variables, ConvertingFormats convertingFormat)
         {
-            throw new NotImplementedException();
+            List<int> result = new List<int>();
+
+            if (variables.Length > 2)
+                throw new ArgumentException("Количество байт больше, чем может поместиться в слове!");
+
+            int wordNum = -1;
+            byte[] temp = new byte[4] { 0, 0, 0, 0 };
+            int index = 3;
+            foreach (var variable in variables)
+            {
+                if (wordNum == -1)
+                {
+                    wordNum = (variable as ModbusAddress).WordNum;
+                }
+                else
+                {
+                    if (wordNum != (variable as ModbusAddress).WordNum)
+                    {
+                        throw new InvalidOperationException("Невозможно компоновать байты из разных слов.");
+                    }
+                }
+                temp[index--] = (byte)variable.GetValue();
+            }
+
+            if (convertingFormat == ConvertingFormats.Address)
+            {
+                result.Add(wordNum);
+            }
+            if (convertingFormat == ConvertingFormats.Value)
+            {
+                result.Add(BitConverter.ToInt32(temp, 0));
+            }
+
+            return result.ToArray();
         }
-        private byte[] SByteToBytes(IVariable variable, ConvertingFormats convertingFormat)
+        private int[] SByteToInts(IVariable[] variables, ConvertingFormats convertingFormat)
         {
-            throw new NotImplementedException();
+            List<int> result = new List<int>();
+
+            if (variables.Length > 2)
+                throw new ArgumentException("Количество байт больше, чем может поместиться в слове!");
+
+            int wordNum = -1;
+            byte[] temp = new byte[4] { 0, 0, 0, 0 };
+            int index = 3;
+            foreach (var variable in variables)
+            {
+                if (wordNum == -1)
+                {
+                    wordNum = (variable as ModbusAddress).WordNum;
+                }
+                else
+                {
+                    if (wordNum != (variable as ModbusAddress).WordNum)
+                    {
+                        throw new InvalidOperationException("Невозможно компоновать байты из разных слов.");
+                    }
+                }
+                temp[index--] = Convert.ToByte(variable.GetValue());
+            }
+
+            if (convertingFormat == ConvertingFormats.Address)
+            {
+                result.Add(wordNum);
+            }
+            if (convertingFormat == ConvertingFormats.Value)
+            {
+                result.Add(BitConverter.ToInt32(temp, 0));
+            }
+
+            return result.ToArray();
         }
-        private byte[] ShortToBytes(IVariable variable, ConvertingFormats convertingFormat)
+        private int[] ShortToInts(IVariable variable, ConvertingFormats convertingFormat)
         {
-            throw new NotImplementedException();
+            List<int> result = new List<int>();
+            if (convertingFormat == ConvertingFormats.Address)
+            {
+                result.Add((variable as ModbusAddress).WordNum);
+            }
+            if (convertingFormat == ConvertingFormats.Value)
+            {
+                result.Add(Convert.ToInt32(variable.GetValue()));
+            }
+            return result.ToArray();
         }
-        private byte[] UShortToBytes(IVariable variable, ConvertingFormats convertingFormat)
+        private int[] UShortToInts(IVariable variable, ConvertingFormats convertingFormat)
         {
-            throw new NotImplementedException();
+            List<int> result = new List<int>();
+            if (convertingFormat == ConvertingFormats.Address)
+            {
+                result.Add((variable as ModbusAddress).WordNum);
+            }
+            if (convertingFormat == ConvertingFormats.Value)
+            {
+                result.Add(Convert.ToInt32(variable.GetValue()));
+            }
+            return result.ToArray();
         }
-        private byte[] IntToBytes(IVariable variable, ConvertingFormats convertingFormat)
+        private int[] IntToInts(IVariable variable, ConvertingFormats convertingFormat)
         {
-            throw new NotImplementedException();
+            List<int> result = new List<int>();
+            if (convertingFormat == ConvertingFormats.Address)
+            {
+                result.Add((variable as ModbusAddress).WordNum);
+            }
+            if (convertingFormat == ConvertingFormats.Value)
+            {
+                result.Add(Convert.ToInt32(variable.GetValue()));
+            }
+            return result.ToArray();
         }
-        private byte[] UIntToBytes(IVariable variable, ConvertingFormats convertingFormat)
+        private int[] UIntToInts(IVariable variable, ConvertingFormats convertingFormat)
         {
-            throw new NotImplementedException();
+            List<int> result = new List<int>();
+            if (convertingFormat == ConvertingFormats.Address)
+            {
+                result.Add((variable as ModbusAddress).WordNum);
+            }
+            if (convertingFormat == ConvertingFormats.Value)
+            {
+                result.Add(Convert.ToInt32(variable.GetValue()));
+            }
+            return result.ToArray();
         }
-        private byte[] LongToBytes(IVariable variable, ConvertingFormats convertingFormat)
+        private int[] LongToInts(IVariable variable, ConvertingFormats convertingFormat)
         {
-            throw new NotImplementedException();
+            return ToInts(variable as IVariable<long>, convertingFormat);
         }
-        private byte[] ULongToBytes(IVariable variable, ConvertingFormats convertingFormat)
+        private int[] ULongToInts(IVariable variable, ConvertingFormats convertingFormat)
         {
-            throw new NotImplementedException();
+            return ToInts(variable as IVariable<ulong>, convertingFormat);
         }
-        private byte[] FloatToBytes(IVariable variable, ConvertingFormats convertingFormat)
+        private int[] FloatToInts(IVariable variable, ConvertingFormats convertingFormat)
         {
-            throw new NotImplementedException();
+            return ToInts(variable as IVariable<float>, convertingFormat);
         }
-        private byte[] DoubleToBytes(IVariable variable, ConvertingFormats convertingFormat)
+        private int[] DoubleToInts(IVariable variable, ConvertingFormats convertingFormat)
         {
-            throw new NotImplementedException();
+            return ToInts(variable as IVariable<double>, convertingFormat);
         }
-        private byte[] StringToBytes(IVariable variable, ConvertingFormats convertingFormat)
+        private int[] StringToInts(IVariable variable, ConvertingFormats convertingFormat)
         {
-            throw new NotImplementedException();
+            return ToInts(variable as IVariable<string>, convertingFormat);
         }
         #endregion
 

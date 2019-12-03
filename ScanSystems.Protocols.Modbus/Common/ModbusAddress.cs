@@ -74,7 +74,7 @@ namespace ScanSystems.Protocols.Modbus
                                 int.TryParse(addr[1], out addr2))
                             {
                                 wordNum = Convert.ToInt32(Math.Floor(addr1 * 8 / 2D));
-                                bitNum = addr2;
+                                bitNum = addr2 + ((addr1 % 2) * 8);
                             }
                             else
                             {
