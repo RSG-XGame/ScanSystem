@@ -6,7 +6,7 @@ using System.Text;
 
 namespace OnionApp.Domain.Core.Entities.Processing
 {
-   // [Table(nameof(SAPBarcode), Schema = "processing")]
+    [Table(nameof(SAPBarcode), Schema = "processing")]
     public class SAPBarcode : Entity<Guid>
     {
         public Guid OrderId { get; set; }

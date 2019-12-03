@@ -10,7 +10,7 @@ using OnionApp.Domain.Core.IEntities;
 
 namespace OnionApp.Infrastructure.Data
 {
-    public sealed class ScanContext : DbContext
+    internal sealed class ScanContext : DbContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }

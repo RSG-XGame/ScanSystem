@@ -6,7 +6,7 @@ using System.Text;
 
 namespace OnionApp.Domain.Core.Entities.Processing
 {
-   // [Table(nameof(OrderStatus), Schema = "processing")]
+    [Table(nameof(OrderStatus), Schema = "processing")]
     public class OrderStatus : Entity<int>
     {
         public string OrderStatusName { get; set; }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace OnionApp.Domain.Core.Entities.Processing
 {
-    //[Table(nameof(Change), Schema = "processing")]
+    [Table(nameof(Change), Schema = "processing")]
     public class Change : Entity<Guid>
     {
 

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace OnionApp.Domain.Core.Entities.Accounts
 {
-  //  [Table(nameof(UserMessage), Schema = "accounts")]
+    [Table(nameof(UserMessage), Schema = "accounts")]
     public class UserMessage : Entity<Guid>
     {
         [ForeignKey(nameof(User))]

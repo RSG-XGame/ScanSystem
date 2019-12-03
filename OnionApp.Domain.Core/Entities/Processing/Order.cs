@@ -7,7 +7,7 @@ using System.Text;
 
 namespace OnionApp.Domain.Core.Entities.Processing
 {
-    //[Table(nameof(Order), Schema = "processing")]
+    [Table(nameof(Order), Schema = "processing")]
     public class Order : Entity<Guid>
     {
         [DataType(DataType.DateTime)]

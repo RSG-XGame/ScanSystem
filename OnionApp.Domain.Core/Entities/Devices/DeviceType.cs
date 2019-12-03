@@ -7,7 +7,7 @@ using System.Text;
 
 namespace OnionApp.Domain.Core.Entities.Devices
 {
-  //  [Table(nameof(DeviceType), Schema = "devices")]
+    [Table(nameof(DeviceType), Schema = "devices")]
     public class DeviceType : Entity<int>
     {
         [MaxLength(64)]

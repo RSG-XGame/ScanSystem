@@ -6,7 +6,7 @@ using System.Text;
 
 namespace OnionApp.Domain.Core.Entities.Accounts
 {
-   // [Table(nameof(User), Schema = "accounts")]
+    [Table(nameof(User), Schema = "accounts")]
     public class User : Entity<int>
     {
         public string Login { get; set; }
