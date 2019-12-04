@@ -3,6 +3,7 @@ using ScanSystems.Protocols.Modbus.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace ScanSystems.Protocols.Modbus
 {
@@ -64,6 +65,13 @@ namespace ScanSystems.Protocols.Modbus
             converterDictionary.Add(typeof(string), StringToInts);
         }
         
+        public IEnumerable<IGrouping<int, IVariable>> GroupingVariablesToPackages(IVariable[] variables)
+        {
+            var sortedVariables = variables.OrderBy(x => (x.Address as ModbusAddress).WordNum).OrderBy(x => (x.Address as ModbusAddress).BitNum);
+
+            return null;
+        }
+
         private int[] ToInts<T>(IVariable<T> variable, ConvertingFormats convertingFormat)
             where T : IComparable, IComparable<T>, IConvertible, IEquatable<T>
         {
@@ -72,6 +80,9 @@ namespace ScanSystems.Protocols.Modbus
         
         private int[] BooleanToInts(IVariable[] variables, ConvertingFormats convertingFormat)
         {
+            List<IVariable> vars = new List<IVariable>(variables);
+            vars.GroupBy(x => (x.Address as ModbusAddress).WordNum);
+
             List<int> result = new List<int>();
 
             if (variables.Length > 16)
@@ -288,16 +299,6 @@ namespace ScanSystems.Protocols.Modbus
         public ModbusRequest[] SendForceSingleCoil(IVariable variable)
         {
             List<ModbusRequest> requests = new List<ModbusRequest>();
-
-            ModbusRequest request = new ModbusRequest();
-            request.MBAPHeader.TransactionId = GetTransactionId();
-            request.MBAPHeader.Length = 6;
-            request.MBAPHeader.UnitId = UnitId;
-            request.PDU.FunctionCode = ModbusFunctions.ForceSingleCoil;
-            request.PDU.Data = new byte[4];
-
-            byte[] temp = converterDictionary[variable.GetValueType()].Invoke(variable, ConvertingFormats.Value | ConvertingFormats.Address);
-            Array.Copy(temp, 0, request.PDU.Data, 0, 4);
 
             return requests.ToArray();
         }

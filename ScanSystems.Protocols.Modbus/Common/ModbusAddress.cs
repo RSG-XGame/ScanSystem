@@ -32,6 +32,23 @@ namespace ScanSystems.Protocols.Modbus
             set { Update(value); }
         }
 
+        public bool Union(IAddress address)
+        {
+            bool result = false;
+            var addr = address as ModbusAddress;
+            if (addr != null)
+            {
+                result = (addr.wordNum == wordNum);
+                if (!result)
+                {
+                    int cw1 = Convert.ToInt32(Math.Ceiling(countBits / 16d));
+                    int cw2 = Convert.ToInt32(Math.Ceiling(addr.countBits / 16d));
+                    result = (wordNum + cw1 + 1 == addr.wordNum) ||
+                        (addr.wordNum + cw2 + 1 == wordNum);
+                }
+            }
+            return result;
+        }
         public bool CheckSupportOperation(ModbusFunctions functionCode)
         {
             bool result = false;

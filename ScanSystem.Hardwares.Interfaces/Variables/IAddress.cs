@@ -6,5 +6,6 @@ namespace ScanSystem.Hardwares.Interfaces.Variables
 {
     public interface IAddress : IComparable
     {
+        bool Union(IAddress address);
     }
 }
