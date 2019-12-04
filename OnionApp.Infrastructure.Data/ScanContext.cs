@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using OnionApp.Domain.Core.Entities;
 using OnionApp.Domain.Core.Entities.Accounts;
 using OnionApp.Domain.Core.Entities.Devices;
+using OnionApp.Domain.Core.Entities.Dict;
 using OnionApp.Domain.Core.Entities.Processing;
 using OnionApp.Domain.Core.IEntities;
 
 namespace OnionApp.Infrastructure.Data
 {
-    internal sealed class ScanContext : DbContext
+    public sealed class ScanContext : DbContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -47,6 +49,11 @@ namespace OnionApp.Infrastructure.Data
             var adminUser2 = new User {Id = 2, Login = "tom@mail.ru", Password = "123456", RoleId = adminRole.Id};
             var simpleUser1 = new User {Id = 3, Login = "bob@mail.ru", Password = "123456", RoleId = userRole.Id};
             var simpleUser2 = new User {Id = 4, Login = "sam@mail.ru", Password = "123456", RoleId = userRole.Id};
+
+            foreach (var relShip in modelBuilder.Model.GetEntityTypes().SelectMany(x => x.GetForeignKeys()))
+            {
+                relShip.DeleteBehavior = DeleteBehavior.Restrict;
+            }
 
             modelBuilder.Entity<Role>().HasData(adminRole, userRole);
             modelBuilder.Entity<User>().HasData(adminUser1, adminUser2, simpleUser1, simpleUser2);

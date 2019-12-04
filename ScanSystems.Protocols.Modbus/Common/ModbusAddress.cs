@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace ScanSystems.Protocols.Modbus
+namespace ScanSystems.Protocols.Modbus.Common
 {
     public class ModbusAddress : IAddress
     {
@@ -18,6 +18,7 @@ namespace ScanSystems.Protocols.Modbus
         public string MemoryAddress { get; private set; } = "0";
 
         public int CountBits => countBits;
+        public int StartIndex => wordNum * 16 + bitNum;
         public int BitNum
         {
             get { return bitNum; }
@@ -41,10 +42,10 @@ namespace ScanSystems.Protocols.Modbus
                 result = (addr.wordNum == wordNum);
                 if (!result)
                 {
-                    int cw1 = Convert.ToInt32(Math.Ceiling(countBits / 16d));
-                    int cw2 = Convert.ToInt32(Math.Ceiling(addr.countBits / 16d));
-                    result = (wordNum + cw1 + 1 == addr.wordNum) ||
-                        (addr.wordNum + cw2 + 1 == wordNum);
+                    result = (addr.StartIndex + addr.CountBits == StartIndex) ||
+                        (StartIndex + CountBits == addr.StartIndex) ||
+                        (addr.WordNum + 1 == WordNum) ||
+                        (WordNum + 1 == addr.WordNum);
                 }
             }
             return result;
@@ -67,7 +68,7 @@ namespace ScanSystems.Protocols.Modbus
         }
         private void Update(string value)
         {
-            if (!address.Equals(value))
+            if (address == null || !address.Equals(value))
             {
                 Regex regex = new Regex(@"%(?<MemoryArea>[IQMiqm])(?<MemorySize>[XBWDLxbwdl])(?<MemoryAddress>\d+\.\d+|\d+)", RegexOptions.IgnorePatternWhitespace);
 
@@ -90,7 +91,7 @@ namespace ScanSystems.Protocols.Modbus
                                 int.TryParse(addr[0], out addr1) &&
                                 int.TryParse(addr[1], out addr2))
                             {
-                                wordNum = Convert.ToInt32(Math.Floor(addr1 * 8 / 2D));
+                                wordNum = Convert.ToInt32(Math.Floor((addr1 - addr1 % 2) / 2D));
                                 bitNum = addr2 + ((addr1 % 2) * 8);
                             }
                             else
@@ -104,7 +105,7 @@ namespace ScanSystems.Protocols.Modbus
                             if (addr.Length == 1 &&
                                 int.TryParse(addr[0], out addr1))
                             {
-                                wordNum = Convert.ToInt32(Math.Floor(addr1 / 2D));
+                                wordNum = Convert.ToInt32(Math.Floor((addr1 - addr1 % 2) / 2D));
                                 bitNum = addr1 % 2 == 1 ? 7 : 0;
                             }
                             else
@@ -156,6 +157,11 @@ namespace ScanSystems.Protocols.Modbus
                     address = value;
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return Address ?? "%MX0.0";
         }
     }
 }

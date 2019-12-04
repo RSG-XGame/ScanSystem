@@ -5,20 +5,21 @@ using System.Text;
 
 namespace ScanSystem.Hardwares.Interfaces.Variables
 {
-    public interface IVariable : INotifyPropertyChanging, INotifyPropertyChanged, IDisposable
+    public interface IVariable : INotifyPropertyChanging, INotifyPropertyChanged, IDisposable, IDisosingNotify
     {
         string Name { get; }
         IAddress Address { get; }
         bool Disposed { get; }
+        object Value { get; set; }
 
-        object GetValue();
-        void SetValue(object value);
+        void Initialize(string name, string address);
         Type GetValueType();
     }
 
-    public interface IVariable<TType> : IVariable
+    public interface IVariable<TType, TAddress> : IVariable
         where TType : IComparable, IComparable<TType>, IConvertible, IEquatable<TType>
     {
-        TType Value { get; set; }
+        new TType Value { get; set; }
+        new TAddress Address { get; }
     }
 }

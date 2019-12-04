@@ -25,22 +25,24 @@ namespace OnionApp.Infrastructure.Data
             Context.Entry(entity).State = EntityState.Modified;
         }
 
-        public virtual void Delete<TEntity>(object id)
+        public virtual void Delete<TEntity>(object id, int? modifiedBy = null)
             where TEntity : class, IEntity
         {
             TEntity entity = Context.Set<TEntity>().Find(id);
-            Delete(entity);
+            Delete(entity, modifiedBy);
         }
 
-        public virtual void Delete<TEntity>(TEntity entity)
+        public virtual void Delete<TEntity>(TEntity entity, int? modifiedBy = null)
             where TEntity : class, IEntity
         {
-            var dbSet = Context.Set<TEntity>();
-            if (Context.Entry(entity).State == EntityState.Detached)
-            {
-                dbSet.Attach(entity);
-            }
-            dbSet.Remove(entity);
+            entity.IsDeleted = true;
+            Update(entity, modifiedBy);
+            //var dbSet = Context.Set<TEntity>();
+            //if (Context.Entry(entity).State == EntityState.Modified)
+            //{
+            //    dbSet.Attach(entity);
+            //}
+            //dbSet.Remove(entity);
         }
 
         public virtual void Save()

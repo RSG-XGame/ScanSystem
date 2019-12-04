@@ -12,17 +12,17 @@ namespace ScanSystem.Hardwares.Interfaces.CommonDevice
 
         bool Disposed { get; }
 
-        event DeviceConnectingHandle DeviceConnecting;
-        event DeviceConnectedHandle DeviceConnected;
+        event DeviceConnectingHandler DeviceConnecting;
+        event DeviceConnectedHandler DeviceConnected;
 
-        event DeviceDisconnectingHandle DeviceDisconnecting;
-        event DeviceDisconnectedHandle DeviceDisconnected;
+        event DeviceDisconnectingHandler DeviceDisconnecting;
+        event DeviceDisconnectedHandler DeviceDisconnected;
 
-        event DeviceRecivedMessageHandle DeviceRecivedMessage;
+        event DeviceRecivedMessageHandler DeviceRecivedMessage;
 
-        event DeviceErrorHandle DeviceError;
+        event DeviceErrorHandler DeviceError;
 
-        event DeviceCheckStateHandle DeviceCheckState;
+        event DeviceCheckStateHandler DeviceCheckState;
 
         void Initialization(IDeviceInitializationParams initParams);
 

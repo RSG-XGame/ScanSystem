@@ -8,7 +8,7 @@ namespace ScanSystem.Hardwares.Interfaces.Variables
     {
         bool Disposed { get; }
         
-        TType Read<TType>(IVariable<TType> variable) where TType : IComparable, IComparable<TType>, IConvertible, IEquatable<TType>;
-        bool Write<TType>(IVariable<TType> variable) where TType : IComparable, IComparable<TType>, IConvertible, IEquatable<TType>;
+        TType Read<TType>(IVariable<TType, IAddress> variable) where TType : IComparable, IComparable<TType>, IConvertible, IEquatable<TType>;
+        bool Write<TType>(IVariable<TType, IAddress> variable) where TType : IComparable, IComparable<TType>, IConvertible, IEquatable<TType>;
     }
 }

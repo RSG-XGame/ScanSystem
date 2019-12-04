@@ -1,12 +1,13 @@
-﻿using OnionApp.Domain.Core.IEntities;
+﻿using OnionApp.Domain.Core.Entities.Processing;
+using OnionApp.Domain.Core.IEntities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace OnionApp.Domain.Core.Entities.Processing
+namespace OnionApp.Domain.Core.Entities.Dict
 {
-    [Table(nameof(OrderStatus), Schema = "processing")]
+    [Table(nameof(OrderStatus), Schema = "dict")]
     public class OrderStatus : Entity<int>
     {
         public string OrderStatusName { get; set; }

@@ -1,13 +1,14 @@
-﻿using OnionApp.Domain.Core.IEntities;
+﻿using OnionApp.Domain.Core.Entities.Devices;
+using OnionApp.Domain.Core.IEntities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace OnionApp.Domain.Core.Entities.Devices
+namespace OnionApp.Domain.Core.Entities.Dict
 {
-    [Table(nameof(DeviceType), Schema = "devices")]
+    [Table(nameof(DeviceType), Schema = "dict")]
     public class DeviceType : Entity<int>
     {
         [MaxLength(64)]

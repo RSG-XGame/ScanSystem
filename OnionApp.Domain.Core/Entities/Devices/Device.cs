@@ -1,4 +1,5 @@
-﻿using OnionApp.Domain.Core.IEntities;
+﻿using OnionApp.Domain.Core.Entities.Dict;
+using OnionApp.Domain.Core.IEntities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,6 +10,7 @@ namespace OnionApp.Domain.Core.Entities.Devices
     [Table(nameof(Device), Schema = "devices")]
     public class Device : Entity<Guid>
     {
+        [Column(name: nameof(DeviceSettings), TypeName = "json")]
         public string DeviceSettings { get; set; }
 
         public int DeviceTypeId { get; set; }

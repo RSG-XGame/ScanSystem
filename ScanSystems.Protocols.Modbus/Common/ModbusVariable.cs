@@ -3,11 +3,12 @@ using ScanSystem.Hardwares.Interfaces.Variables;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace ScanSystems.Protocols.Modbus.Common
 {
-    public class ModbusVariable<TType> : IVariable<TType>
+    public class ModbusVariable<TType> : IVariable<TType, ModbusAddress>
         where TType : IComparable, IComparable<TType>, IConvertible, IEquatable<TType>
     {
         private TType value;
@@ -36,17 +37,25 @@ namespace ScanSystems.Protocols.Modbus.Common
         }
         public string Name { get => name; }
 
-        public IAddress Address => address;
+        public ModbusAddress Address => address;
+
+        IAddress IVariable.Address => address;
+        object IVariable.Value { get => Value; set => Value = (TType)value; }
 
         public event PropertyChangingEventHandler PropertyChanging;
         public event PropertyChangedEventHandler PropertyChanged;
+        public event DisposingHandler Disposing;
 
         public ModbusVariable()
         {
-            name = GetType().Name;
             address = new ModbusAddress();
         }
 
+        public void Initialize(string name, string address = "%MW0")
+        {
+            this.name = name;
+            Address.Address = address;
+        }
 
         public object GetValue()
         {
@@ -90,6 +99,7 @@ namespace ScanSystems.Protocols.Modbus.Common
         // Этот код добавлен для правильной реализации шаблона высвобождаемого класса.
         public void Dispose()
         {
+            Disposing?.Invoke(this);
             // Не изменяйте этот код. Разместите код очистки выше, в методе Dispose(bool disposing).
             Dispose(true);
             // TODO: раскомментировать следующую строку, если метод завершения переопределен выше.

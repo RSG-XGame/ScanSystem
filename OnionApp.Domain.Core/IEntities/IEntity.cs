@@ -15,7 +15,7 @@ namespace OnionApp.Domain.Core.IEntities
         DateTime? ModifiedDate { get; set; }
         int? ModifiedBy { get; set; }
         long RowVersion { get; set; }
-        bool IsEnabled { get; set; }
+        bool IsDeleted { get; set; }
     }
 
     public interface IEntity<T> : IEntity

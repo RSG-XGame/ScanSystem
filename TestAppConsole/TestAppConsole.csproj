@@ -142,6 +142,14 @@
       <Project>{00274fed-3e6c-4669-982e-9c12343a165f}</Project>
       <Name>OnionApp.Infrastructure.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ScanSystem.Hardwares.Interfaces\ScanSystem.Hardwares.Interfaces.csproj">
+      <Project>{34D18B20-8952-45E2-A0BC-FCF06FB217F6}</Project>
+      <Name>ScanSystem.Hardwares.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScanSystems.Protocols.Modbus\ScanSystems.Protocols.Modbus.csproj">
+      <Project>{9C1712F5-E991-4F70-B44E-F8F270DDF743}</Project>
+      <Name>ScanSystems.Protocols.Modbus</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

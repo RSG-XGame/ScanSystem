@@ -23,13 +23,13 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
         public IDeviceSettings Settings { get; private set; }
         public bool Busy => !resetWait.WaitOne(0);
 
-        public event DeviceConnectingHandle DeviceConnecting;
-        public event DeviceConnectedHandle DeviceConnected;
-        public event DeviceDisconnectingHandle DeviceDisconnecting;
-        public event DeviceDisconnectedHandle DeviceDisconnected;
-        public event DeviceRecivedMessageHandle DeviceRecivedMessage;
-        public event DeviceErrorHandle DeviceError;
-        public event DeviceCheckStateHandle DeviceCheckState;
+        public event DeviceConnectingHandler DeviceConnecting;
+        public event DeviceConnectedHandler DeviceConnected;
+        public event DeviceDisconnectingHandler DeviceDisconnecting;
+        public event DeviceDisconnectedHandler DeviceDisconnected;
+        public event DeviceRecivedMessageHandler DeviceRecivedMessage;
+        public event DeviceErrorHandler DeviceError;
+        public event DeviceCheckStateHandler DeviceCheckState;
 
         public virtual void Initialization(IDeviceInitializationParams initParams)
         {
