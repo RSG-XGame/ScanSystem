@@ -13,12 +13,37 @@ namespace ScanSystems.Protocols.Modbus.Common
 
         public IVariable this[int index] { get => (variables as List<IVariable>)[index]; }
 
+        public int StartRegister
+        {
+            get
+            {
+                int result = -1;
+                if (CountVariables > 0)
+                {
+                    result = (variables.OrderBy(x => (x.Address as ModbusAddress).StartIndex).First().Address as ModbusAddress).WordNum;
+                }
+                return result;
+            }
+        }
+        public int CountRegisters
+        {
+            get
+            {
+                int result = -1;
+                if (CountVariables > 0)
+                {
+                    int min = variables.Min(x=>(x.Address as ModbusAddress).WordNum);
+                    int max = variables.Max(x => (x.Address as ModbusAddress).WordNum);
+                    result = max - min + 1;
+                }
+                return result;
+            }
+        }
+
         public int MaxSizeInBits => 240 * 8;
         public int SizeInBits => (variables as List<IVariable>).Sum(x => (x.Address as ModbusAddress).CountBits);
         public int CountVariables => (variables as List<IVariable>).Count;
-
         public IVariable Current => variables.GetEnumerator().Current;
-
         object IEnumerator.Current => variables.GetEnumerator().Current;
 
         public ModbusPackage()
@@ -36,6 +61,13 @@ namespace ScanSystems.Protocols.Modbus.Common
                 (variables as List<IVariable>).Add(variable);
                 result = true;
             }
+
+            return result;
+        }
+
+        public byte[] GetData()
+        {
+            byte[] result = new byte[CountVariables > 0 ? CountRegisters : 0];
 
             return result;
         }

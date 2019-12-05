@@ -44,11 +44,18 @@ namespace ScanSystems.Protocols.Modbus
         }
         #endregion
 
-        #region supported data types
+        #region packaging
         private void InitializeConverterDictionary()
         {
         }
-        
+
+        private void ConvertingToBytes(int value, byte[] array, int startIndex)
+        {
+            string temp = value.ToString("X4");
+            array[startIndex] = byte.Parse(temp.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+            array[startIndex + 1] = byte.Parse(temp.Substring(temp.Length - 2, 2), System.Globalization.NumberStyles.HexNumber);
+        }
+
         public ModbusPackage[] PackagingVariables(IVariable[] variables)
         {
             List<ModbusPackage> packages = new List<ModbusPackage>();
@@ -75,29 +82,47 @@ namespace ScanSystems.Protocols.Modbus
             InitializeConverterDictionary();
         }
 
-        public ModbusRequest[] SendReadCoilStatus(IVariable[] variables)
+        private ModbusRequest[] SendRead(ModbusPackage[] packages, ModbusFunctions functionCode)
         {
             List<ModbusRequest> requests = new List<ModbusRequest>();
-            
+            foreach (var package in packages)
+            {
+                if (package.CountVariables > 0)
+                {
+                    ModbusRequest request = new ModbusRequest();
+                    request.MBAPHeader.Length = 6;
+                    request.MBAPHeader.UnitId = UnitId;
+                    request.PDU.FunctionCode = functionCode;
+                    request.PDU.Data = new byte[4];
+                    ConvertingToBytes(package.StartRegister, request.PDU.Data, 0);
+                    ConvertingToBytes(package.CountRegisters, request.PDU.Data, 2);
+                    requests.Add(request);
+                }
+            }
             return requests.ToArray();
         }
-        public ModbusRequest[] SendReadInputStatus(IVariable[] variables)
+        private ModbusRequest[] SendWrite(ModbusPackage[] packages, ModbusFunctions functionCode)
         {
             List<ModbusRequest> requests = new List<ModbusRequest>();
 
             return requests.ToArray();
         }
-        public ModbusRequest[] SendReadHoldingRegisters(IVariable[] variables)
-        {
-            List<ModbusRequest> requests = new List<ModbusRequest>();
 
-            return requests.ToArray();
+        public ModbusRequest[] SendReadCoilStatus(ModbusPackage[] packages)
+        {
+            return SendRead(packages, ModbusFunctions.ReadCoilStatus);
         }
-        public ModbusRequest[] SendReadInputRegisters(IVariable[] variables)
+        public ModbusRequest[] SendReadInputStatus(ModbusPackage[] packages)
         {
-            List<ModbusRequest> requests = new List<ModbusRequest>();
-
-            return requests.ToArray();
+            return SendRead(packages, ModbusFunctions.ReadInputStatus);
+        }
+        public ModbusRequest[] SendReadHoldingRegisters(ModbusPackage[] packages)
+        {
+            return SendRead(packages, ModbusFunctions.ReadHoldingRegisters);
+        }
+        public ModbusRequest[] SendReadInputRegisters(ModbusPackage[] packages)
+        {
+            return SendRead(packages, ModbusFunctions.ReadInputRegisters);
         }
         public ModbusRequest[] SendForceSingleCoil(IVariable variable)
         {
