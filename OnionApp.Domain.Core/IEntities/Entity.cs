@@ -12,9 +12,7 @@ namespace OnionApp.Domain.Core.IEntities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public T Id { get; set; }
-        object IEntity.Id => Id;
-
-        //public string Name { get; set; }
+        //object IEntity.Id => Id;
 
         public int CreatedBy { get; set; } = 1;
 
@@ -26,7 +24,6 @@ namespace OnionApp.Domain.Core.IEntities
 
         public int? ModifiedBy { get; set; }
 
-        //[Timestamp]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [ConcurrencyCheck]
         [Column(name: "xmin", TypeName = "xid")]

@@ -9,7 +9,6 @@ namespace OnionApp.Domain.Core.IEntities
 
     public interface IEntity//: IModifiableEntity
     {
-        object Id { get; }
         DateTime CreatedDate { get; set; }
         int CreatedBy { get; set; }
         DateTime? ModifiedDate { get; set; }
@@ -20,6 +19,6 @@ namespace OnionApp.Domain.Core.IEntities
 
     public interface IEntity<T> : IEntity
     {
-        new T Id { get; set; }
+        T Id { get; set; }
     }
 }

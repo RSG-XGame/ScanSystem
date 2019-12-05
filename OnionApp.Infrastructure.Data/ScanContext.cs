@@ -27,11 +27,6 @@ namespace OnionApp.Infrastructure.Data
         public DbSet<OrderStatus> OrderStatuses { get; set; }
         public DbSet<SAPBarcode> SAPBarcodes { get; set; }
 
-        //public ScanContext()
-        //{
-        //    Database.EnsureCreated();
-        //}
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
         #if DEBUG

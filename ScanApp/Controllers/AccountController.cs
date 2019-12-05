@@ -61,6 +61,7 @@ namespace ScanApp.Controllers
         private async Task<ClaimsIdentity> GetIdentity(string username, string password)
         {
             var person = await _context.GetFirstAsync<User>(x => x.Login == username && x.Password == password);
+
             if (person == null) return null;
             person.Role = await _context.GetFirstAsync<Role>(x => x.Id == person.RoleId);
             if (person.Role == null) return null;
