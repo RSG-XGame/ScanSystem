@@ -10,6 +10,7 @@
     <None Remove="ClientApp\App\app.component.ts" />
     <None Remove="ClientApp\App\app.module.ts" />
     <None Remove="ClientApp\main.ts" />
+    <None Remove="ClientApp\Models\login.ts" />
     <None Remove="ClientApp\polyfills.ts" />
   </ItemGroup>
 
