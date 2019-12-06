@@ -13,7 +13,7 @@ namespace ScanSystems.Protocols.Modbus.Common
     {
         private TType value;
         private string name;
-        private ModbusAddress address;
+        private readonly ModbusAddress address;
 
         public bool Disposed => disposedValue;
         public TType Value
