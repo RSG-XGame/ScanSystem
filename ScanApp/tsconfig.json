@@ -7,7 +7,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": [ "es2018", "dom" ],
-    "noImplicitAny": true,
+    "removeComments": false,
+    "noImplicitAny": false,
     "suppressImplicitAnyIndexErrors": true,
     "typeRoots": [
       "node_modules/@types/",
