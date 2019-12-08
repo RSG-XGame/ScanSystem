@@ -1,5 +1,6 @@
 ﻿using ScanSystem.Hardwares.Implementations.Abstracts;
 using ScanSystem.Hardwares.Interfaces.CommonDevice;
+using ScanSystems.Protocols.Modbus;
 using ScanSystems.Protocols.Modbus.Common;
 using System;
 using System.Collections.Generic;
@@ -10,12 +11,18 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
     public class SEDevice : Device
     {
         private ModbusProtocol protocol;
+        private ModbusHelper helper;
+
+        private List<ModbusRequest> requestes;
+        private object lockerRequestes;
 
         public ModbusProtocol Protocol => protocol;
 
         public SEDevice()
         {
-            protocol = new ModbusProtocol();
+            lockerRequestes = new object();
+            requestes = new List<ModbusRequest>();
+            helper = new ModbusHelper();
         }
 
         public override bool SendRequest(IDeviceRequest request)
