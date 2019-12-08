@@ -1,4 +1,5 @@
-﻿using ScanSystem.Hardwares.Interfaces.CommonDevice;
+﻿using ScanSystem.Base.Interfaces;
+using ScanSystem.Hardwares.Interfaces.CommonDevice;
 using ScanSystem.Hardwares.Interfaces.Variables;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
 {
     public class SEDeviceEventArgs : IDeviceEventArgs
     {
-        byte[] RecivedData { get; }
+        IDeviceRequest Request { get; }
+        IDeviceResponse Response { get; }
     }
 }

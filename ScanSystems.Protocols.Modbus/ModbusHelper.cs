@@ -88,6 +88,7 @@ namespace ScanSystems.Protocols.Modbus
             if (package.CountVariables > 0)
             {
                 request = new ModbusRequest();
+                request.MBAPHeader.TransactionId = GetTransactionId();
                 request.MBAPHeader.Length = 6;
                 request.MBAPHeader.UnitId = UnitId;
                 request.PDU.FunctionCode = functionCode;
@@ -97,7 +98,7 @@ namespace ScanSystems.Protocols.Modbus
             }
             return request;
         }
-        private ModbusRequest SendWrite(ModbusPackage package, int index, ModbusFunctions functionCode, byte[] source)
+        private ModbusRequest SendWrite(ModbusPackage package, ModbusFunctions functionCode, byte[] source)
         {
             ModbusRequest request = null;
             if (package.CountVariables > 0)
@@ -113,7 +114,7 @@ namespace ScanSystems.Protocols.Modbus
                     case ModbusFunctions.ForceSingleCoil:
                     case ModbusFunctions.PresetSingleRegister:
                         request.MBAPHeader.Length = 6;
-
+                        request.PDU.Data = package.GetData(source);
                         break;
 
                     case ModbusFunctions.ForceMultipleCoils:
@@ -142,21 +143,44 @@ namespace ScanSystems.Protocols.Modbus
         {
             return SendRead(package, ModbusFunctions.ReadInputRegisters);
         }
-        public ModbusRequest SendForceSingleCoil(ModbusPackage package, int index, byte[] source)
+        public ModbusRequest SendForceSingleCoil(ModbusPackage package, byte[] source)
         {
             throw new NotSupportedException("Данная функция 'ForceSingleCoil' не поддерживается этой версией приложения!");
         }
-        public ModbusRequest SendPresetSingleRegister(ModbusPackage package, int index, byte[] source)
+        public ModbusRequest SendPresetSingleRegister(ModbusPackage package, byte[] source)
         {
             throw new NotSupportedException("Данная функция 'PresetSingleRegister' не поддерживается этой версией приложения!");
         }
         public ModbusRequest SendForceMultipleCoils(ModbusPackage package, byte[] source)
         {
-            return SendWrite(package, -1, ModbusFunctions.ForceMultipleCoils, source);
+            return SendWrite(package, ModbusFunctions.ForceMultipleCoils, source);
         }
         public ModbusRequest SendPresetMultipleRegisters(ModbusPackage package, byte[] source)
         {
-            return SendWrite(package, -1, ModbusFunctions.PresetMultipleRegisters, source);
+            return SendWrite(package, ModbusFunctions.PresetMultipleRegisters, source);
         }
     }
+
+    internal static class ArrayHelper
+    {
+        public static byte[] Reverse(this byte[] data)
+        {
+            Array.Reverse(data);
+            return data;
+        }
+
+        public static byte[] GetRange(this byte[] data, int startIndex, int length)
+        {
+            byte[] result = new byte[length];
+            Array.Copy(data, startIndex, result, 0, length);
+            for (int i = 0; i < length; ++i)
+            {
+                byte temp = result[i];
+                result[i] = result[i + 1];
+                result[i + 1] = temp;
+            }
+            return result;
+        }
+    }
+
 }
