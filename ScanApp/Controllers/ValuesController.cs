@@ -11,11 +11,6 @@ namespace WebAPI.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        public ValuesController(AuthenticationContext context)
-        {
-                
-        }
-
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
