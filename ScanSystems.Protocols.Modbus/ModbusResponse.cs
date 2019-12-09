@@ -16,7 +16,7 @@ namespace ScanSystems.Protocols.Modbus
             PDU = new ModbusPDU();
         }
 
-        public void FromBytes(byte[] data)
+        public void FromBytes(byte[] data, int length)
         {
             MBAPHeader.TransactionId = BitConverter.ToUInt16(data.GetRange(0, 2), 0);
             MBAPHeader.ProtocolId = BitConverter.ToUInt16(data.GetRange(2, 2), 0);
@@ -24,7 +24,6 @@ namespace ScanSystems.Protocols.Modbus
             MBAPHeader.UnitId = data[6];
             PDU.FunctionCode = (ModbusFunctions)data[7];
 
-            int length;
             switch (PDU.FunctionCode)
             {
                 case ModbusFunctions.ReadCoilStatus:
@@ -40,8 +39,7 @@ namespace ScanSystems.Protocols.Modbus
                 case ModbusFunctions.PresetSingleRegister:
                 case ModbusFunctions.ForceMultipleCoils:
                 case ModbusFunctions.PresetMultipleRegisters:
-                    length = data.Length - 8;
-                    PDU.Data = new byte[length];
+                    PDU.Data = new byte[length - 8];
                     Array.Copy(data, 8, PDU.Data, 0, length);
                     break;
             }
