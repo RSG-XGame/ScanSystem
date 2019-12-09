@@ -57,15 +57,6 @@ namespace ScanSystems.Protocols.Modbus.Common
             Address.Address = address;
         }
 
-        public object GetValue()
-        {
-            return Value;
-        }
-
-        public void SetValue(object value)
-        {
-            Value = (TType)value;
-        }
         public Type GetValueType()
         {
             return typeof(TType);

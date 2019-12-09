@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ScanSystem.Hardwares.Interfaces
 {
-    public interface IDisosingNotify
+    public interface IDisposingNotify
     {
         event DisposingHandler Disposing;
     }

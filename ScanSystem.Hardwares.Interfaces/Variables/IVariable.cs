@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ScanSystem.Hardwares.Interfaces.Variables
 {
-    public interface IVariable : INotifyPropertyChanging, INotifyPropertyChanged, IDisposable, IDisosingNotify
+    public interface IVariable : INotifyPropertyChanging, INotifyPropertyChanged, IDisposable, IDisposingNotify
     {
         string Name { get; }
         IAddress Address { get; }
