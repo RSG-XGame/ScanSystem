@@ -18,6 +18,7 @@ namespace ScanSystem.Hardwares.Interfaces.Variables
 
     public interface IVariable<TType, TAddress> : IVariable
         where TType : IComparable, IComparable<TType>, IConvertible, IEquatable<TType>
+        where TAddress : IAddress
     {
         new TType Value { get; set; }
         new TAddress Address { get; }

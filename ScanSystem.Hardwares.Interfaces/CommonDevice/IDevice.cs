@@ -25,6 +25,7 @@ namespace ScanSystem.Hardwares.Interfaces.CommonDevice
         event DeviceCheckStateHandler DeviceCheckState;
 
         void Initialization(IDeviceInitializationParams initParams);
+        void Reinitialization(IDeviceInitializationParams initParams);
 
         /// <summary>
         /// Отключиться от устройства
