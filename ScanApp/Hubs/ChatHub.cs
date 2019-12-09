@@ -23,6 +23,7 @@ namespace ScanApp.Hubs
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             await Clients.All.SendAsync("Notify", $"{Context.User.Identity.Name} покинул в чат");
+            //Context.User.Identity.AuthenticationType
             await base.OnDisconnectedAsync(exception);
         }
     }

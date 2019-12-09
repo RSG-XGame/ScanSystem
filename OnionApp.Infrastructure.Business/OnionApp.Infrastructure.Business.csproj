@@ -9,4 +9,8 @@
     <ProjectReference Include="..\OnionApp.Domain.Interfaces\OnionApp.Domain.Interfaces.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Changes\" />
+  </ItemGroup>
+
 </Project>

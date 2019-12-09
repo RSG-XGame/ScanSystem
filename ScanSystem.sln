@@ -43,7 +43,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnionApp.Infrastructure.Bus
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScanApp", "ScanApp\ScanApp.csproj", "{E6D75309-63EA-45C1-AD6E-CD3B3C53EA5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScanSystem.Hardwares.Protocols", "ScanSystem.Hardwares.Protocols\ScanSystem.Hardwares.Protocols.csproj", "{B0B3514A-7428-4CF2-A1B7-C2D885852D21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScanSystem.Hardwares.Protocols", "ScanSystem.Hardwares.Protocols\ScanSystem.Hardwares.Protocols.csproj", "{B0B3514A-7428-4CF2-A1B7-C2D885852D21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
