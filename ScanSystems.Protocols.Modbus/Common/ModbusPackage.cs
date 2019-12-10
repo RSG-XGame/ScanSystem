@@ -20,52 +20,52 @@ namespace ScanSystems.Protocols.Modbus.Common
             fillDict[variable.GetValueType()].Invoke(data, byteNum, variable);
         }
 
-        private void FillBool(byte[] data, int byteNum, IVariable variable)
+        private void GetBool(byte[] data, int byteNum, IVariable variable)
         {
-            FillBool(data, byteNum, variable as ModbusVariable<bool>);
+            GetBool(data, byteNum, variable as ModbusVariable<bool>);
         }
-        private void FillByte(byte[] data, int byteNum, IVariable variable)
+        private void GetByte(byte[] data, int byteNum, IVariable variable)
         {
-            FillByte(data, byteNum, variable as ModbusVariable<byte>);
+            GetByte(data, byteNum, variable as ModbusVariable<byte>);
         }
-        private void FillShort(byte[] data, int byteNum, IVariable variable)
+        private void GetShort(byte[] data, int byteNum, IVariable variable)
         {
-            FillShort(data, byteNum, variable as ModbusVariable<short>);
+            GetShort(data, byteNum, variable as ModbusVariable<short>);
         }
-        private void FillUShort(byte[] data, int byteNum, IVariable variable)
+        private void GetUShort(byte[] data, int byteNum, IVariable variable)
         {
-            FillUShort(data, byteNum, variable as ModbusVariable<ushort>);
+            GetUShort(data, byteNum, variable as ModbusVariable<ushort>);
         }
-        private void FillInt(byte[] data, int byteNum, IVariable variable)
+        private void GetInt(byte[] data, int byteNum, IVariable variable)
         {
-            FillInt(data, byteNum, variable as ModbusVariable<int>);
+            GetInt(data, byteNum, variable as ModbusVariable<int>);
         }
-        private void FillUInt(byte[] data, int byteNum, IVariable variable)
+        private void GetUInt(byte[] data, int byteNum, IVariable variable)
         {
-            FillUInt(data, byteNum, variable as ModbusVariable<uint>);
+            GetUInt(data, byteNum, variable as ModbusVariable<uint>);
         }
-        private void FillLong(byte[] data, int byteNum, IVariable variable)
+        private void GetLong(byte[] data, int byteNum, IVariable variable)
         {
-            FillLong(data, byteNum, variable as ModbusVariable<long>);
+            GetLong(data, byteNum, variable as ModbusVariable<long>);
         }
-        private void FillULong(byte[] data, int byteNum, IVariable variable)
+        private void GetULong(byte[] data, int byteNum, IVariable variable)
         {
-            FillULong(data, byteNum, variable as ModbusVariable<ulong>);
+            GetULong(data, byteNum, variable as ModbusVariable<ulong>);
         }
-        private void FillFloat(byte[] data, int byteNum, IVariable variable)
+        private void GetFloat(byte[] data, int byteNum, IVariable variable)
         {
-            FillFloat(data, byteNum, variable as ModbusVariable<float>);
+            GetFloat(data, byteNum, variable as ModbusVariable<float>);
         }
-        private void FillDouble(byte[] data, int byteNum, IVariable variable)
+        private void GetDouble(byte[] data, int byteNum, IVariable variable)
         {
-            FillDouble(data, byteNum, variable as ModbusVariable<double>);
+            GetDouble(data, byteNum, variable as ModbusVariable<double>);
         }
-        private void FillString(byte[] data, int byteNum, IVariable variable)
+        private void GetString(byte[] data, int byteNum, IVariable variable)
         {
-            FillString(data, byteNum, variable as ModbusVariable<string>);
+            GetString(data, byteNum, variable as ModbusVariable<string>);
         }
 
-        private void FillBool(byte[] data, int byteNum, ModbusVariable<bool> variable)
+        private void GetBool(byte[] data, int byteNum, ModbusVariable<bool> variable)
         {
             int bitNum = variable.Address.BitNum > 7 ? variable.Address.BitNum - 8 : variable.Address.BitNum;
             bool value = (data[byteNum] & (1 << bitNum)) != 0;
@@ -80,54 +80,146 @@ namespace ScanSystems.Protocols.Modbus.Common
                     data[byteNum] |= (byte)(1 << bitNum);
             }
         }
-        private void FillByte(byte[] data, int byteNum, ModbusVariable<byte> variable)
+        private void GetByte(byte[] data, int byteNum, ModbusVariable<byte> variable)
         {
             data[byteNum] = variable.Value;
         }
-        private void FillShort(byte[] data, int byteNum, ModbusVariable<short> variable)
+        private void GetShort(byte[] data, int byteNum, ModbusVariable<short> variable)
         {
             byte[] temp = ReverseData(BitConverter.GetBytes(variable.Value));
             Array.Copy(temp, 0, data, byteNum, temp.Length);
         }
-        private void FillUShort(byte[] data, int byteNum, ModbusVariable<ushort> variable)
+        private void GetUShort(byte[] data, int byteNum, ModbusVariable<ushort> variable)
         {
             byte[] temp = ReverseData(BitConverter.GetBytes(variable.Value));
             Array.Copy(temp, 0, data, byteNum, temp.Length);
         }
-        private void FillInt(byte[] data, int byteNum, ModbusVariable<int> variable)
+        private void GetInt(byte[] data, int byteNum, ModbusVariable<int> variable)
         {
             byte[] temp = ReverseData(BitConverter.GetBytes(variable.Value));
             Array.Copy(temp, 0, data, byteNum, temp.Length);
         }
-        private void FillUInt(byte[] data, int byteNum, ModbusVariable<uint> variable)
+        private void GetUInt(byte[] data, int byteNum, ModbusVariable<uint> variable)
         {
             byte[] temp = ReverseData(BitConverter.GetBytes(variable.Value));
             Array.Copy(temp, 0, data, byteNum, temp.Length);
         }
-        private void FillLong(byte[] data, int byteNum, ModbusVariable<long> variable)
+        private void GetLong(byte[] data, int byteNum, ModbusVariable<long> variable)
         {
             byte[] temp = ReverseData(BitConverter.GetBytes(variable.Value));
             Array.Copy(temp, 0, data, byteNum, temp.Length);
         }
-        private void FillULong(byte[] data, int byteNum, ModbusVariable<ulong> variable)
+        private void GetULong(byte[] data, int byteNum, ModbusVariable<ulong> variable)
         {
             byte[] temp = ReverseData(BitConverter.GetBytes(variable.Value));
             Array.Copy(temp, 0, data, byteNum, temp.Length);
         }
-        private void FillFloat(byte[] data, int byteNum, ModbusVariable<float> variable)
+        private void GetFloat(byte[] data, int byteNum, ModbusVariable<float> variable)
         {
             byte[] temp = ReverseData(BitConverter.GetBytes(variable.Value));
             Array.Copy(temp, 0, data, byteNum, temp.Length);
         }
-        private void FillDouble(byte[] data, int byteNum, ModbusVariable<double> variable)
+        private void GetDouble(byte[] data, int byteNum, ModbusVariable<double> variable)
         {
             byte[] temp = ReverseData(BitConverter.GetBytes(variable.Value));
             Array.Copy(temp, 0, data, byteNum, temp.Length);
         }
-        private void FillString(byte[] data, int byteNum, ModbusVariable<string> variable)
+        private void GetString(byte[] data, int byteNum, ModbusVariable<string> variable)
         {
             byte[] temp = ReverseData(Encoding.ASCII.GetBytes(variable.Value));
             Array.Copy(temp, 0, data, byteNum, temp.Length);
+        }
+
+        private void SetBool(byte[] data, int byteNum, IVariable variable)
+        {
+            SetBool(data, byteNum, variable as ModbusVariable<bool>);
+        }
+        private void SetByte(byte[] data, int byteNum, IVariable variable)
+        {
+            SetByte(data, byteNum, variable as ModbusVariable<byte>);
+        }
+        private void SetShort(byte[] data, int byteNum, IVariable variable)
+        {
+            SetShort(data, byteNum, variable as ModbusVariable<short>);
+        }
+        private void SetUShort(byte[] data, int byteNum, IVariable variable)
+        {
+            SetUShort(data, byteNum, variable as ModbusVariable<ushort>);
+        }
+        private void SetInt(byte[] data, int byteNum, IVariable variable)
+        {
+            SetInt(data, byteNum, variable as ModbusVariable<int>);
+        }
+        private void SetUInt(byte[] data, int byteNum, IVariable variable)
+        {
+            SetUInt(data, byteNum, variable as ModbusVariable<uint>);
+        }
+        private void SetLong(byte[] data, int byteNum, IVariable variable)
+        {
+            SetLong(data, byteNum, variable as ModbusVariable<long>);
+        }
+        private void SetULong(byte[] data, int byteNum, IVariable variable)
+        {
+            SetULong(data, byteNum, variable as ModbusVariable<ulong>);
+        }
+        private void SetFloat(byte[] data, int byteNum, IVariable variable)
+        {
+            SetFloat(data, byteNum, variable as ModbusVariable<float>);
+        }
+        private void SetDouble(byte[] data, int byteNum, IVariable variable)
+        {
+            SetDouble(data, byteNum, variable as ModbusVariable<double>);
+        }
+        private void SetString(byte[] data, int byteNum, IVariable variable)
+        {
+            SetString(data, byteNum, variable as ModbusVariable<string>);
+        }
+
+        private void SetBool(byte[] data, int byteNum, ModbusVariable<bool> variable)
+        {
+            int bitNum = variable.Address.BitNum > 7 ? variable.Address.BitNum - 8 : variable.Address.BitNum;
+            bool value = (data[byteNum] & (1 << bitNum)) != 0;
+            variable.Value = value;
+        }
+        private void SetByte(byte[] data, int byteNum, ModbusVariable<byte> variable)
+        {
+            variable.Value = data[byteNum];
+        }
+        private void SetShort(byte[] data, int byteNum, ModbusVariable<short> variable)
+        {
+            variable.Value = BitConverter.ToInt16(data.GetRange(byteNum, variable.Size), 0);
+        }
+        private void SetUShort(byte[] data, int byteNum, ModbusVariable<ushort> variable)
+        {
+            variable.Value = BitConverter.ToUInt16(data.GetRange(byteNum, variable.Size), 0);
+        }
+        private void SetInt(byte[] data, int byteNum, ModbusVariable<int> variable)
+        {
+            variable.Value = BitConverter.ToInt32(data.GetRange(byteNum, variable.Size), 0);
+        }
+        private void SetUInt(byte[] data, int byteNum, ModbusVariable<uint> variable)
+        {
+            variable.Value = BitConverter.ToUInt32(data.GetRange(byteNum, variable.Size), 0);
+        }
+        private void SetLong(byte[] data, int byteNum, ModbusVariable<long> variable)
+        {
+            variable.Value = BitConverter.ToInt64(data.GetRange(byteNum, variable.Size), 0);
+        }
+        private void SetULong(byte[] data, int byteNum, ModbusVariable<ulong> variable)
+        {
+            variable.Value = BitConverter.ToUInt64(data.GetRange(byteNum, variable.Size), 0);
+        }
+        private void SetFloat(byte[] data, int byteNum, ModbusVariable<float> variable)
+        {
+            variable.Value = BitConverter.ToSingle(data.GetRange(byteNum, variable.Size), 0);
+        }
+        private void SetDouble(byte[] data, int byteNum, ModbusVariable<double> variable)
+        {
+            variable.Value = BitConverter.ToDouble(data.GetRange(byteNum, variable.Size), 0);
+        }
+        private void SetString(byte[] data, int byteNum, ModbusVariable<string> variable)
+        {
+            variable.Value = Encoding.ASCII.GetString(data.GetRange(byteNum, variable.Size));
         }
 
         private byte[] ReverseData(byte[] data)
@@ -143,21 +235,22 @@ namespace ScanSystems.Protocols.Modbus.Common
 
         private void InitializeFillDict()
         {
-            fillDict.Add(typeof(bool), FillBool);
-            fillDict.Add(typeof(byte), FillByte);
-            fillDict.Add(typeof(short), FillShort);
-            fillDict.Add(typeof(ushort), FillUShort);
-            fillDict.Add(typeof(int), FillInt);
-            fillDict.Add(typeof(uint), FillUInt);
-            fillDict.Add(typeof(long), FillLong);
-            fillDict.Add(typeof(ulong), FillULong);
-            fillDict.Add(typeof(float), FillFloat);
-            fillDict.Add(typeof(double), FillDouble);
-            fillDict.Add(typeof(string), FillString);
+            fillDict.Add(typeof(bool), GetBool);
+            fillDict.Add(typeof(byte), GetByte);
+            fillDict.Add(typeof(short), GetShort);
+            fillDict.Add(typeof(ushort), GetUShort);
+            fillDict.Add(typeof(int), GetInt);
+            fillDict.Add(typeof(uint), GetUInt);
+            fillDict.Add(typeof(long), GetLong);
+            fillDict.Add(typeof(ulong), GetULong);
+            fillDict.Add(typeof(float), GetFloat);
+            fillDict.Add(typeof(double), GetDouble);
+            fillDict.Add(typeof(string), GetString);
         }
         #endregion
 
         private readonly IEnumerable<IVariable> variables;
+        private byte[] source;
 
         public Guid PackageId { get; private set; } = Guid.NewGuid();
         public IVariable this[int index] { get => (variables as List<IVariable>)[index]; }
@@ -204,6 +297,14 @@ namespace ScanSystems.Protocols.Modbus.Common
             InitializeFillDict();
         }
 
+        private void Initialize()
+        {
+            if (source == null)
+            {
+                source = new byte[SizeInBytes];
+            }
+        }
+
         public bool Add(IVariable variable)
         {
             bool result = false;
@@ -219,10 +320,11 @@ namespace ScanSystems.Protocols.Modbus.Common
             return result;
         }
 
-        public byte[] GetData(byte[] source)
+        public byte[] GetData()
         {
+            Initialize();
             byte[] result = new byte[CountVariables > 0 ? CountRegisters : 0];
-            
+         
             if (source.Length != result.Length)
                 throw new ArgumentException($"Размер исходного массива не соответствует размеру пакета '{PackageId}'.");
 
@@ -231,6 +333,14 @@ namespace ScanSystems.Protocols.Modbus.Common
                 Fill(result, variable);
             }
             return result;
+        }
+        public void SetData(byte[] data, int startIndex)
+        {
+            Array.Copy(data, startIndex, source, 0, source.Length);
+            (variables as List<IVariable>).ForEach(x => 
+            {
+
+            });
         }
 
         private void Variable_Disposing(object sender)

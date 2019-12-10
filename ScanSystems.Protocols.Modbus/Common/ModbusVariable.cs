@@ -13,6 +13,7 @@ namespace ScanSystems.Protocols.Modbus.Common
     {
         private TType value;
         private string name;
+        private int size;
         private readonly ModbusAddress address;
 
         public bool Disposed => disposedValue;
@@ -35,8 +36,8 @@ namespace ScanSystems.Protocols.Modbus.Common
                 }
             }
         }
-        public string Name { get => name; }
-
+        public string Name => name;
+        public int Size => size;
         public ModbusAddress Address => address;
 
         IAddress IVariable.Address => address;
@@ -51,10 +52,11 @@ namespace ScanSystems.Protocols.Modbus.Common
             address = new ModbusAddress();
         }
 
-        public void Initialize(string name, string address = "%MW0")
+        public void Initialize(string name, string address = "%MW0", int size = 0)
         {
             this.name = name;
             Address.Address = address;
+            this.size = size;
         }
 
         public Type GetValueType()

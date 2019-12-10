@@ -98,7 +98,7 @@ namespace ScanSystems.Protocols.Modbus
             }
             return request;
         }
-        private ModbusRequest SendWrite(ModbusPackage package, ModbusFunctions functionCode, byte[] source)
+        private ModbusRequest SendWrite(ModbusPackage package, ModbusFunctions functionCode)
         {
             ModbusRequest request = null;
             if (package.CountVariables > 0)
@@ -114,13 +114,13 @@ namespace ScanSystems.Protocols.Modbus
                     case ModbusFunctions.ForceSingleCoil:
                     case ModbusFunctions.PresetSingleRegister:
                         request.MBAPHeader.Length = 6;
-                        request.PDU.Data = package.GetData(source);
+                        request.PDU.Data = package.GetData();
                         break;
 
                     case ModbusFunctions.ForceMultipleCoils:
                     case ModbusFunctions.PresetMultipleRegisters:
                         request.MBAPHeader.Length = (ushort)(7 + package.SizeInBytes);
-                        request.PDU.Data = package.GetData(source);
+                        request.PDU.Data = package.GetData();
                         break;
                 }
             }
@@ -143,21 +143,21 @@ namespace ScanSystems.Protocols.Modbus
         {
             return SendRead(package, ModbusFunctions.ReadInputRegisters);
         }
-        public ModbusRequest SendForceSingleCoil(ModbusPackage package, byte[] source)
+        public ModbusRequest SendForceSingleCoil(ModbusPackage package)
         {
             throw new NotSupportedException("Данная функция 'ForceSingleCoil' не поддерживается этой версией приложения!");
         }
-        public ModbusRequest SendPresetSingleRegister(ModbusPackage package, byte[] source)
+        public ModbusRequest SendPresetSingleRegister(ModbusPackage package)
         {
             throw new NotSupportedException("Данная функция 'PresetSingleRegister' не поддерживается этой версией приложения!");
         }
-        public ModbusRequest SendForceMultipleCoils(ModbusPackage package, byte[] source)
+        public ModbusRequest SendForceMultipleCoils(ModbusPackage package)
         {
-            return SendWrite(package, ModbusFunctions.ForceMultipleCoils, source);
+            return SendWrite(package, ModbusFunctions.ForceMultipleCoils);
         }
-        public ModbusRequest SendPresetMultipleRegisters(ModbusPackage package, byte[] source)
+        public ModbusRequest SendPresetMultipleRegisters(ModbusPackage package)
         {
-            return SendWrite(package, ModbusFunctions.PresetMultipleRegisters, source);
+            return SendWrite(package, ModbusFunctions.PresetMultipleRegisters);
         }
     }
 

@@ -11,8 +11,9 @@ namespace ScanSystem.Hardwares.Interfaces.Variables
         IAddress Address { get; }
         bool Disposed { get; }
         object Value { get; set; }
+        int Size { get; }
 
-        void Initialize(string name, string address);
+        void Initialize(string name, string address, int size = 0);
         Type GetValueType();
     }
 

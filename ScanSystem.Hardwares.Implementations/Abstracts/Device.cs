@@ -31,11 +31,27 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
         public event DeviceErrorHandler DeviceError;
         public event DeviceCheckStateHandler DeviceCheckState;
 
+        protected bool IsCanceled => cancelToken.IsCancellationRequested;
+
         public virtual void Initialization(IDeviceInitializationParams initParams)
         {
             Settings = initParams.Settings;
             resetWait = new ManualResetEvent(true);
         }
+        public void Reinitialization(IDeviceInitializationParams initParams)
+        {
+            if (Settings.Equals(initParams))
+            {
+                bool isBusy = Busy;
+                Close();
+                Settings = initParams.Settings;
+                resetWait = new ManualResetEvent(true);
+                if (isBusy) Open();
+                Initialization(initParams);
+            }
+        }
+        protected abstract void Connect();
+        protected abstract void Diconnect();
         public abstract bool SendRequest(IDeviceRequest request);
 
         public bool Open()
@@ -58,6 +74,7 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
                             client.Connect(IPAddress.Parse(Settings.IPAddress), Settings.Port);
                         }
                         result = StartListen();
+                        Connect();
                         DeviceConnected?.Invoke(this);
                     }
                 }
@@ -81,6 +98,7 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
         private void Disconnect()
         {
             DeviceDisconnecting?.Invoke(this);
+            Disconnect();
             client?.Close();
             StopListen();
             DeviceDisconnected?.Invoke(this);

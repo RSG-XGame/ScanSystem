@@ -7,13 +7,17 @@ using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
+using System.Timers;
 
 namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
 {
     public class SEDevice : Device
     {
+        private Timer pollingTimer;
+
         private readonly Dictionary<int, Func<SEVeriableDescription, IVariable>> dictCreateVariables;
         private ModbusPackage[] packages;
+        private byte[] source;
 
         private ModbusProtocol protocol;
         private ModbusHelper helper;
@@ -29,8 +33,31 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
             requestes = new List<ModbusRequest>();
             helper = new ModbusHelper();
             dictCreateVariables = new Dictionary<int, Func<SEVeriableDescription, IVariable>>();
-            
+
+            pollingTimer = new Timer();
+            pollingTimer.Interval = 1000;
+            pollingTimer.AutoReset = true;
+            pollingTimer.Elapsed += PollingTimer_Elapsed;
+            pollingTimer.Enabled = true;
+            pollingTimer.Stop();
+
             InitializationDictCreateVariables();
+        }
+
+        private void PollingTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            foreach (var package in packages)
+            {
+                helper.SendPresetMultipleRegisters(package);
+            }
+        }
+        protected override void Connect()
+        {
+            pollingTimer.Start();
+        }
+        protected override void Diconnect()
+        {
+            pollingTimer.Stop();
         }
 
         private void InitializationDictCreateVariables()

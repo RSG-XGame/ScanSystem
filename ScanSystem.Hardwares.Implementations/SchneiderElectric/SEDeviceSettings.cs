@@ -10,6 +10,8 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
         public string IPAddress { get; set; }
         public int Port { get; set; }
 
+        public int PollingTimeout { get; set; }
+
         public List<SEVeriableDescription> Variables { get; set; } = new List<SEVeriableDescription>();
     }
 }
