@@ -51,7 +51,7 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
             }
         }
         protected abstract void Connect();
-        protected abstract void Diconnect();
+        protected abstract void Disconnect();
         public abstract bool SendRequest(IDeviceRequest request);
 
         public bool Open()
@@ -71,6 +71,10 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
                         }
                         if (!client.Connected)
                         {
+                            client.SendTimeout = Settings.SendTimeout;
+                            client.ReceiveTimeout = Settings.ReciveTimeout;
+                            client.SendBufferSize = Settings.SendBufferSize;
+                            client.ReceiveBufferSize = Settings.ReciveBufferSize;
                             client.Connect(IPAddress.Parse(Settings.IPAddress), Settings.Port);
                         }
                         result = StartListen();
@@ -90,12 +94,12 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
             bool result = false;
             if (Busy)
             {
-                Disconnect();
+                Disconnection();
             }
             return result;
         }
 
-        private void Disconnect()
+        private void Disconnection()
         {
             DeviceDisconnecting?.Invoke(this);
             Disconnect();
@@ -131,8 +135,8 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
                 NetworkStream stream = client.GetStream();
                 while (!token.IsCancellationRequested)
                 {
-                    if (stream.DataAvailable)
-                    {
+                    //if (stream.DataAvailable)
+                    //{
                         byte[] buffer = new byte[client.ReceiveBufferSize];
                         int length = stream.Read(buffer, 0, buffer.Length);
                         try
@@ -145,13 +149,13 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
                         {
                             DeviceError?.Invoke(this, new DeviceErrorEventArgs { Ex = ex });
                         }
-                    }
+                    //}
 
-                    DeviceCheckState?.Invoke(this, state);
-                    if (!state.IsEnabled)
-                    {
-                        break;
-                    }
+                    //DeviceCheckState?.Invoke(this, state);
+                    //if (!state.IsEnabled)
+                    //{
+                    //    break;
+                    //}
                 }
             }
             catch(Exception ex)

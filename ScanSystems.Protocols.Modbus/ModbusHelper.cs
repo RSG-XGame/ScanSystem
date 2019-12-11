@@ -82,12 +82,13 @@ namespace ScanSystems.Protocols.Modbus
             InitializeConverterDictionary();
         }
 
-        private ModbusRequest SendRead(ModbusPackage package, ModbusFunctions functionCode)
+        private ModbusRequest SendRead(ModbusPackage package, ModbusFunctions functionCode, bool isInternal)
         {
             ModbusRequest request = null;
             if (package.CountVariables > 0)
             {
                 request = new ModbusRequest();
+                request.IsInternal = isInternal;
                 request.MBAPHeader.TransactionId = GetTransactionId();
                 request.MBAPHeader.Length = 6;
                 request.MBAPHeader.UnitId = UnitId;
@@ -98,66 +99,72 @@ namespace ScanSystems.Protocols.Modbus
             }
             return request;
         }
-        private ModbusRequest SendWrite(ModbusPackage package, ModbusFunctions functionCode)
+        private ModbusRequest SendWrite(ModbusPackage package, ModbusFunctions functionCode, bool isInternal)
         {
             ModbusRequest request = null;
             if (package.CountVariables > 0)
             {
-                new ModbusRequest();
+                request = new ModbusRequest();
+                request.IsInternal = isInternal;
+                request.MBAPHeader.TransactionId = GetTransactionId();
                 request.MBAPHeader.Length = 0;
                 request.MBAPHeader.UnitId = UnitId;
                 request.PDU.FunctionCode = functionCode;
-                request.PDU.Data = new byte[package.SizeInBytes];
+
+                List<byte> pdu = new List<byte>();
+                pdu.AddRange(BitConverter.GetBytes(Convert.ToUInt16(package.StartRegister)).Reverse());
+                pdu.AddRange(BitConverter.GetBytes(Convert.ToUInt16(package.CountRegisters)).Reverse());
 
                 switch (functionCode)
                 {
                     case ModbusFunctions.ForceSingleCoil:
                     case ModbusFunctions.PresetSingleRegister:
                         request.MBAPHeader.Length = 6;
-                        request.PDU.Data = package.GetData();
                         break;
 
                     case ModbusFunctions.ForceMultipleCoils:
                     case ModbusFunctions.PresetMultipleRegisters:
                         request.MBAPHeader.Length = (ushort)(7 + package.SizeInBytes);
-                        request.PDU.Data = package.GetData();
+                        pdu.Add(Convert.ToByte(package.SizeInBytes));
+                        pdu.AddRange(package.GetData());
                         break;
                 }
+                request.PDU.Data = pdu.ToArray();
             }
             return request;
         }
 
-        public ModbusRequest SendReadCoilStatus(ModbusPackage package)
+        public ModbusRequest SendReadCoilStatus(ModbusPackage package, bool isInternal)
         {
             throw new NotSupportedException("Данная функция 'ReadCoilStatus' не поддерживается этой версией приложения!");
         }
-        public ModbusRequest SendReadInputStatus(ModbusPackage package)
+        public ModbusRequest SendReadInputStatus(ModbusPackage package, bool isInternal)
         {
             throw new NotSupportedException("Данная функция 'ReadInputStatus' не поддерживается этой версией приложения!");
         }
-        public ModbusRequest SendReadHoldingRegisters(ModbusPackage package)
+        public ModbusRequest SendReadHoldingRegisters(ModbusPackage package, bool isInternal)
         {
-            return SendRead(package, ModbusFunctions.ReadHoldingRegisters);
+            return SendRead(package, ModbusFunctions.ReadHoldingRegisters, isInternal);
         }
-        public ModbusRequest SendReadInputRegisters(ModbusPackage package)
+        public ModbusRequest SendReadInputRegisters(ModbusPackage package, bool isInternal)
         {
-            return SendRead(package, ModbusFunctions.ReadInputRegisters);
+            return SendRead(package, ModbusFunctions.ReadInputRegisters, isInternal);
         }
-        public ModbusRequest SendForceSingleCoil(ModbusPackage package)
+        public ModbusRequest SendForceSingleCoil(ModbusPackage package, bool isInternal)
         {
             throw new NotSupportedException("Данная функция 'ForceSingleCoil' не поддерживается этой версией приложения!");
         }
-        public ModbusRequest SendPresetSingleRegister(ModbusPackage package)
+        public ModbusRequest SendPresetSingleRegister(ModbusPackage package, bool isInternal)
         {
             throw new NotSupportedException("Данная функция 'PresetSingleRegister' не поддерживается этой версией приложения!");
         }
-        public ModbusRequest SendForceMultipleCoils(ModbusPackage package)
+        public ModbusRequest SendForceMultipleCoils(ModbusPackage package, bool isInternal)
         {
-            return SendWrite(package, ModbusFunctions.ForceMultipleCoils);
+            return SendWrite(package, ModbusFunctions.ForceMultipleCoils, isInternal);
         }
-        public ModbusRequest SendPresetMultipleRegisters(ModbusPackage package)
+        public ModbusRequest SendPresetMultipleRegisters(ModbusPackage package, bool isInternal)
         {
-            return SendWrite(package, ModbusFunctions.PresetMultipleRegisters);
+            return SendWrite(package, ModbusFunctions.PresetMultipleRegisters, isInternal);
         }
     }
 
@@ -173,7 +180,7 @@ namespace ScanSystems.Protocols.Modbus
         {
             byte[] result = new byte[length];
             Array.Copy(data, startIndex, result, 0, length);
-            for (int i = 0; i < length; ++i)
+            for (int i = 0; i < length; i += 2)
             {
                 byte temp = result[i];
                 result[i] = result[i + 1];

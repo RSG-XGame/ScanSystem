@@ -1,4 +1,5 @@
 ﻿using ScanSystem.Hardwares.Interfaces;
+using ScanSystem.Hardwares.Interfaces.CommonDevice;
 using ScanSystem.Hardwares.Interfaces.Variables;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace ScanSystems.Protocols.Modbus.Common
         private string name;
         private int size;
         private readonly ModbusAddress address;
+        private ModbusVariableParams variableParams;
 
         public bool Disposed => disposedValue;
         public TType Value
@@ -27,7 +29,7 @@ namespace ScanSystems.Protocols.Modbus.Common
             {
                 if (!disposedValue)
                 {
-                    if (!value.Equals(value))
+                    if (!this.value.Equals(value))
                     {
                         PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(nameof(Value)));
                         this.value = value;
@@ -39,6 +41,7 @@ namespace ScanSystems.Protocols.Modbus.Common
         public string Name => name;
         public int Size => size;
         public ModbusAddress Address => address;
+        public bool IsUnicode => variableParams?.IsUnicode ?? false;
 
         IAddress IVariable.Address => address;
         object IVariable.Value { get => Value; set => Value = (TType)value; }
@@ -52,11 +55,12 @@ namespace ScanSystems.Protocols.Modbus.Common
             address = new ModbusAddress();
         }
 
-        public void Initialize(string name, string address = "%MW0", int size = 0)
+        public void Initialize(IVariableParams variableParams)
         {
-            this.name = name;
-            Address.Address = address;
-            this.size = size;
+            this.variableParams = (variableParams as ModbusVariableParams);
+            name = this.variableParams.Name;
+            Address.Address = this.variableParams.Address;
+            size = this.variableParams.Size;
         }
 
         public Type GetValueType()

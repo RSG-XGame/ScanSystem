@@ -1,11 +1,12 @@
 ﻿using ScanSystem.Base.Interfaces;
+using ScanSystem.Hardwares.Interfaces.CommonDevice;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ScanSystems.Protocols.Modbus
 {
-    public class ModbusResponse : IResponse
+    public class ModbusResponse : IDeviceResponse
     {
         public ModbusMBAPHeader MBAPHeader { get; set; }
         public ModbusPDU PDU { get; set; }

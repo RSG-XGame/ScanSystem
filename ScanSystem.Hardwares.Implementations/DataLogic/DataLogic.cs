@@ -24,7 +24,7 @@ namespace ScanSystem.Hardwares.Implementations.DataLogic
         protected override void Connect()
         {
         }
-        protected override void Diconnect()
+        protected override void Disconnect()
         {
         }
     }

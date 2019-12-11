@@ -8,16 +8,23 @@ using System.Text;
 
 namespace ScanSystems.Protocols.Modbus.Common
 {
-    public class ModbusPackage : IEnumerator<IVariable>
+    public class ModbusPackage : IPackage, IEnumerator<IVariable>
     {
         #region filling bytes array
-        private readonly Dictionary<Type, Action<byte[], int, IVariable>> fillDict;
+        private readonly Dictionary<Type, Action<byte[], int, IVariable>> getDict;
+        private readonly Dictionary<Type, Action<byte[], int, IVariable>> setDict;
      
-        private void Fill(byte[] data, IVariable variable)
+        private void Get(byte[] data, IVariable variable)
         {
             ModbusAddress addr = variable.Address as ModbusAddress;
             int byteNum = addr.WordNum * 2 + (addr.BitNum > 7 ? 1 : 0);
-            fillDict[variable.GetValueType()].Invoke(data, byteNum, variable);
+            getDict[variable.GetValueType()].Invoke(data, byteNum, variable);
+        }
+        private void Set(byte[] data, IVariable variable)
+        {
+            ModbusAddress addr = variable.Address as ModbusAddress;
+            int byteNum = addr.WordNum * 2 + (addr.BitNum > 7 ? 1 : 0);
+            setDict[variable.GetValueType()].Invoke(data, byteNum, variable);
         }
 
         private void GetBool(byte[] data, int byteNum, IVariable variable)
@@ -187,7 +194,9 @@ namespace ScanSystems.Protocols.Modbus.Common
         }
         private void SetShort(byte[] data, int byteNum, ModbusVariable<short> variable)
         {
-            variable.Value = BitConverter.ToInt16(data.GetRange(byteNum, variable.Size), 0);
+            var val = data.GetRange(byteNum, variable.Size);
+
+            variable.Value = BitConverter.ToInt16(val, 0);
         }
         private void SetUShort(byte[] data, int byteNum, ModbusVariable<ushort> variable)
         {
@@ -233,19 +242,31 @@ namespace ScanSystems.Protocols.Modbus.Common
             return result;
         }
 
-        private void InitializeFillDict()
+        private void InitializeGSDict()
         {
-            fillDict.Add(typeof(bool), GetBool);
-            fillDict.Add(typeof(byte), GetByte);
-            fillDict.Add(typeof(short), GetShort);
-            fillDict.Add(typeof(ushort), GetUShort);
-            fillDict.Add(typeof(int), GetInt);
-            fillDict.Add(typeof(uint), GetUInt);
-            fillDict.Add(typeof(long), GetLong);
-            fillDict.Add(typeof(ulong), GetULong);
-            fillDict.Add(typeof(float), GetFloat);
-            fillDict.Add(typeof(double), GetDouble);
-            fillDict.Add(typeof(string), GetString);
+            getDict.Add(typeof(bool),   GetBool);
+            getDict.Add(typeof(byte),   GetByte);
+            getDict.Add(typeof(short),  GetShort);
+            getDict.Add(typeof(ushort), GetUShort);
+            getDict.Add(typeof(int),    GetInt);
+            getDict.Add(typeof(uint),   GetUInt);
+            getDict.Add(typeof(long),   GetLong);
+            getDict.Add(typeof(ulong),  GetULong);
+            getDict.Add(typeof(float),  GetFloat);
+            getDict.Add(typeof(double), GetDouble);
+            getDict.Add(typeof(string), GetString);
+
+            setDict.Add(typeof(bool),   SetBool);
+            setDict.Add(typeof(byte),   SetByte);
+            setDict.Add(typeof(short),  SetShort);
+            setDict.Add(typeof(ushort), SetUShort);
+            setDict.Add(typeof(int),    SetInt);
+            setDict.Add(typeof(uint),   SetUInt);
+            setDict.Add(typeof(long),   SetLong);
+            setDict.Add(typeof(ulong),  SetULong);
+            setDict.Add(typeof(float),  SetFloat);
+            setDict.Add(typeof(double), SetDouble);
+            setDict.Add(typeof(string), SetString);
         }
         #endregion
 
@@ -289,12 +310,15 @@ namespace ScanSystems.Protocols.Modbus.Common
         public IVariable Current => variables.GetEnumerator().Current;
         object IEnumerator.Current => variables.GetEnumerator().Current;
 
+        public bool Disposed => disposedValue;
+
         public ModbusPackage()
         {
             variables = new List<IVariable>();
-            fillDict = new Dictionary<Type, Action<byte[], int, IVariable>>();
-         
-            InitializeFillDict();
+            getDict = new Dictionary<Type, Action<byte[], int, IVariable>>();
+            setDict = new Dictionary<Type, Action<byte[], int, IVariable>>();
+
+            InitializeGSDict();
         }
 
         private void Initialize()
@@ -323,23 +347,24 @@ namespace ScanSystems.Protocols.Modbus.Common
         public byte[] GetData()
         {
             Initialize();
-            byte[] result = new byte[CountVariables > 0 ? CountRegisters : 0];
+            byte[] result = new byte[CountVariables > 0 ? CountRegisters * 2 : 0];
          
             if (source.Length != result.Length)
                 throw new ArgumentException($"Размер исходного массива не соответствует размеру пакета '{PackageId}'.");
 
             foreach (var variable in variables)
             {
-                Fill(result, variable);
+                Get(result, variable);
             }
             return result;
         }
         public void SetData(byte[] data, int startIndex)
         {
+            Initialize();
             Array.Copy(data, startIndex, source, 0, source.Length);
             (variables as List<IVariable>).ForEach(x => 
             {
-
+                Set(data, x);
             });
         }
 
@@ -359,7 +384,6 @@ namespace ScanSystems.Protocols.Modbus.Common
             {
                 if (disposing)
                 {
-                    // TODO: освободить управляемое состояние (управляемые объекты).
                 }
 
                 // TODO: освободить неуправляемые ресурсы (неуправляемые объекты) и переопределить ниже метод завершения.

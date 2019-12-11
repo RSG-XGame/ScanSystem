@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScanSystem.Hardwares.Interfaces.CommonDevice;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
@@ -13,7 +14,7 @@ namespace ScanSystem.Hardwares.Interfaces.Variables
         object Value { get; set; }
         int Size { get; }
 
-        void Initialize(string name, string address, int size = 0);
+        void Initialize(IVariableParams variableParams);
         Type GetValueType();
     }
 
