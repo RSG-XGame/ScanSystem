@@ -19,11 +19,16 @@ namespace ScanSystems.Protocols.Modbus
 
         public void FromBytes(byte[] data, int length)
         {
-            MBAPHeader.TransactionId = BitConverter.ToUInt16(data.GetRange(0, 2), 0);
-            MBAPHeader.ProtocolId = BitConverter.ToUInt16(data.GetRange(2, 2), 0);
-            MBAPHeader.Length = BitConverter.ToUInt16(data.GetRange(4, 2), 0);
-            MBAPHeader.UnitId = data[6];
-            PDU.FunctionCode = (ModbusFunctions)data[7];
+            FromBytes(data, 0, length);
+        }
+
+        public void FromBytes(byte[] data, int startIndex, int length)
+        {
+            MBAPHeader.TransactionId = BitConverter.ToUInt16(data.GetRange(startIndex + 0, 2), 0);
+            MBAPHeader.ProtocolId = BitConverter.ToUInt16(data.GetRange(startIndex + 2, 2), 0);
+            MBAPHeader.Length = BitConverter.ToUInt16(data.GetRange(startIndex + 4, 2), 0);
+            MBAPHeader.UnitId = data[startIndex + 6];
+            PDU.FunctionCode = (ModbusFunctions)data[startIndex + 7];
 
             switch (PDU.FunctionCode)
             {
@@ -31,9 +36,8 @@ namespace ScanSystems.Protocols.Modbus
                 case ModbusFunctions.ReadInputStatus:
                 case ModbusFunctions.ReadHoldingRegisters:
                 case ModbusFunctions.ReadInputRegisters:
-                    length = data[8];
-                    PDU.Data = new byte[length];
-                    Array.Copy(data, 9, PDU.Data, 0, length);
+                    PDU.Data = new byte[data[8]];
+                    Array.Copy(data, startIndex + 9, PDU.Data, 0, PDU.Data.Length);
                     break;
 
                 case ModbusFunctions.ForceSingleCoil:
@@ -44,6 +48,24 @@ namespace ScanSystems.Protocols.Modbus
                     Array.Copy(data, 8, PDU.Data, 0, length);
                     break;
             }
+        }
+
+        public static ModbusResponse[] ReadResponses(byte[] data, int length, out int lastIndex)
+        {
+            List<ModbusResponse> responses = new List<ModbusResponse>();
+
+            lastIndex = 0;
+            while (lastIndex < length)
+            {
+                ModbusResponse response = new ModbusResponse();
+                response.FromBytes(data, lastIndex, length);
+
+                lastIndex += response.MBAPHeader.Length + 4;
+
+                responses.Add(response);
+            }
+
+            return responses.ToArray();
         }
     }
 }

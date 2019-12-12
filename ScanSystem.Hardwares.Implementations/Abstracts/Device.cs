@@ -135,8 +135,8 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
                 NetworkStream stream = client.GetStream();
                 while (!token.IsCancellationRequested)
                 {
-                    //if (stream.DataAvailable)
-                    //{
+                    if (stream.DataAvailable)
+                    {
                         byte[] buffer = new byte[client.ReceiveBufferSize];
                         int length = stream.Read(buffer, 0, buffer.Length);
                         try
@@ -149,13 +149,13 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
                         {
                             DeviceError?.Invoke(this, new DeviceErrorEventArgs { Ex = ex });
                         }
-                    //}
+                    }
 
-                    //DeviceCheckState?.Invoke(this, state);
-                    //if (!state.IsEnabled)
-                    //{
-                    //    break;
-                    //}
+                    DeviceCheckState?.Invoke(this, state);
+                    if (!state.IsEnabled)
+                    {
+                        break;
+                    }
                 }
             }
             catch(Exception ex)
@@ -168,7 +168,7 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
             }
             if (state.IsEnabled)
             {
-                Disconnect();
+                Disconnection();
             }
         }
 

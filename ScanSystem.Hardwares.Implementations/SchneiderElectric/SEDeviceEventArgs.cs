@@ -9,7 +9,6 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
 {
     public class SEDeviceEventArgs : IDeviceEventArgs
     {
-        public IRequest Request { get; internal set; }
-        public IResponse Response { get; internal set; }
+        public IRequest[] Requests { get; internal set; }
     }
 }

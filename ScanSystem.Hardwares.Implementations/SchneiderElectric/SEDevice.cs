@@ -95,12 +95,16 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
 
         public override bool SendRequest(IDeviceRequest request)
         {
-            bool result = Add(request as ModbusRequest);
-            if (result)
+            bool result = false;
+            if (client.Connected)
             {
-                NetworkStream stream = client.GetStream();
-                byte[] buffer = (request as ModbusRequest).GetBytes();
-                stream.Write(buffer, 0, buffer.Length);
+                result = Add(request as ModbusRequest);
+                if (result)
+                {
+                    NetworkStream stream = client.GetStream();
+                    byte[] buffer = (request as ModbusRequest).GetBytes();
+                    stream.Write(buffer, 0, buffer.Length);
+                }
             }
             return result;
         }
@@ -108,13 +112,16 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
         protected override IDeviceEventArgs RecivedData(byte[] data, int length)
         {
             SEDeviceEventArgs result = new SEDeviceEventArgs();
-            result.Response = new ModbusResponse();
-            (result.Response as ModbusResponse).FromBytes(data, length);
-            result.Request = Get(result.Response as ModbusResponse);
-            if (result.Request != null && (result.Request as ModbusRequest).IsInternal)
+
+            int lastIndex;
+            ModbusResponse[] responses = ModbusResponse.ReadResponses(data, length, out lastIndex);
+            foreach (var response in responses)
             {
-                packages[(result.Request as ModbusRequest).PackageId].SetData((result.Response as ModbusResponse).PDU.Data, 0);
-                //result = null;
+                var request = Get(response as ModbusResponse);
+                if (request != null && request.IsInternal)
+                {
+                    packages[(request as ModbusRequest).PackageId].SetData(response.PDU.Data, 0);
+                }
             }
             return result;
         }

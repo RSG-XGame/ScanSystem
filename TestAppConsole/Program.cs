@@ -111,8 +111,8 @@ namespace TestAppConsole
                 UnitId = 1,
                 SendTimeout = 250,
                 ReciveTimeout = 0,
-                SendBufferSize = 300,
-                ReciveBufferSize = 300
+                SendBufferSize = 8000,
+                ReciveBufferSize = 65535
             };
             settings.Variables.AddRange(new ModbusVariableParams[]
             {
