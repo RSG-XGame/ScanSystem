@@ -6,6 +6,7 @@ using ScanSystems.Protocols.Modbus.Common;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Timers;
@@ -14,12 +15,12 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
 {
     public class SEDevice : Device, IEnumerable<IVariable>
     {
-        private Timer pollingTimer;
+        //private Timer pollingTimer;
+        private List<byte> data;
 
         private readonly Dictionary<int, Func<ModbusVariableParams, IVariable>> dictCreateVariables;
         private ModbusPackage[] packages;
         private List<IVariable> variables;
-        private byte[] source;
 
         public IVariable this[int index]
         {
@@ -37,38 +38,48 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
         public SEDevice()
         {
             lockerRequestes = new object();
+            data = new List<byte>();
             requestes = new List<ModbusRequest>();
             helper = new ModbusHelper();
             dictCreateVariables = new Dictionary<int, Func<ModbusVariableParams, IVariable>>();
             variables = new List<IVariable>();
 
-            pollingTimer = new Timer();
-            pollingTimer.Interval = 1000;
-            pollingTimer.AutoReset = true;
-            pollingTimer.Elapsed += PollingTimer_Elapsed;
-            pollingTimer.Enabled = true;
-            pollingTimer.Stop();
+            //pollingTimer = new Timer();
+            //pollingTimer.Interval = 1000;
+            //pollingTimer.AutoReset = true;
+            //pollingTimer.Elapsed += PollingTimer_Elapsed;
+            //pollingTimer.Enabled = true;
+            //pollingTimer.Stop();
 
             InitializationDictCreateVariables();
         }
 
-        private void PollingTimer_Elapsed(object sender, ElapsedEventArgs e)
+        protected override void PollingRequests()
         {
             int index = 0;
             foreach (var package in packages)
             {
                 var request = helper.SendReadHoldingRegisters(package, true);
                 request.PackageId = index++;
-                SendRequest(request);
+                if (!SendRequest(request))
+                {
+                    lock (lockerRequestes)
+                    {
+                        requestes.Remove(request);
+                    }
+                }
             }
         }
+        //private void PollingTimer_Elapsed(object sender, ElapsedEventArgs e)
+        //{
+        //}
         protected override void Connect()
         {
-            pollingTimer.Start();
+            //pollingTimer.Start();
         }
         protected override void Disconnect()
         {
-            pollingTimer.Stop();
+            //pollingTimer.Stop();
         }
 
         private void InitializationDictCreateVariables()
@@ -89,32 +100,40 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
         {
             base.Initialization(initParams);
             helper.UnitId = (initParams.Settings as SEDeviceSettings).UnitId;
-            pollingTimer.Interval = (initParams.Settings as SEDeviceSettings).PollingTimeout;
+            //pollingTimer.Interval = (initParams.Settings as SEDeviceSettings).PollingTimeout;
             packages = CreatePackages((initParams.Settings as SEDeviceSettings).Variables.ToArray());
         }
 
         public override bool SendRequest(IDeviceRequest request)
         {
             bool result = false;
-            if (client.Connected)
+            result = Add(request as ModbusRequest);
+            if (result)
             {
-                result = Add(request as ModbusRequest);
-                if (result)
+                byte[] buffer = (request as ModbusRequest).GetBytes();
+                try
                 {
-                    NetworkStream stream = client.GetStream();
-                    byte[] buffer = (request as ModbusRequest).GetBytes();
-                    stream.Write(buffer, 0, buffer.Length);
+                    SendRequest(buffer);
+                }
+                catch
+                {
+                    result = false;
                 }
             }
+
             return result;
         }
 
         protected override IDeviceEventArgs RecivedData(byte[] data, int length)
         {
             SEDeviceEventArgs result = new SEDeviceEventArgs();
+            byte[] temp = new byte[length];
+            Array.Copy(data, 0, temp, 0, length);
+            this.data.AddRange(temp);
 
             int lastIndex;
-            ModbusResponse[] responses = ModbusResponse.ReadResponses(data, length, out lastIndex);
+            ModbusResponse[] responses = ModbusResponse.ReadResponses(this.data.ToArray(), this.data.Count, out lastIndex);
+            this.data.RemoveRange(0, lastIndex);
             foreach (var response in responses)
             {
                 var request = Get(response as ModbusResponse);
@@ -265,11 +284,11 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
             {
                 if (disposing)
                 {
-                    pollingTimer.Stop();
-                    pollingTimer.Dispose();
+                    //pollingTimer.Stop();
+                    //pollingTimer.Dispose();
                 }
 
-                pollingTimer = null;
+                //pollingTimer = null;
             }
 
             base.Dispose(disposing);

@@ -45,6 +45,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScanApp", "ScanApp\ScanApp.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScanSystem.Hardwares.Protocols", "ScanSystem.Hardwares.Protocols\ScanSystem.Hardwares.Protocols.csproj", "{B0B3514A-7428-4CF2-A1B7-C2D885852D21}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWin", "TestWin\TestWin.csproj", "{544B39EE-792D-4968-884B-C0F82864D3A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +109,10 @@ Global
 		{B0B3514A-7428-4CF2-A1B7-C2D885852D21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0B3514A-7428-4CF2-A1B7-C2D885852D21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0B3514A-7428-4CF2-A1B7-C2D885852D21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{544B39EE-792D-4968-884B-C0F82864D3A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{544B39EE-792D-4968-884B-C0F82864D3A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{544B39EE-792D-4968-884B-C0F82864D3A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{544B39EE-792D-4968-884B-C0F82864D3A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,6 +133,7 @@ Global
 		{9080389F-DE69-4D0A-9A21-44CDE7B88DA2} = {103CA264-46F6-4D60-B7D2-D4AF0344EB48}
 		{E6D75309-63EA-45C1-AD6E-CD3B3C53EA5D} = {8F9AD2E0-5EDD-4343-88BC-50DFD9BD0E9D}
 		{B0B3514A-7428-4CF2-A1B7-C2D885852D21} = {34F0386E-7A45-42A5-82C5-975991DD03F0}
+		{544B39EE-792D-4968-884B-C0F82864D3A8} = {6D8B0D85-F747-44C5-B627-D34F089E5A93}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D2634E16-1660-4E20-8204-AA094C9E1402}

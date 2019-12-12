@@ -9,7 +9,6 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
 {
     public class SEDeviceSettings : DeviceSettings
     {
-        public int PollingTimeout { get; set; }
         public byte UnitId { get; set; }
 
         public List<ModbusVariableParams> Variables { get; set; } = new List<ModbusVariableParams>();

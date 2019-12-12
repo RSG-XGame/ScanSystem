@@ -6,6 +6,18 @@ using System.Text;
 
 namespace ScanSystem.Hardwares.Interfaces.Variables
 {
+    public interface IVariableGetValue<TType> 
+        where TType : IComparable, IComparable<TType>, IConvertible, IEquatable<TType>
+    {
+        new TType GetValue();
+    }
+
+    public interface IVariableSetValue<TType> 
+        where TType : IComparable, IComparable<TType>, IConvertible, IEquatable<TType>
+    {
+        void SetValue(TType value);
+    }
+
     public interface IVariable : INotifyPropertyChanging, INotifyPropertyChanged, IDisposable, IDisposingNotify
     {
         string Name { get; }
@@ -13,7 +25,7 @@ namespace ScanSystem.Hardwares.Interfaces.Variables
         bool Disposed { get; }
         object Value { get; set; }
         int Size { get; }
-
+        
         void Initialize(IVariableParams variableParams);
         Type GetValueType();
     }

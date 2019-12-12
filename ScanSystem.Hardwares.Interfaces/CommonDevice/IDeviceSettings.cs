@@ -6,6 +6,7 @@ namespace ScanSystem.Hardwares.Interfaces.CommonDevice
 {
     public interface IDeviceSettings : IEquatable<IDeviceSettings>
     {
+        int PollingTimeout { get; }
         string IPAddress { get; set; }
         int Port { get; set; }
         int SendTimeout { get; set; }

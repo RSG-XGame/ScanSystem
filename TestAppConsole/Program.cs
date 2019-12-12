@@ -107,25 +107,25 @@ namespace TestAppConsole
             {
                 IPAddress = "127.0.0.1",
                 Port = 502,
-                PollingTimeout = 500,
+                PollingTimeout = 100,
                 UnitId = 1,
                 SendTimeout = 250,
                 ReciveTimeout = 0,
-                SendBufferSize = 8000,
-                ReciveBufferSize = 65535
+                SendBufferSize = 2048,
+                ReciveBufferSize = 2048
             };
             settings.Variables.AddRange(new ModbusVariableParams[]
             {
                 new ModbusVariableParams { Name = "V0000", Size = 2, DataType = 3, IsUnicode = false, Address = "%MW0" },
                 new ModbusVariableParams { Name = "V0001", Size = 2, DataType = 3, IsUnicode = false, Address = "%MW1" },
-                new ModbusVariableParams { Name = "V000", Size = 2, DataType = 3, IsUnicode = false, Address =  "%MW2" },
-                new ModbusVariableParams { Name = "V000", Size = 2, DataType = 3, IsUnicode = false, Address =  "%MW3" },
-                new ModbusVariableParams { Name = "V000", Size = 2, DataType = 3, IsUnicode = false, Address =  "%MW4" },
-                new ModbusVariableParams { Name = "V000", Size = 2, DataType = 3, IsUnicode = false, Address =  "%MW5" },
-                new ModbusVariableParams { Name = "V000", Size = 2, DataType = 3, IsUnicode = false, Address =  "%MW6" },
-                new ModbusVariableParams { Name = "V000", Size = 2, DataType = 3, IsUnicode = false, Address =  "%MW7" },
-                new ModbusVariableParams { Name = "V000", Size = 2, DataType = 3, IsUnicode = false, Address =  "%MW8" },
-                new ModbusVariableParams { Name = "V000", Size = 2, DataType = 3, IsUnicode = false, Address =  "%MW9" },
+                new ModbusVariableParams { Name = "V0002", Size = 2, DataType = 3, IsUnicode = false, Address =  "%MW2" },
+                new ModbusVariableParams { Name = "V0003", Size = 2, DataType = 3, IsUnicode = false, Address =  "%MW3" },
+                new ModbusVariableParams { Name = "V0004", Size = 2, DataType = 3, IsUnicode = false, Address =  "%MW4" },
+                new ModbusVariableParams { Name = "V0005", Size = 2, DataType = 3, IsUnicode = false, Address =  "%MW5" },
+                new ModbusVariableParams { Name = "V0006", Size = 2, DataType = 3, IsUnicode = false, Address =  "%MW6" },
+                new ModbusVariableParams { Name = "V0007", Size = 2, DataType = 3, IsUnicode = false, Address =  "%MW7" },
+                new ModbusVariableParams { Name = "V0008", Size = 2, DataType = 3, IsUnicode = false, Address =  "%MW8" },
+                new ModbusVariableParams { Name = "V0009", Size = 2, DataType = 3, IsUnicode = false, Address =  "%MW9" },
                 new ModbusVariableParams { Name = "V0010", Size = 2, DataType = 3, IsUnicode = false, Address =  "%MW10" },
                 new ModbusVariableParams { Name = "V0011", Size = 2, DataType = 3, IsUnicode = false, Address = "%MW11" },
                 new ModbusVariableParams { Name = "V0012", Size = 2, DataType = 3, IsUnicode = false, Address = "%MW12" },

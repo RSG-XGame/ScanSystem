@@ -21,6 +21,9 @@ namespace ScanSystem.Hardwares.Implementations.DataLogic
             return result;
         }
 
+        protected override void PollingRequests()
+        {
+        }
         protected override void Connect()
         {
         }

@@ -58,9 +58,15 @@ namespace ScanSystems.Protocols.Modbus
             while (lastIndex < length)
             {
                 ModbusResponse response = new ModbusResponse();
-                response.FromBytes(data, lastIndex, length);
-
-                lastIndex += response.MBAPHeader.Length + 4;
+                try
+                {
+                    response.FromBytes(data, lastIndex, length);
+                }
+                catch
+                {
+                    break;
+                }
+                lastIndex += response.MBAPHeader.Length + 6;
 
                 responses.Add(response);
             }

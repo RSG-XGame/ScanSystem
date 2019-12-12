@@ -194,9 +194,7 @@ namespace ScanSystems.Protocols.Modbus.Common
         }
         private void SetShort(byte[] data, int byteNum, ModbusVariable<short> variable)
         {
-            var val = data.GetRange(byteNum, variable.Size);
-
-            variable.Value = BitConverter.ToInt16(val, 0);
+            variable.Value = BitConverter.ToInt16(data.GetRange(byteNum, variable.Size), 0);
         }
         private void SetUShort(byte[] data, int byteNum, ModbusVariable<ushort> variable)
         {

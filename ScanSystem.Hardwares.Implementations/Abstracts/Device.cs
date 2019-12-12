@@ -15,7 +15,9 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
     {
         private ManualResetEvent resetWait;
         private CancellationTokenSource cancelToken;
-        protected TcpClient client;
+        private TcpClient client;
+        private object lockerClient;
+        private int pollingTimeout;
 
         public bool Disposed => disposedValue;
 
@@ -35,6 +37,12 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
 
         public virtual void Initialization(IDeviceInitializationParams initParams)
         {
+            pollingTimeout = initParams.Settings.PollingTimeout;
+            if (pollingTimeout < 1)
+            {
+                pollingTimeout = 10;
+            }
+            lockerClient = new object();
             Settings = initParams.Settings;
             resetWait = new ManualResetEvent(true);
         }
@@ -52,6 +60,7 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
         }
         protected abstract void Connect();
         protected abstract void Disconnect();
+        protected abstract void PollingRequests();
         public abstract bool SendRequest(IDeviceRequest request);
 
         public bool Open()
@@ -65,18 +74,7 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
                     DeviceConnecting?.Invoke(args);
                     if (args.AcceptConnection)
                     {
-                        if (client == null)
-                        {
-                            client = new TcpClient();
-                        }
-                        if (!client.Connected)
-                        {
-                            client.SendTimeout = Settings.SendTimeout;
-                            client.ReceiveTimeout = Settings.ReciveTimeout;
-                            client.SendBufferSize = Settings.SendBufferSize;
-                            client.ReceiveBufferSize = Settings.ReciveBufferSize;
-                            client.Connect(IPAddress.Parse(Settings.IPAddress), Settings.Port);
-                        }
+                        OpenClient();
                         result = StartListen();
                         Connect();
                         DeviceConnected?.Invoke(this);
@@ -88,6 +86,28 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
                 DeviceError?.Invoke(this, new DeviceErrorEventArgs { Ex = ex });
             }
             return result;
+        }
+        private void OpenClient()
+        {
+            if (client == null)
+            {
+                client = new TcpClient();
+            }
+            if (!client.Connected)
+            {
+                client.SendTimeout = Settings.SendTimeout;
+                client.ReceiveTimeout = Settings.ReciveTimeout;
+                client.SendBufferSize = Settings.SendBufferSize;
+                client.ReceiveBufferSize = Settings.ReciveBufferSize;
+                try
+                {
+                    client.Connect(IPAddress.Parse(Settings.IPAddress), Settings.Port);
+                }
+                catch(Exception ex)
+                {
+                    DeviceError?.Invoke(this, new DeviceErrorEventArgs { Ex = ex });
+                }
+            }
         }
         public bool Close()
         {
@@ -126,19 +146,46 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
             return result;
         }
 
+        protected void SendRequest(byte[] request)
+        {
+            lock (lockerClient)
+            {
+                var stream = client.GetStream();
+                stream.Write(request, 0, request.Length);
+            }
+        }
+
         private void Listen(CancellationToken token)
         {
             DeviceStateEventArgs state = new DeviceStateEventArgs { IsEnabled = true };
             try
             {
                 resetWait.Reset();
-                NetworkStream stream = client.GetStream();
+                NetworkStream stream = client.Connected ? client.GetStream() : null;
                 while (!token.IsCancellationRequested)
                 {
-                    if (stream.DataAvailable)
+                    PollingRequests();
+
+                    if (!client.Connected)
+                    {
+                        lock (lockerClient)
+                        {
+                            client.Dispose();
+                            client = null;
+                            OpenClient();
+                            stream = client.Connected ? client.GetStream() : null;
+                        }
+                    }
+
+                    if (stream?.DataAvailable ?? false)
                     {
                         byte[] buffer = new byte[client.ReceiveBufferSize];
-                        int length = stream.Read(buffer, 0, buffer.Length);
+
+                        int length = 0;
+                        lock (lockerClient)
+                        {
+                            length = stream.Read(buffer, 0, buffer.Length);
+                        }
                         try
                         {
                             IDeviceEventArgs message = RecivedData(buffer, length);
@@ -156,9 +203,11 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
                     {
                         break;
                     }
+
+                    Thread.Sleep(pollingTimeout);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 DeviceError?.Invoke(this, new DeviceErrorEventArgs { Ex = ex });
             }

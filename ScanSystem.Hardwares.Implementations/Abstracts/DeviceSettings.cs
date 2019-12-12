@@ -13,6 +13,7 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
         public int ReciveTimeout { get; set; }
         public int SendBufferSize { get; set; }
         public int ReciveBufferSize { get; set; }
+        public int PollingTimeout { get; set; }
 
         public bool Equals(DeviceSettings other)
         {
@@ -22,7 +23,8 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
                    SendTimeout == other.SendTimeout &&
                    ReciveTimeout == other.ReciveTimeout &&
                    SendBufferSize == other.SendBufferSize &&
-                   ReciveBufferSize == other.ReciveBufferSize;
+                   ReciveBufferSize == other.ReciveBufferSize &&
+                   PollingTimeout == other.PollingTimeout;
         }
 
         public virtual bool Equals(IDeviceSettings other)
@@ -39,6 +41,7 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
             hashCode = hashCode * -1521134295 + ReciveTimeout.GetHashCode();
             hashCode = hashCode * -1521134295 + SendBufferSize.GetHashCode();
             hashCode = hashCode * -1521134295 + ReciveBufferSize.GetHashCode();
+            hashCode = hashCode * -1521134295 + PollingTimeout.GetHashCode();
             return hashCode;
         }
     }
