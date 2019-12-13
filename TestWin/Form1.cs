@@ -16,7 +16,8 @@ namespace TestWin
         {
             InitializeComponent();
 
-            testSEDeviceCtrl1.Initialize();
+            testSEDeviceCtrl1.Initialize(502);
+            testSEDeviceCtrl2.Initialize(503);
 
             Shown += Form1_Shown;
             FormClosing += Form1_FormClosing;
@@ -25,11 +26,13 @@ namespace TestWin
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             testSEDeviceCtrl1.Release();
+            testSEDeviceCtrl2.Release();
         }
 
         private void Form1_Shown(object sender, EventArgs e)
         {
             testSEDeviceCtrl1.Start();
+            testSEDeviceCtrl2.Start();
         }
     }
 }

@@ -20,12 +20,11 @@ namespace TestWin.SETest
         public TestSEDeviceCtrl()
         {
             InitializeComponent();
-            Initialize();
         }
 
-        public void Initialize()
+        public void Initialize(int port)
         {
-            device = TestSEDevice.CreateSEDevice();
+            device = TestSEDevice.CreateSEDevice(port);
 
             int index = 0;
             bindTextBox(textBox1, index++);

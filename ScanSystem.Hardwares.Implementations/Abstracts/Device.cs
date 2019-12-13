@@ -118,13 +118,14 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
             }
             return result;
         }
-
-        private void Disconnection()
+        private void Disconnection(bool stopListen = true)
         {
             DeviceDisconnecting?.Invoke(this);
             Disconnect();
             client?.Close();
-            StopListen();
+            client?.Dispose();
+            if (stopListen)
+                StopListen();
             DeviceDisconnected?.Invoke(this);
         }
 
@@ -146,6 +147,11 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
             return result;
         }
 
+        protected void InvokeDeviceError(IDeviceEventArgs e)
+        {
+            DeviceError?.Invoke(this, e);
+        }
+
         protected void SendRequest(byte[] request)
         {
             lock (lockerClient)
@@ -158,68 +164,68 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
         private void Listen(CancellationToken token)
         {
             DeviceStateEventArgs state = new DeviceStateEventArgs { IsEnabled = true };
-            try
+            resetWait.Reset();
+            NetworkStream stream = client.Connected ? client.GetStream() : null;
+            while (!token.IsCancellationRequested)
             {
-                resetWait.Reset();
-                NetworkStream stream = client.Connected ? client.GetStream() : null;
-                while (!token.IsCancellationRequested)
+                if (state.IsEnabled)
                 {
-                    PollingRequests();
-
-                    if (!client.Connected)
+                    try
                     {
-                        lock (lockerClient)
+                        PollingRequests();
+
+                        if (!client.Connected)
                         {
-                            client.Dispose();
-                            client = null;
-                            OpenClient();
-                            stream = client.Connected ? client.GetStream() : null;
+                            lock (lockerClient)
+                            {
+                                client.Dispose();
+                                client = null;
+                                OpenClient();
+                                stream = client.Connected ? client.GetStream() : null;
+                            }
+                        }
+
+                        if (stream?.DataAvailable ?? false)
+                        {
+                            byte[] buffer = new byte[client.ReceiveBufferSize];
+
+                            int length = 0;
+                            lock (lockerClient)
+                            {
+                                length = stream.Read(buffer, 0, buffer.Length);
+                            }
+                            try
+                            {
+                                IDeviceEventArgs message = RecivedData(buffer, length);
+                                if (message != null)
+                                    DeviceRecivedMessage?.Invoke(this, message);
+                            }
+                            catch (Exception ex)
+                            {
+                                DeviceError?.Invoke(this, new DeviceErrorEventArgs { Ex = ex });
+                            }
+                        }
+
+                        DeviceCheckState?.Invoke(this, state);
+                        if (!state.IsEnabled)
+                        {
+                            break;
                         }
                     }
-
-                    if (stream?.DataAvailable ?? false)
+                    catch (Exception ex)
                     {
-                        byte[] buffer = new byte[client.ReceiveBufferSize];
-
-                        int length = 0;
-                        lock (lockerClient)
-                        {
-                            length = stream.Read(buffer, 0, buffer.Length);
-                        }
-                        try
-                        {
-                            IDeviceEventArgs message = RecivedData(buffer, length);
-                            if (message != null)
-                                DeviceRecivedMessage?.Invoke(this, message);
-                        }
-                        catch (Exception ex)
-                        {
-                            DeviceError?.Invoke(this, new DeviceErrorEventArgs { Ex = ex });
-                        }
+                        DeviceError?.Invoke(this, new DeviceErrorEventArgs { Ex = ex });
                     }
-
-                    DeviceCheckState?.Invoke(this, state);
-                    if (!state.IsEnabled)
-                    {
-                        break;
-                    }
-
-                    Thread.Sleep(pollingTimeout);
                 }
+                else
+                {
+                    Disconnection(false);
+                }
+                Thread.Sleep(pollingTimeout);
             }
-            catch (Exception ex)
-            {
-                DeviceError?.Invoke(this, new DeviceErrorEventArgs { Ex = ex });
-            }
-            finally
-            {
-                resetWait.Set();
-            }
-            if (state.IsEnabled)
-            {
-                Disconnection();
-            }
+            resetWait.Set();
         }
+        
 
         /// <summary>
         /// Считаны данные из потока

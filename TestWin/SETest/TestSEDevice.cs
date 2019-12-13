@@ -11,13 +11,13 @@ namespace TestWin.SETest
     public class TestSEDevice
     {
 
-        public static SEDevice CreateSEDevice()
+        public static SEDevice CreateSEDevice(int port)
         {
             SEDeviceSettings settings = new SEDeviceSettings
             {
                 IPAddress = "127.0.0.1",
-                Port = 503,
-                PollingTimeout = 1,
+                Port = port,
+                PollingTimeout = 250,
                 UnitId = 1,
                 SendTimeout = 0,
                 ReciveTimeout = 0,

@@ -15,12 +15,12 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
 {
     public class SEDevice : Device, IEnumerable<IVariable>
     {
-        //private Timer pollingTimer;
         private List<byte> data;
 
         private readonly Dictionary<int, Func<ModbusVariableParams, IVariable>> dictCreateVariables;
         private ModbusPackage[] packages;
         private List<IVariable> variables;
+        private int maxLifeTime = 30000;
 
         public IVariable this[int index]
         {
@@ -44,18 +44,22 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
             dictCreateVariables = new Dictionary<int, Func<ModbusVariableParams, IVariable>>();
             variables = new List<IVariable>();
 
-            //pollingTimer = new Timer();
-            //pollingTimer.Interval = 1000;
-            //pollingTimer.AutoReset = true;
-            //pollingTimer.Elapsed += PollingTimer_Elapsed;
-            //pollingTimer.Enabled = true;
-            //pollingTimer.Stop();
-
             InitializationDictCreateVariables();
         }
 
+        private void CheckRequestsLifeTime()
+        {
+            if (maxLifeTime > 0)
+            {
+                lock (lockerRequestes)
+                {
+                    requestes.RemoveAll(x => x.ElapsedTime.TotalMilliseconds >= maxLifeTime);
+                }
+            }
+        }
         protected override void PollingRequests()
         {
+            CheckRequestsLifeTime();
             int index = 0;
             foreach (var package in packages)
             {
@@ -70,16 +74,11 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
                 }
             }
         }
-        //private void PollingTimer_Elapsed(object sender, ElapsedEventArgs e)
-        //{
-        //}
         protected override void Connect()
         {
-            //pollingTimer.Start();
         }
         protected override void Disconnect()
         {
-            //pollingTimer.Stop();
         }
 
         private void InitializationDictCreateVariables()
@@ -100,8 +99,8 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
         {
             base.Initialization(initParams);
             helper.UnitId = (initParams.Settings as SEDeviceSettings).UnitId;
-            //pollingTimer.Interval = (initParams.Settings as SEDeviceSettings).PollingTimeout;
             packages = CreatePackages((initParams.Settings as SEDeviceSettings).Variables.ToArray());
+            maxLifeTime = (initParams.Settings as SEDeviceSettings).MaxLifeTimeRequest;
         }
 
         public override bool SendRequest(IDeviceRequest request)
@@ -111,14 +110,11 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
             if (result)
             {
                 byte[] buffer = (request as ModbusRequest).GetBytes();
-                try
-                {
-                    SendRequest(buffer);
-                }
-                catch
-                {
-                    result = false;
-                }
+
+                SendRequest(buffer);
+                (request as ModbusRequest).SendDate = DateTime.Now;
+                System.Threading.Thread.Sleep(100);
+                result = false;
             }
 
             return result;
@@ -137,9 +133,13 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
             foreach (var response in responses)
             {
                 var request = Get(response as ModbusResponse);
-                if (request != null && request.IsInternal)
+                if (request != null && request.IsInternal && !response.Error)
                 {
                     packages[(request as ModbusRequest).PackageId].SetData(response.PDU.Data, 0);
+                }
+                else if (response.Error)
+                {
+                    InvokeDeviceError(new SEDeviceErrorEventArgs { ErrorCode = response.PDU.Data[0], Description = response.ErrorDescription });
                 }
             }
             return result;
@@ -155,6 +155,7 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
                     if (requestes.Find(x => x.MBAPHeader.TransactionId == request.MBAPHeader.TransactionId) == null)
                     {
                         requestes.Add(request);
+
                         result = true;
                     }
                     else
@@ -172,8 +173,15 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
             {
                 lock (lockerRequestes)
                 {
+                    if (requestes.Count > 2)
+                    {
+                    }
                     result = requestes.Find(x => x.MBAPHeader.TransactionId == response.MBAPHeader.TransactionId);
+                    if (result == null)
+                    {
+                    }
                     requestes.Remove(result);
+
                 }
             }
             return result;

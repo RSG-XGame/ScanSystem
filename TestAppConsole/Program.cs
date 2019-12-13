@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
 using System.Timers;
@@ -101,18 +102,20 @@ namespace TestAppConsole
 
     class Program
     {
-        private static void deviceModbus()
+        private static List<SEDevice> devices = new List<SEDevice>();
+
+        private static void deviceModbus(int port)
         {
             SEDeviceSettings settings = new SEDeviceSettings
             {
                 IPAddress = "127.0.0.1",
-                Port = 502,
+                Port = port,
                 PollingTimeout = 100,
                 UnitId = 1,
-                SendTimeout = 250,
+                SendTimeout = 1000,
                 ReciveTimeout = 0,
-                SendBufferSize = 2048,
-                ReciveBufferSize = 2048
+                SendBufferSize = 4096,
+                ReciveBufferSize = 4096
             };
             settings.Variables.AddRange(new ModbusVariableParams[]
             {
@@ -167,50 +170,52 @@ namespace TestAppConsole
                 new ModbusVariableParams { Name = "V0048", Size = 2, DataType = 3, IsUnicode = false, Address = "%MW48" },
                 new ModbusVariableParams { Name = "V0049", Size = 2, DataType = 3, IsUnicode = false, Address = "%MW49" }
             });
-
-
             SEInitParams initParams = new SEInitParams
             {
                 DeviceId = Guid.NewGuid(),
                 Settings = settings
             };
-
             SEDevice device = new SEDevice();
             device.Initialization(initParams);
 
-            device.DeviceRecivedMessage += Device_DeviceRecivedMessage;
-            
-            device.Open();
+           // device.DeviceRecivedMessage += Device_DeviceRecivedMessage;
 
-            Console.ReadKey(true);
-
-            device.Close();
-            device.Dispose();
-            device = null;
+            devices.Add(device);
         }
 
         static ManualResetEvent lockConsole = new ManualResetEvent(true);
         private static void Device_DeviceRecivedMessage(ScanSystem.Hardwares.Interfaces.CommonDevice.IDevice device, ScanSystem.Hardwares.Interfaces.CommonDevice.IDeviceEventArgs args)
         {
-            if (lockConsole.WaitOne(0))
-            {
-                lockConsole.Reset();
-                Console.Clear();
-                if (device is SEDevice)
-                {
-                    SEDevice d = device as SEDevice;
-                    foreach (var variable in d)
-                    {
-                        Console.WriteLine($"{variable.Name} = {variable.Value}");
-                    }
-                }
-                lockConsole.Set();
-            }
+            
         }
 
         static void Main(string[] args)
         {
-            deviceModbus();
+
+            System.Timers.Timer t = new System.Timers.Timer();
+            //t.Enabled = true;
+            t.Interval = 50;
+            t.AutoReset = true;
+            t.Elapsed += T_Elapsed;
+            deviceModbus(502);
+            //deviceModbus(503);
+
+            foreach (var device in devices)
+            {
+                device.Open();
+            }
+            //t.Start();
+
+            Console.ReadKey(true);
+
+            //t.Stop();
+            foreach (var device in devices)
+            {
+                device.Close();
+                device.Dispose();
+            }
+
+            devices.Clear();
             //ModbusVariable<bool> v1 = new ModbusVariable<bool>(); v1.Initialize(nameof(v1), "%MX0.0");
             //ModbusVariable<bool> v2 = new ModbusVariable<bool>(); v2.Initialize(nameof(v2), "%MX0.3");
             //ModbusVariable<bool> v3 = new ModbusVariable<bool>(); v3.Initialize(nameof(v3), "%MX0.4");
@@ -278,6 +283,29 @@ namespace TestAppConsole
             //    client.Dispose();
             //    client = null;
             //}
+        }
+
+        private static void T_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (lockConsole.WaitOne(0))
+            {
+                lockConsole.Reset();
+                Console.Clear();
+                foreach (var device in devices)
+                {
+                    if (device is SEDevice)
+                    {
+                        SEDevice d = device as SEDevice;
+                        foreach (var variable in d)
+                        {
+                            Console.WriteLine($"{variable.Name} = {variable.Value}");
+                        }
+                    }
+                    Console.WriteLine();
+                    Console.WriteLine();
+                }
+                lockConsole.Set();
+            }
         }
 
         private static void T_ExecuteMethods(CancellationToken obj)

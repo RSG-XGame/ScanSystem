@@ -10,7 +10,7 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
     public class SEDeviceSettings : DeviceSettings
     {
         public byte UnitId { get; set; }
-
+        public int MaxLifeTimeRequest { get; set; }
         public List<ModbusVariableParams> Variables { get; set; } = new List<ModbusVariableParams>();
 
         public override bool Equals(IDeviceSettings other)

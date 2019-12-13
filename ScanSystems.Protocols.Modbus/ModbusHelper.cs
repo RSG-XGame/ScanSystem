@@ -35,7 +35,10 @@ namespace ScanSystems.Protocols.Modbus
             lock (lockerTransaction)
             {
                 result = ++transactionId;
-                if (transactionId == 0)
+                if (result >= short.MaxValue)
+                {
+                }
+                if (result == 0)
                 {
                     result = ++transactionId;
                 }
