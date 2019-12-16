@@ -18,7 +18,7 @@ namespace ScanSystems.Protocols.Modbus
         {
             MBAPHeader = new ModbusMBAPHeader();
             PDU = new ModbusPDU();
-            Error = true;
+            Error = false;
         }
 
         public void FromBytes(byte[] data, int length)

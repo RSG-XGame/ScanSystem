@@ -9,9 +9,10 @@ using System.Text;
 
 namespace ScanSystems.Protocols.Modbus.Common
 {
-    public class ModbusVariable<TType> : IVariable<TType, ModbusAddress>
+    public class ModbusVariable<TType> : IVariable<TType, ModbusAddress>, IVariableInternal<TType>
         where TType : IComparable, IComparable<TType>, IConvertible, IEquatable<TType>
     {
+        private object lockerValue;
         private TType value;
         private string name;
         private int size;
@@ -23,7 +24,7 @@ namespace ScanSystems.Protocols.Modbus.Common
         {
             get
             {
-                return value;
+                return GetValue();
             }
             set
             {
@@ -31,9 +32,11 @@ namespace ScanSystems.Protocols.Modbus.Common
                 {
                     if (!this.value.Equals(value))
                     {
-                        PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(nameof(Value)));
-                        this.value = value;
-                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Value)));
+                        lock (lockerValue)
+                        {
+                            this.value = value;
+                            VariableValueChanged?.Invoke(this);
+                        }
                     }
                 }
             }
@@ -49,10 +52,12 @@ namespace ScanSystems.Protocols.Modbus.Common
         public event PropertyChangingEventHandler PropertyChanging;
         public event PropertyChangedEventHandler PropertyChanged;
         public event DisposingHandler Disposing;
+        public event VariableValueChangedHandler VariableValueChanged;
 
         public ModbusVariable()
         {
             address = new ModbusAddress();
+            lockerValue = new object();
         }
 
         public void Initialize(IVariableParams variableParams)
@@ -66,6 +71,35 @@ namespace ScanSystems.Protocols.Modbus.Common
         public Type GetValueType()
         {
             return typeof(TType);
+        }
+
+
+        void IVariableInternal.SetValue(object value)
+        {
+            SetValue((TType)value);
+        }
+        object IVariableInternal.GetValue()
+        {
+            return GetValue();
+        }
+        public void SetValue(TType value)
+        {
+            if (!disposedValue)
+            {
+                if (!this.value.Equals(value))
+                {
+                    lock (lockerValue)
+                    {
+                        PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(nameof(Value)));
+                        this.value = value;
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Value)));
+                    }
+                }
+            }
+        }
+        public TType GetValue()
+        {
+            return value;
         }
 
         #region IDisposable Support

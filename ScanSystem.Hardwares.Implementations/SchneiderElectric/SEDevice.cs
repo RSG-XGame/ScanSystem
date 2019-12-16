@@ -113,8 +113,8 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
 
                 SendRequest(buffer);
                 (request as ModbusRequest).SendDate = DateTime.Now;
-                System.Threading.Thread.Sleep(100);
-                result = false;
+                System.Threading.Thread.Sleep(50);
+                result = true;
             }
 
             return result;
@@ -155,7 +155,6 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
                     if (requestes.Find(x => x.MBAPHeader.TransactionId == request.MBAPHeader.TransactionId) == null)
                     {
                         requestes.Add(request);
-
                         result = true;
                     }
                     else
@@ -173,15 +172,8 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
             {
                 lock (lockerRequestes)
                 {
-                    if (requestes.Count > 2)
-                    {
-                    }
                     result = requestes.Find(x => x.MBAPHeader.TransactionId == response.MBAPHeader.TransactionId);
-                    if (result == null)
-                    {
-                    }
                     requestes.Remove(result);
-
                 }
             }
             return result;
@@ -200,6 +192,7 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
             foreach (var variableDescription in variableDescriptions)
             {
                 IVariable variable = CreateInstance(variableDescription);
+                (variable as IVariableInternal).VariableValueChanged += SEDevice_VariableValueChanged;
                 if (variable != null)
                 {
                     variables.Add(variable);
@@ -208,6 +201,22 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
             return variables.ToArray();
         }
 
+        private void SEDevice_VariableValueChanged(IVariable variable)
+        {
+            ModbusPackage package = new ModbusPackage();
+            package.Add(variable);
+
+            var request = helper.SendPresetMultipleRegisters(package, false);
+            request.PackageId = -1;
+            if (!SendRequest(request))
+            {
+                lock (lockerRequestes)
+                {
+                    requestes.Remove(request);
+                }
+            }
+        }
+        
         private IVariable CreateInstance(ModbusVariableParams variableDescription)
         {
             IVariable variable = null;
@@ -217,7 +226,6 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
             }
             return variable;
         }
-
         private IVariable CreateBool(ModbusVariableParams variableParams)
         {
             ModbusVariable<bool> variable = new ModbusVariable<bool>();

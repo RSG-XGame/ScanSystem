@@ -32,7 +32,7 @@ namespace TestWin
         private void Form1_Shown(object sender, EventArgs e)
         {
             testSEDeviceCtrl1.Start();
-            testSEDeviceCtrl2.Start();
+            //testSEDeviceCtrl2.Start();
         }
     }
 }

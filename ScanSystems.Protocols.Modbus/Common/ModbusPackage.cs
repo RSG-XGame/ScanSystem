@@ -13,17 +13,17 @@ namespace ScanSystems.Protocols.Modbus.Common
         #region filling bytes array
         private readonly Dictionary<Type, Action<byte[], int, IVariable>> getDict;
         private readonly Dictionary<Type, Action<byte[], int, IVariable>> setDict;
-     
+
         private void Get(byte[] data, IVariable variable)
         {
             ModbusAddress addr = variable.Address as ModbusAddress;
-            int byteNum = addr.WordNum * 2 + (addr.BitNum > 7 ? 1 : 0);
+            int byteNum = addr.WordNum * 2 + (addr.BitNum > 7 ? 1 : 0) - StartRegister * 2;
             getDict[variable.GetValueType()].Invoke(data, byteNum, variable);
         }
         private void Set(byte[] data, IVariable variable)
         {
             ModbusAddress addr = variable.Address as ModbusAddress;
-            int byteNum = addr.WordNum * 2 + (addr.BitNum > 7 ? 1 : 0);
+            int byteNum = addr.WordNum * 2 + (addr.BitNum > 7 ? 1 : 0) - StartRegister * 2;
             setDict[variable.GetValueType()].Invoke(data, byteNum, variable);
         }
 
@@ -186,47 +186,47 @@ namespace ScanSystems.Protocols.Modbus.Common
         {
             int bitNum = variable.Address.BitNum > 7 ? variable.Address.BitNum - 8 : variable.Address.BitNum;
             bool value = (data[byteNum] & (1 << bitNum)) != 0;
-            variable.Value = value;
+            variable.SetValue(value);
         }
         private void SetByte(byte[] data, int byteNum, ModbusVariable<byte> variable)
         {
-            variable.Value = data[byteNum];
+            variable.SetValue(data[byteNum]);
         }
         private void SetShort(byte[] data, int byteNum, ModbusVariable<short> variable)
         {
-            variable.Value = BitConverter.ToInt16(data.GetRange(byteNum, variable.Size), 0);
+            variable.SetValue(BitConverter.ToInt16(data.GetRange(byteNum, variable.Size), 0));
         }
         private void SetUShort(byte[] data, int byteNum, ModbusVariable<ushort> variable)
         {
-            variable.Value = BitConverter.ToUInt16(data.GetRange(byteNum, variable.Size), 0);
+            variable.SetValue(BitConverter.ToUInt16(data.GetRange(byteNum, variable.Size), 0));
         }
         private void SetInt(byte[] data, int byteNum, ModbusVariable<int> variable)
         {
-            variable.Value = BitConverter.ToInt32(data.GetRange(byteNum, variable.Size), 0);
+            variable.SetValue(BitConverter.ToInt32(data.GetRange(byteNum, variable.Size), 0));
         }
         private void SetUInt(byte[] data, int byteNum, ModbusVariable<uint> variable)
         {
-            variable.Value = BitConverter.ToUInt32(data.GetRange(byteNum, variable.Size), 0);
+            variable.SetValue(BitConverter.ToUInt32(data.GetRange(byteNum, variable.Size), 0));
         }
         private void SetLong(byte[] data, int byteNum, ModbusVariable<long> variable)
         {
-            variable.Value = BitConverter.ToInt64(data.GetRange(byteNum, variable.Size), 0);
+            variable.SetValue(BitConverter.ToInt64(data.GetRange(byteNum, variable.Size), 0));
         }
         private void SetULong(byte[] data, int byteNum, ModbusVariable<ulong> variable)
         {
-            variable.Value = BitConverter.ToUInt64(data.GetRange(byteNum, variable.Size), 0);
+            variable.SetValue(BitConverter.ToUInt64(data.GetRange(byteNum, variable.Size), 0));
         }
         private void SetFloat(byte[] data, int byteNum, ModbusVariable<float> variable)
         {
-            variable.Value = BitConverter.ToSingle(data.GetRange(byteNum, variable.Size), 0);
+            variable.SetValue(BitConverter.ToSingle(data.GetRange(byteNum, variable.Size), 0));
         }
         private void SetDouble(byte[] data, int byteNum, ModbusVariable<double> variable)
         {
-            variable.Value = BitConverter.ToDouble(data.GetRange(byteNum, variable.Size), 0);
+            variable.SetValue(BitConverter.ToDouble(data.GetRange(byteNum, variable.Size), 0));
         }
         private void SetString(byte[] data, int byteNum, ModbusVariable<string> variable)
         {
-            variable.Value = Encoding.ASCII.GetString(data.GetRange(byteNum, variable.Size));
+            variable.SetValue(Encoding.ASCII.GetString(data.GetRange(byteNum, variable.Size)));
         }
 
         private byte[] ReverseData(byte[] data)
@@ -270,6 +270,7 @@ namespace ScanSystems.Protocols.Modbus.Common
 
         private readonly IEnumerable<IVariable> variables;
         private byte[] source;
+        private ModbusPackage sourcePackage;
 
         public Guid PackageId { get; private set; } = Guid.NewGuid();
         public IVariable this[int index] { get => (variables as List<IVariable>)[index]; }
@@ -316,7 +317,25 @@ namespace ScanSystems.Protocols.Modbus.Common
             getDict = new Dictionary<Type, Action<byte[], int, IVariable>>();
             setDict = new Dictionary<Type, Action<byte[], int, IVariable>>();
 
+            sourcePackage = null;
+
             InitializeGSDict();
+        }
+
+        public bool Contains(IVariable variable)
+        {
+            return variables.Contains(variable);
+        }
+        public ModbusPackage PackageVariable(IVariable variable)
+        {
+            ModbusPackage result = null;
+            if (Contains(variable))
+            {
+                result = new ModbusPackage();
+                result.Add(variable);
+                result.sourcePackage = this;
+            }
+            return result;
         }
 
         private void Initialize()
@@ -345,6 +364,9 @@ namespace ScanSystems.Protocols.Modbus.Common
         public byte[] GetData()
         {
             Initialize();
+
+            
+
             byte[] result = new byte[CountVariables > 0 ? CountRegisters * 2 : 0];
          
             if (source.Length != result.Length)

@@ -6,16 +6,19 @@ using System.Text;
 
 namespace ScanSystem.Hardwares.Interfaces.Variables
 {
-    public interface IVariableGetValue<TType> 
-        where TType : IComparable, IComparable<TType>, IConvertible, IEquatable<TType>
+    public interface IVariableInternal
     {
-        new TType GetValue();
-    }
+        void SetValue(object value);
+        object GetValue();
 
-    public interface IVariableSetValue<TType> 
+        event VariableValueChangedHandler VariableValueChanged;
+    }
+    public interface IVariableInternal<TType> : IVariableInternal
         where TType : IComparable, IComparable<TType>, IConvertible, IEquatable<TType>
     {
         void SetValue(TType value);
+        new TType GetValue();
+
     }
 
     public interface IVariable : INotifyPropertyChanging, INotifyPropertyChanged, IDisposable, IDisposingNotify
