@@ -172,8 +172,6 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
                 {
                     try
                     {
-                        PollingRequests();
-
                         if (!client.Connected)
                         {
                             lock (lockerClient)
@@ -184,6 +182,8 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
                                 stream = client.Connected ? client.GetStream() : null;
                             }
                         }
+
+                        PollingRequests();
 
                         if (stream?.DataAvailable ?? false)
                         {

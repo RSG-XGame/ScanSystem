@@ -9,7 +9,7 @@ namespace ScanSystems.Protocols.Modbus.Common
     {
         public string Name { get; set; }
         public string Address { get; set; }
-        public int DataType { get; set; }
+        public ModbusDataTypes DataType { get; set; }
         public int Size { get; set; }
         public bool IsUnicode { get; set; }
     }

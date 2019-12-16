@@ -127,9 +127,9 @@ namespace ScanSystems.Protocols.Modbus
 
                     case ModbusFunctions.ForceMultipleCoils:
                     case ModbusFunctions.PresetMultipleRegisters:
-                        request.MBAPHeader.Length = (ushort)(7 + package.SizeInBytes);
                         pdu.Add(Convert.ToByte(package.SizeInBytes));
                         pdu.AddRange(package.GetData());
+                        request.MBAPHeader.Length = (ushort)(pdu.Count + 2);
                         break;
                 }
                 request.PDU.Data = pdu.ToArray();
@@ -182,12 +182,15 @@ namespace ScanSystems.Protocols.Modbus
         public static byte[] GetRange(this byte[] data, int startIndex, int length)
         {
             byte[] result = new byte[length];
-            Array.Copy(data, startIndex, result, 0, length);
-            for (int i = 0; i < length; i += 2)
+            if (data != null)
             {
-                byte temp = result[i];
-                result[i] = result[i + 1];
-                result[i + 1] = temp;
+                Array.Copy(data, startIndex, result, 0, length);
+                for (int i = 0; i < length; i += 2)
+                {
+                    byte temp = result[i];
+                    result[i] = result[i + 1];
+                    result[i + 1] = temp;
+                }
             }
             return result;
         }

@@ -16,15 +16,18 @@ namespace ScanSystems.Protocols.Modbus.Common
 
         private void Get(byte[] data, IVariable variable)
         {
-            ModbusAddress addr = variable.Address as ModbusAddress;
-            int byteNum = addr.WordNum * 2 + (addr.BitNum > 7 ? 1 : 0) - StartRegister * 2;
+            int byteNum = GetByteNum(variable.Address as ModbusAddress, StartRegister);
             getDict[variable.GetValueType()].Invoke(data, byteNum, variable);
         }
         private void Set(byte[] data, IVariable variable)
         {
-            ModbusAddress addr = variable.Address as ModbusAddress;
-            int byteNum = addr.WordNum * 2 + (addr.BitNum > 7 ? 1 : 0) - StartRegister * 2;
+            int byteNum = GetByteNum(variable.Address as ModbusAddress, StartRegister);
             setDict[variable.GetValueType()].Invoke(data, byteNum, variable);
+        }
+
+        private int GetByteNum(ModbusAddress address, int startRegister)
+        {
+            return address.WordNum * 2 + (address.BitNum > 7 ? 1 : 0) - startRegister * 2;
         }
 
         private void GetBool(byte[] data, int byteNum, IVariable variable)
@@ -75,7 +78,16 @@ namespace ScanSystems.Protocols.Modbus.Common
         private void GetBool(byte[] data, int byteNum, ModbusVariable<bool> variable)
         {
             int bitNum = variable.Address.BitNum > 7 ? variable.Address.BitNum - 8 : variable.Address.BitNum;
+            if (byteNum % 2 == 0)
+            {
+                ++byteNum;
+            }
+            else
+            {
+                --byteNum;
+            }
             bool value = (data[byteNum] & (1 << bitNum)) != 0;
+            
             if (value)
             {
                 if (!variable.Value)
@@ -185,6 +197,14 @@ namespace ScanSystems.Protocols.Modbus.Common
         private void SetBool(byte[] data, int byteNum, ModbusVariable<bool> variable)
         {
             int bitNum = variable.Address.BitNum > 7 ? variable.Address.BitNum - 8 : variable.Address.BitNum;
+            if (byteNum % 2 == 0)
+            {
+                ++byteNum;
+            }
+            else
+            {
+                --byteNum;
+            }
             bool value = (data[byteNum] & (1 << bitNum)) != 0;
             variable.SetValue(value);
         }
@@ -270,7 +290,7 @@ namespace ScanSystems.Protocols.Modbus.Common
 
         private readonly IEnumerable<IVariable> variables;
         private byte[] source;
-        private ModbusPackage sourcePackage;
+        private ModbusPackage parentPackage;
 
         public Guid PackageId { get; private set; } = Guid.NewGuid();
         public IVariable this[int index] { get => (variables as List<IVariable>)[index]; }
@@ -304,7 +324,7 @@ namespace ScanSystems.Protocols.Modbus.Common
 
         public int MaxSizeInBits => 1920;
         public int SizeInBits => (variables as List<IVariable>).Sum(x => (x.Address as ModbusAddress).CountBits);
-        public int SizeInBytes => SizeInBits / 8;
+        public int SizeInBytes => Convert.ToInt32(Math.Ceiling(SizeInBits / 8D));
         public int CountVariables => (variables as List<IVariable>).Count;
         public IVariable Current => variables.GetEnumerator().Current;
         object IEnumerator.Current => variables.GetEnumerator().Current;
@@ -317,7 +337,7 @@ namespace ScanSystems.Protocols.Modbus.Common
             getDict = new Dictionary<Type, Action<byte[], int, IVariable>>();
             setDict = new Dictionary<Type, Action<byte[], int, IVariable>>();
 
-            sourcePackage = null;
+            parentPackage = null;
 
             InitializeGSDict();
         }
@@ -333,7 +353,7 @@ namespace ScanSystems.Protocols.Modbus.Common
             {
                 result = new ModbusPackage();
                 result.Add(variable);
-                result.sourcePackage = this;
+                result.parentPackage = this;
             }
             return result;
         }
@@ -342,7 +362,15 @@ namespace ScanSystems.Protocols.Modbus.Common
         {
             if (source == null)
             {
-                source = new byte[SizeInBytes];
+                if (parentPackage != null && (variables as List<IVariable>).Count > 0)
+                {
+                    int byteNum = GetByteNum((variables as List<IVariable>)[0].Address as ModbusAddress, parentPackage.StartRegister);
+                    source = parentPackage.source.GetRange(byteNum, CountRegisters * 2);
+                }
+                else 
+                {
+                    source = new byte[SizeInBytes];
+                }
             }
         }
 
@@ -364,13 +392,11 @@ namespace ScanSystems.Protocols.Modbus.Common
         public byte[] GetData()
         {
             Initialize();
-
-            
-
             byte[] result = new byte[CountVariables > 0 ? CountRegisters * 2 : 0];
-         
+
             if (source.Length != result.Length)
                 throw new ArgumentException($"Размер исходного массива не соответствует размеру пакета '{PackageId}'.");
+            Array.Copy(source, 0, result, 0, result.Length);
 
             foreach (var variable in variables)
             {

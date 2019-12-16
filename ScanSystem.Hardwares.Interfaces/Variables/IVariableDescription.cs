@@ -10,6 +10,5 @@ namespace ScanSystem.Hardwares.Interfaces.Variables
     {
         string Name { get; set; }
         string Address { get; set; }
-        int DataType { get; set; }
     }
 }

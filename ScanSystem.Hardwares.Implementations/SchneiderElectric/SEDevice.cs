@@ -6,6 +6,7 @@ using ScanSystems.Protocols.Modbus.Common;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -17,8 +18,8 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
     {
         private List<byte> data;
 
-        private readonly Dictionary<int, Func<ModbusVariableParams, IVariable>> dictCreateVariables;
-        private ModbusPackage[] packages;
+        private readonly Dictionary<ModbusDataTypes, Func<ModbusVariableParams, IVariable>> dictCreateVariables;
+        private List<ModbusPackage> packages;
         private List<IVariable> variables;
         private int maxLifeTime = 30000;
 
@@ -37,11 +38,12 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
         
         public SEDevice()
         {
+            packages = new List<ModbusPackage>();
             lockerRequestes = new object();
             data = new List<byte>();
             requestes = new List<ModbusRequest>();
             helper = new ModbusHelper();
-            dictCreateVariables = new Dictionary<int, Func<ModbusVariableParams, IVariable>>();
+            dictCreateVariables = new Dictionary<ModbusDataTypes, Func<ModbusVariableParams, IVariable>>();
             variables = new List<IVariable>();
 
             InitializationDictCreateVariables();
@@ -83,23 +85,24 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
 
         private void InitializationDictCreateVariables()
         {
-            dictCreateVariables.Add(1, CreateBool);
-            dictCreateVariables.Add(2, CreateByte);
-            dictCreateVariables.Add(3, CreateShort);
-            dictCreateVariables.Add(4, CreateUShort);
-            dictCreateVariables.Add(5, CreateInt);
-            dictCreateVariables.Add(6, CreateUInt);
-            dictCreateVariables.Add(7, CreateLong);
-            dictCreateVariables.Add(8, CreateULong);
-            dictCreateVariables.Add(9, CreateFloat);
-            dictCreateVariables.Add(10, CreateDouble);
-            dictCreateVariables.Add(11, CreateString);
+            dictCreateVariables.Add(ModbusDataTypes.BOOL, CreateBool);
+            dictCreateVariables.Add(ModbusDataTypes.BYTE, CreateByte);
+            dictCreateVariables.Add(ModbusDataTypes.SHORT, CreateShort);
+            dictCreateVariables.Add(ModbusDataTypes.USHORT, CreateUShort);
+            dictCreateVariables.Add(ModbusDataTypes.INT, CreateInt);
+            dictCreateVariables.Add(ModbusDataTypes.UINT, CreateUInt);
+            dictCreateVariables.Add(ModbusDataTypes.LONG, CreateLong);
+            dictCreateVariables.Add(ModbusDataTypes.ULONG, CreateULong);
+            dictCreateVariables.Add(ModbusDataTypes.FLOAT, CreateFloat);
+            dictCreateVariables.Add(ModbusDataTypes.DOUBLE, CreateDouble);
+            dictCreateVariables.Add(ModbusDataTypes.STRING, CreateString);
         }
         public override void Initialization(IDeviceInitializationParams initParams)
         {
             base.Initialization(initParams);
             helper.UnitId = (initParams.Settings as SEDeviceSettings).UnitId;
-            packages = CreatePackages((initParams.Settings as SEDeviceSettings).Variables.ToArray());
+            packages.Clear();
+            packages.AddRange(CreatePackages((initParams.Settings as SEDeviceSettings).Variables.ToArray()));
             maxLifeTime = (initParams.Settings as SEDeviceSettings).MaxLifeTimeRequest;
         }
 
@@ -203,9 +206,7 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
 
         private void SEDevice_VariableValueChanged(IVariable variable)
         {
-            ModbusPackage package = new ModbusPackage();
-            package.Add(variable);
-
+            ModbusPackage package = packages.FirstOrDefault(x => x.Contains(variable)).PackageVariable(variable);
             var request = helper.SendPresetMultipleRegisters(package, false);
             request.PackageId = -1;
             if (!SendRequest(request))

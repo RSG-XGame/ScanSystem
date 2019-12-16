@@ -26,8 +26,25 @@ namespace TestWin.SETest
         {
             device = TestSEDevice.CreateSEDevice(port);
 
+            
             int index = 0;
-            bindTextBox(textBox1, index++);
+            //bindTextBox(textBox1, index++);
+            bindCheckBox(checkBox1, index++);
+            bindCheckBox(checkBox2, index++);
+            bindCheckBox(checkBox3, index++);
+            bindCheckBox(checkBox4, index++);
+            bindCheckBox(checkBox5, index++);
+            bindCheckBox(checkBox6, index++);
+            bindCheckBox(checkBox7, index++);
+            bindCheckBox(checkBox8, index++);
+            bindCheckBox(checkBox9, index++);
+            bindCheckBox(checkBox10, index++);
+            bindCheckBox(checkBox11, index++);
+            bindCheckBox(checkBox12, index++);
+            bindCheckBox(checkBox13, index++);
+            bindCheckBox(checkBox14, index++);
+            bindCheckBox(checkBox15, index++);
+            bindCheckBox(checkBox16, index++);
             bindTextBox(textBox2, index++);
             bindTextBox(textBox3, index++);
             bindTextBox(textBox4, index++);
@@ -88,6 +105,16 @@ namespace TestWin.SETest
 
             textBox.DataBindings.Clear();
             textBox.DataBindings.Add(bind);
+        }
+        private void bindCheckBox(CheckBox checkBox, int index)
+        {
+            //textBox.ReadOnly = true;
+            Binding bind = new Binding("Checked", device[index] as ModbusVariable<bool>, "Value", false, DataSourceUpdateMode.OnValidation);
+            bind.Format += Bind_Format;
+            bind.Parse += Bind_Parse;
+
+            checkBox.DataBindings.Clear();
+            checkBox.DataBindings.Add(bind);
         }
 
         private void Bind_Parse(object sender, ConvertEventArgs e)
