@@ -7,7 +7,7 @@ using System.Text;
 
 namespace OnionApp.Domain.Core.Entities.Dict
 {
-    [Table(nameof(OrderStatus), Schema = "dict")]
+    [Table(nameof(OrderStatus), Schema = "dicts")]
     public class OrderStatus : Entity<int>
     {
         public string OrderStatusName { get; set; }

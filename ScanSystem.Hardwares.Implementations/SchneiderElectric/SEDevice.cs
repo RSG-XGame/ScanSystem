@@ -4,100 +4,147 @@ using ScanSystem.Hardwares.Interfaces.Variables;
 using ScanSystems.Protocols.Modbus;
 using ScanSystems.Protocols.Modbus.Common;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Timers;
 
 namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
 {
-    public class SEDevice : Device
+    public class SEDevice : Device, IEnumerable<IVariable>
     {
-        private Timer pollingTimer;
+        private List<byte> data;
 
-        private readonly Dictionary<int, Func<SEVeriableDescription, IVariable>> dictCreateVariables;
-        private ModbusPackage[] packages;
-        private byte[] source;
+        private readonly Dictionary<ModbusDataTypes, Func<ModbusVariableParams, IVariable>> dictCreateVariables;
+        private List<ModbusPackage> packages;
+        private List<IVariable> variables;
+        private int maxLifeTime = 30000;
 
-        private ModbusProtocol protocol;
+        public IVariable this[int index]
+        {
+            get
+            {
+                return variables[index];
+            }
+        }
+
         private ModbusHelper helper;
 
         private List<ModbusRequest> requestes;
         private object lockerRequestes;
-
-        public ModbusProtocol Protocol => protocol;
-
+        
         public SEDevice()
         {
+            packages = new List<ModbusPackage>();
             lockerRequestes = new object();
+            data = new List<byte>();
             requestes = new List<ModbusRequest>();
             helper = new ModbusHelper();
-            dictCreateVariables = new Dictionary<int, Func<SEVeriableDescription, IVariable>>();
-
-            pollingTimer = new Timer();
-            pollingTimer.Interval = 1000;
-            pollingTimer.AutoReset = true;
-            pollingTimer.Elapsed += PollingTimer_Elapsed;
-            pollingTimer.Enabled = true;
-            pollingTimer.Stop();
+            dictCreateVariables = new Dictionary<ModbusDataTypes, Func<ModbusVariableParams, IVariable>>();
+            variables = new List<IVariable>();
 
             InitializationDictCreateVariables();
         }
 
-        private void PollingTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void CheckRequestsLifeTime()
         {
+            if (maxLifeTime > 0)
+            {
+                lock (lockerRequestes)
+                {
+                    requestes.RemoveAll(x => x.ElapsedTime.TotalMilliseconds >= maxLifeTime);
+                }
+            }
+        }
+        protected override void PollingRequests()
+        {
+            CheckRequestsLifeTime();
+            int index = 0;
             foreach (var package in packages)
             {
-                helper.SendPresetMultipleRegisters(package);
+                var request = helper.SendReadHoldingRegisters(package, true);
+                request.PackageId = index++;
+                if (!SendRequest(request))
+                {
+                    lock (lockerRequestes)
+                    {
+                        requestes.Remove(request);
+                    }
+                }
             }
         }
         protected override void Connect()
         {
-            pollingTimer.Start();
         }
-        protected override void Diconnect()
+        protected override void Disconnect()
         {
-            pollingTimer.Stop();
         }
 
         private void InitializationDictCreateVariables()
         {
-            dictCreateVariables.Add(1, CreateBool);
-            dictCreateVariables.Add(2, CreateByte);
-            dictCreateVariables.Add(3, CreateShort);
-            dictCreateVariables.Add(4, CreateUShort);
-            dictCreateVariables.Add(5, CreateInt);
-            dictCreateVariables.Add(6, CreateUInt);
-            dictCreateVariables.Add(7, CreateLong);
-            dictCreateVariables.Add(8, CreateULong);
-            dictCreateVariables.Add(9, CreateFloat);
-            dictCreateVariables.Add(10, CreateDouble);
-            dictCreateVariables.Add(11, CreateString);
+            dictCreateVariables.Add(ModbusDataTypes.BOOL, CreateBool);
+            dictCreateVariables.Add(ModbusDataTypes.BYTE, CreateByte);
+            dictCreateVariables.Add(ModbusDataTypes.SHORT, CreateShort);
+            dictCreateVariables.Add(ModbusDataTypes.USHORT, CreateUShort);
+            dictCreateVariables.Add(ModbusDataTypes.INT, CreateInt);
+            dictCreateVariables.Add(ModbusDataTypes.UINT, CreateUInt);
+            dictCreateVariables.Add(ModbusDataTypes.LONG, CreateLong);
+            dictCreateVariables.Add(ModbusDataTypes.ULONG, CreateULong);
+            dictCreateVariables.Add(ModbusDataTypes.FLOAT, CreateFloat);
+            dictCreateVariables.Add(ModbusDataTypes.DOUBLE, CreateDouble);
+            dictCreateVariables.Add(ModbusDataTypes.STRING, CreateString);
         }
         public override void Initialization(IDeviceInitializationParams initParams)
         {
             base.Initialization(initParams);
-            packages = CreatePackages((initParams.Settings as SEDeviceSettings).Variables.ToArray());
+            helper.UnitId = (initParams.Settings as SEDeviceSettings).UnitId;
+            packages.Clear();
+            packages.AddRange(CreatePackages((initParams.Settings as SEDeviceSettings).Variables.ToArray()));
+            maxLifeTime = (initParams.Settings as SEDeviceSettings).MaxLifeTimeRequest;
         }
 
         public override bool SendRequest(IDeviceRequest request)
         {
-            bool result = Add(request as ModbusRequest);
+            bool result = false;
+            result = Add(request as ModbusRequest);
             if (result)
             {
-                NetworkStream stream = client.GetStream();
                 byte[] buffer = (request as ModbusRequest).GetBytes();
-                stream.Write(buffer, 0, buffer.Length);
+
+                SendRequest(buffer);
+                (request as ModbusRequest).SendDate = DateTime.Now;
+                System.Threading.Thread.Sleep(50);
+                result = true;
             }
+
             return result;
         }
 
         protected override IDeviceEventArgs RecivedData(byte[] data, int length)
         {
             SEDeviceEventArgs result = new SEDeviceEventArgs();
-            result.Response = new ModbusResponse();
-            (result.Response as ModbusResponse).FromBytes(data, length);
-            result.Request = Get(result.Response as ModbusResponse);
+            byte[] temp = new byte[length];
+            Array.Copy(data, 0, temp, 0, length);
+            this.data.AddRange(temp);
+
+            int lastIndex;
+            ModbusResponse[] responses = ModbusResponse.ReadResponses(this.data.ToArray(), this.data.Count, out lastIndex);
+            this.data.RemoveRange(0, lastIndex);
+            foreach (var response in responses)
+            {
+                var request = Get(response as ModbusResponse);
+                if (request != null && request.IsInternal && !response.Error)
+                {
+                    packages[(request as ModbusRequest).PackageId].SetData(response.PDU.Data, 0);
+                }
+                else if (response.Error)
+                {
+                    InvokeDeviceError(new SEDeviceErrorEventArgs { ErrorCode = response.PDU.Data[0], Description = response.ErrorDescription });
+                }
+            }
             return result;
         }
 
@@ -136,17 +183,19 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
         }
 
         #region initialize variables
-        private ModbusPackage[] CreatePackages(SEVeriableDescription[] variableDescriptions)
+        private ModbusPackage[] CreatePackages(ModbusVariableParams[] variableDescriptions)
         {
-            ModbusPackage[] packages = helper.PackagingVariables(CreateVariables(variableDescriptions));
+            variables.AddRange(CreateVariables(variableDescriptions));
+            ModbusPackage[] packages = helper.PackagingVariables(variables.ToArray());
             return packages;
         }
-        private IVariable[] CreateVariables(SEVeriableDescription[] variableDescriptions)
+        private IVariable[] CreateVariables(ModbusVariableParams[] variableDescriptions)
         {
             List<IVariable> variables = new List<IVariable>();
             foreach (var variableDescription in variableDescriptions)
             {
                 IVariable variable = CreateInstance(variableDescription);
+                (variable as IVariableInternal).VariableValueChanged += SEDevice_VariableValueChanged;
                 if (variable != null)
                 {
                     variables.Add(variable);
@@ -155,7 +204,21 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
             return variables.ToArray();
         }
 
-        private IVariable CreateInstance(SEVeriableDescription variableDescription)
+        private void SEDevice_VariableValueChanged(IVariable variable)
+        {
+            ModbusPackage package = packages.FirstOrDefault(x => x.Contains(variable)).PackageVariable(variable);
+            var request = helper.SendPresetMultipleRegisters(package, false);
+            request.PackageId = -1;
+            if (!SendRequest(request))
+            {
+                lock (lockerRequestes)
+                {
+                    requestes.Remove(request);
+                }
+            }
+        }
+        
+        private IVariable CreateInstance(ModbusVariableParams variableDescription)
         {
             IVariable variable = null;
             if (variableDescription != null)
@@ -164,71 +227,70 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
             }
             return variable;
         }
-
-        private IVariable CreateBool(SEVeriableDescription variableDescription)
+        private IVariable CreateBool(ModbusVariableParams variableParams)
         {
             ModbusVariable<bool> variable = new ModbusVariable<bool>();
-            variable.Initialize(variableDescription.Name, variableDescription.Address);
+            variable.Initialize(variableParams);
             return variable;
         }
-        private IVariable CreateByte(SEVeriableDescription variableDescription)
+        private IVariable CreateByte(ModbusVariableParams variableParams)
         {
             ModbusVariable<byte> variable = new ModbusVariable<byte>();
-            variable.Initialize(variableDescription.Name, variableDescription.Address);
+            variable.Initialize(variableParams);
             return variable;
         }
-        private IVariable CreateShort(SEVeriableDescription variableDescription)
+        private IVariable CreateShort(ModbusVariableParams variableParams)
         {
             ModbusVariable<short> variable = new ModbusVariable<short>();
-            variable.Initialize(variableDescription.Name, variableDescription.Address);
+            variable.Initialize(variableParams);
             return variable;
         }
-        private IVariable CreateUShort(SEVeriableDescription variableDescription)
+        private IVariable CreateUShort(ModbusVariableParams variableParams)
         {
             ModbusVariable<ushort> variable = new ModbusVariable<ushort>();
-            variable.Initialize(variableDescription.Name, variableDescription.Address);
+            variable.Initialize(variableParams);
             return variable;
         }
-        private IVariable CreateInt(SEVeriableDescription variableDescription)
+        private IVariable CreateInt(ModbusVariableParams variableParams)
         {
             ModbusVariable<int> variable = new ModbusVariable<int>();
-            variable.Initialize(variableDescription.Name, variableDescription.Address);
+            variable.Initialize(variableParams);
             return variable;
         }
-        private IVariable CreateUInt(SEVeriableDescription variableDescription)
+        private IVariable CreateUInt(ModbusVariableParams variableParams)
         {
             ModbusVariable<uint> variable = new ModbusVariable<uint>();
-            variable.Initialize(variableDescription.Name, variableDescription.Address);
+            variable.Initialize(variableParams);
             return variable;
         }
-        private IVariable CreateLong(SEVeriableDescription variableDescription)
+        private IVariable CreateLong(ModbusVariableParams variableParams)
         {
             ModbusVariable<long> variable = new ModbusVariable<long>();
-            variable.Initialize(variableDescription.Name, variableDescription.Address);
+            variable.Initialize(variableParams);
             return variable;
         }
-        private IVariable CreateULong(SEVeriableDescription variableDescription)
+        private IVariable CreateULong(ModbusVariableParams variableParams)
         {
             ModbusVariable<ulong> variable = new ModbusVariable<ulong>();
-            variable.Initialize(variableDescription.Name, variableDescription.Address);
+            variable.Initialize(variableParams);
             return variable;
         }
-        private IVariable CreateFloat(SEVeriableDescription variableDescription)
+        private IVariable CreateFloat(ModbusVariableParams variableParams)
         {
             ModbusVariable<float> variable = new ModbusVariable<float>();
-            variable.Initialize(variableDescription.Name, variableDescription.Address);
+            variable.Initialize(variableParams);
             return variable;
         }
-        private IVariable CreateDouble(SEVeriableDescription variableDescription)
+        private IVariable CreateDouble(ModbusVariableParams variableParams)
         {
             ModbusVariable<double> variable = new ModbusVariable<double>();
-            variable.Initialize(variableDescription.Name, variableDescription.Address);
+            variable.Initialize(variableParams);
             return variable;
         }
-        private IVariable CreateString(SEVeriableDescription variableDescription)
+        private IVariable CreateString(ModbusVariableParams variableParams)
         {
             ModbusVariable<string> variable = new ModbusVariable<string>();
-            variable.Initialize(variableDescription.Name, variableDescription.Address);
+            variable.Initialize(variableParams);
             return variable;
         }
         #endregion
@@ -239,13 +301,24 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
             {
                 if (disposing)
                 {
-                    protocol.Dispose();
+                    //pollingTimer.Stop();
+                    //pollingTimer.Dispose();
                 }
 
-                protocol = null;
+                //pollingTimer = null;
             }
 
             base.Dispose(disposing);
+        }
+
+        public IEnumerator<IVariable> GetEnumerator()
+        {
+            return variables.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

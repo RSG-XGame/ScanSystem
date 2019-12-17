@@ -8,7 +8,7 @@ using System.Text;
 
 namespace OnionApp.Domain.Core.Entities.Dict
 {
-    [Table(name: nameof(ReasonCompletion), Schema = "dict")]
+    [Table(name: nameof(ReasonCompletion), Schema = "dicts")]
     public class ReasonCompletion : Entity<int>
     {
         [MaxLength(64)]

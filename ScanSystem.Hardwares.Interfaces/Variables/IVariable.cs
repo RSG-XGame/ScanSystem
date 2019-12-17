@@ -1,10 +1,26 @@
-﻿using System;
+﻿using ScanSystem.Hardwares.Interfaces.CommonDevice;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
 namespace ScanSystem.Hardwares.Interfaces.Variables
 {
+    public interface IVariableInternal
+    {
+        void SetValue(object value);
+        object GetValue();
+
+        event VariableValueChangedHandler VariableValueChanged;
+    }
+    public interface IVariableInternal<TType> : IVariableInternal
+        where TType : IComparable, IComparable<TType>, IConvertible, IEquatable<TType>
+    {
+        void SetValue(TType value);
+        new TType GetValue();
+
+    }
+
     public interface IVariable : INotifyPropertyChanging, INotifyPropertyChanged, IDisposable, IDisposingNotify
     {
         string Name { get; }
@@ -12,8 +28,8 @@ namespace ScanSystem.Hardwares.Interfaces.Variables
         bool Disposed { get; }
         object Value { get; set; }
         int Size { get; }
-
-        void Initialize(string name, string address, int size = 0);
+        
+        void Initialize(IVariableParams variableParams);
         Type GetValueType();
     }
 

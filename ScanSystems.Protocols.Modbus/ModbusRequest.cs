@@ -1,14 +1,21 @@
 ﻿using ScanSystem.Base.Interfaces;
+using ScanSystem.Hardwares.Interfaces.CommonDevice;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ScanSystems.Protocols.Modbus
 {
-    public class ModbusRequest : IRequest
+    public class ModbusRequest : IDeviceRequest
     {
+        public bool IsInternal { get; internal set; }
+        public DateTime SendDate { get; set; }
+        public TimeSpan ElapsedTime => DateTime.Now - SendDate;
+
         public ModbusMBAPHeader MBAPHeader { get; set; }
         public ModbusPDU PDU { get; set; }
+
+        public int PackageId { get; set; }
 
         public ModbusRequest()
         {
@@ -36,19 +43,10 @@ namespace ScanSystems.Protocols.Modbus
                     break;
 
                 case ModbusFunctions.ForceSingleCoil:
-
-                    break;
-
                 case ModbusFunctions.PresetSingleRegister:
-
-                    break;
-
                 case ModbusFunctions.ForceMultipleCoils:
-
-                    break;
-
                 case ModbusFunctions.PresetMultipleRegisters:
-
+                    result.AddRange(PDU.Data);
                     break;
             }
 

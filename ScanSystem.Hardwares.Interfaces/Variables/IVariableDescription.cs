@@ -4,12 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScanSystem.Hardwares.Interfaces.CommonDevice
+namespace ScanSystem.Hardwares.Interfaces.Variables
 {
-    public interface IVariableDescription
+    public interface IVariableParams
     {
         string Name { get; set; }
         string Address { get; set; }
-        int DataType { get; set; }
     }
 }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScanSystems.Protocols.Modbus.Common
+namespace DataLogic.Emulator
 {
-    public enum ModbusErrors
+    internal class DataLogicClient
     {
     }
 }

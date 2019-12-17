@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OnionApp.Domain.Core.Entities.Dict
 {
-    [Table(name: nameof(ChangeState), Schema = "dict")]
+    [Table(name: nameof(ChangeState), Schema = "dicts")]
     public class ChangeState : Entity<int>
     {
         [MaxLength(64)]

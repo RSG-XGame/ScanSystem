@@ -1,4 +1,5 @@
 ﻿using ScanSystem.Hardwares.Interfaces;
+using ScanSystem.Hardwares.Interfaces.CommonDevice;
 using ScanSystem.Hardwares.Interfaces.Variables;
 using System;
 using System.Collections.Generic;
@@ -8,26 +9,86 @@ using System.Text;
 
 namespace ScanSystems.Protocols.Modbus.Common
 {
-    public class ModbusVariable<TType> : IVariable<TType, ModbusAddress>
+    public class ModbusVariable<TType> : IVariable<TType, ModbusAddress>, IVariableInternal<TType>
         where TType : IComparable, IComparable<TType>, IConvertible, IEquatable<TType>
     {
+        private object lockerValue;
         private TType value;
         private string name;
         private int size;
         private readonly ModbusAddress address;
+        private ModbusVariableParams variableParams;
 
         public bool Disposed => disposedValue;
         public TType Value
         {
             get
             {
-                return value;
+                return GetValue();
             }
             set
             {
                 if (!disposedValue)
                 {
-                    if (!value.Equals(value))
+                    if (!this.value.Equals(value))
+                    {
+                        lock (lockerValue)
+                        {
+                            this.value = value;
+                            VariableValueChanged?.Invoke(this);
+                        }
+                    }
+                }
+            }
+        }
+        public string Name => name;
+        public int Size => size;
+        public ModbusAddress Address => address;
+        public bool IsUnicode => variableParams?.IsUnicode ?? false;
+
+        IAddress IVariable.Address => address;
+        object IVariable.Value { get => Value; set => Value = (TType)value; }
+
+        public event PropertyChangingEventHandler PropertyChanging;
+        public event PropertyChangedEventHandler PropertyChanged;
+        public event DisposingHandler Disposing;
+        public event VariableValueChangedHandler VariableValueChanged;
+
+        public ModbusVariable()
+        {
+            address = new ModbusAddress();
+            lockerValue = new object();
+        }
+
+        public void Initialize(IVariableParams variableParams)
+        {
+            this.variableParams = (variableParams as ModbusVariableParams);
+            name = this.variableParams.Name;
+            Address.Address = this.variableParams.Address;
+            size = this.variableParams.Size;
+        }
+
+        public Type GetValueType()
+        {
+            return typeof(TType);
+        }
+
+
+        void IVariableInternal.SetValue(object value)
+        {
+            SetValue((TType)value);
+        }
+        object IVariableInternal.GetValue()
+        {
+            return GetValue();
+        }
+        public void SetValue(TType value)
+        {
+            if (!disposedValue)
+            {
+                if (!this.value.Equals(value))
+                {
+                    lock (lockerValue)
                     {
                         PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(nameof(Value)));
                         this.value = value;
@@ -36,32 +97,9 @@ namespace ScanSystems.Protocols.Modbus.Common
                 }
             }
         }
-        public string Name => name;
-        public int Size => size;
-        public ModbusAddress Address => address;
-
-        IAddress IVariable.Address => address;
-        object IVariable.Value { get => Value; set => Value = (TType)value; }
-
-        public event PropertyChangingEventHandler PropertyChanging;
-        public event PropertyChangedEventHandler PropertyChanged;
-        public event DisposingHandler Disposing;
-
-        public ModbusVariable()
+        public TType GetValue()
         {
-            address = new ModbusAddress();
-        }
-
-        public void Initialize(string name, string address = "%MW0", int size = 0)
-        {
-            this.name = name;
-            Address.Address = address;
-            this.size = size;
-        }
-
-        public Type GetValueType()
-        {
-            return typeof(TType);
+            return value;
         }
 
         #region IDisposable Support

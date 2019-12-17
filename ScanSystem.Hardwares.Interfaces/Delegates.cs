@@ -51,4 +51,6 @@ namespace ScanSystem.Hardwares.Interfaces
 
 
     public delegate void DisposingHandler(object sender);
+
+    public delegate void VariableValueChangedHandler(IVariable variable);
 }

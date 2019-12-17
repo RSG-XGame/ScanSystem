@@ -4,6 +4,7 @@ using System.Text;
 
 namespace ScanSystems.Protocols.Modbus
 {
+    [Flags]
     public enum ModbusFunctions
     {
         /// <summary>
@@ -38,5 +39,9 @@ namespace ScanSystems.Protocols.Modbus
         /// Запись нескольких AO / 16 битное / Запись
         /// </summary>
         PresetMultipleRegisters = 0x10,
+        /// <summary>
+        /// Ошибка ответа на запрос
+        /// </summary>
+        ErrorResponse = 0x80,
     }
 }

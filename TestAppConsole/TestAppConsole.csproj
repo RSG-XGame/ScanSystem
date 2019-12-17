@@ -142,6 +142,10 @@
       <Project>{00274fed-3e6c-4669-982e-9c12343a165f}</Project>
       <Name>OnionApp.Infrastructure.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ScanSystem.Hardwares.Implementations\ScanSystem.Hardwares.Implementations.csproj">
+      <Project>{E96A0B5E-41BC-4A12-9F9E-2D35F0293CEA}</Project>
+      <Name>ScanSystem.Hardwares.Implementations</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ScanSystem.Hardwares.Interfaces\ScanSystem.Hardwares.Interfaces.csproj">
       <Project>{34D18B20-8952-45E2-A0BC-FCF06FB217F6}</Project>
       <Name>ScanSystem.Hardwares.Interfaces</Name>
