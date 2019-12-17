@@ -108,11 +108,11 @@ namespace TestWin.SETest
         }
         private void bindCheckBox(CheckBox checkBox, int index)
         {
-            //textBox.ReadOnly = true;
             Binding bind = new Binding("Checked", device[index] as ModbusVariable<bool>, "Value", false, DataSourceUpdateMode.OnValidation);
             bind.Format += Bind_Format;
             bind.Parse += Bind_Parse;
 
+            checkBox.AutoCheck = true;
             checkBox.DataBindings.Clear();
             checkBox.DataBindings.Add(bind);
         }

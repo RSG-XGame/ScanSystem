@@ -365,7 +365,14 @@ namespace ScanSystems.Protocols.Modbus.Common
                 if (parentPackage != null && (variables as List<IVariable>).Count > 0)
                 {
                     int byteNum = GetByteNum((variables as List<IVariable>)[0].Address as ModbusAddress, parentPackage.StartRegister);
-                    source = parentPackage.source.GetRange(byteNum, CountRegisters * 2);
+                    if ((variables as List<IVariable>)[0].GetValueType() == typeof(bool) || (variables as List<IVariable>)[0].GetValueType() == typeof(byte))
+                    {
+                        if (byteNum % 2 == 1)
+                        {
+                            --byteNum;
+                        }
+                    }
+                    source = parentPackage.source.GetRange(byteNum, CountRegisters * 2).Reverse();
                 }
                 else 
                 {

@@ -32,69 +32,69 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
+            this.textBox5 = new System.Windows.Forms.TextBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.textBox9 = new System.Windows.Forms.TextBox();
+            this.textBox10 = new System.Windows.Forms.TextBox();
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.textBox12 = new System.Windows.Forms.TextBox();
             this.textBox13 = new System.Windows.Forms.TextBox();
             this.textBox14 = new System.Windows.Forms.TextBox();
+            this.textBox15 = new System.Windows.Forms.TextBox();
             this.textBox16 = new System.Windows.Forms.TextBox();
             this.textBox17 = new System.Windows.Forms.TextBox();
             this.textBox18 = new System.Windows.Forms.TextBox();
             this.textBox19 = new System.Windows.Forms.TextBox();
+            this.textBox20 = new System.Windows.Forms.TextBox();
             this.textBox21 = new System.Windows.Forms.TextBox();
             this.textBox22 = new System.Windows.Forms.TextBox();
             this.textBox23 = new System.Windows.Forms.TextBox();
             this.textBox24 = new System.Windows.Forms.TextBox();
+            this.textBox25 = new System.Windows.Forms.TextBox();
             this.textBox26 = new System.Windows.Forms.TextBox();
             this.textBox27 = new System.Windows.Forms.TextBox();
             this.textBox28 = new System.Windows.Forms.TextBox();
             this.textBox29 = new System.Windows.Forms.TextBox();
+            this.textBox30 = new System.Windows.Forms.TextBox();
             this.textBox31 = new System.Windows.Forms.TextBox();
             this.textBox32 = new System.Windows.Forms.TextBox();
             this.textBox33 = new System.Windows.Forms.TextBox();
             this.textBox34 = new System.Windows.Forms.TextBox();
+            this.textBox35 = new System.Windows.Forms.TextBox();
             this.textBox36 = new System.Windows.Forms.TextBox();
             this.textBox37 = new System.Windows.Forms.TextBox();
             this.textBox38 = new System.Windows.Forms.TextBox();
             this.textBox39 = new System.Windows.Forms.TextBox();
+            this.textBox40 = new System.Windows.Forms.TextBox();
             this.textBox41 = new System.Windows.Forms.TextBox();
             this.textBox42 = new System.Windows.Forms.TextBox();
             this.textBox43 = new System.Windows.Forms.TextBox();
             this.textBox44 = new System.Windows.Forms.TextBox();
+            this.textBox45 = new System.Windows.Forms.TextBox();
             this.textBox46 = new System.Windows.Forms.TextBox();
             this.textBox47 = new System.Windows.Forms.TextBox();
             this.textBox48 = new System.Windows.Forms.TextBox();
             this.textBox49 = new System.Windows.Forms.TextBox();
             this.textBox50 = new System.Windows.Forms.TextBox();
-            this.textBox45 = new System.Windows.Forms.TextBox();
-            this.textBox40 = new System.Windows.Forms.TextBox();
-            this.textBox35 = new System.Windows.Forms.TextBox();
-            this.textBox30 = new System.Windows.Forms.TextBox();
-            this.textBox25 = new System.Windows.Forms.TextBox();
-            this.textBox20 = new System.Windows.Forms.TextBox();
-            this.textBox15 = new System.Windows.Forms.TextBox();
-            this.textBox10 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.checkBox6 = new System.Windows.Forms.CheckBox();
-            this.checkBox7 = new System.Windows.Forms.CheckBox();
-            this.checkBox8 = new System.Windows.Forms.CheckBox();
-            this.checkBox9 = new System.Windows.Forms.CheckBox();
-            this.checkBox10 = new System.Windows.Forms.CheckBox();
-            this.checkBox11 = new System.Windows.Forms.CheckBox();
-            this.checkBox12 = new System.Windows.Forms.CheckBox();
-            this.checkBox13 = new System.Windows.Forms.CheckBox();
-            this.checkBox14 = new System.Windows.Forms.CheckBox();
-            this.checkBox15 = new System.Windows.Forms.CheckBox();
             this.checkBox16 = new System.Windows.Forms.CheckBox();
+            this.checkBox15 = new System.Windows.Forms.CheckBox();
+            this.checkBox14 = new System.Windows.Forms.CheckBox();
+            this.checkBox13 = new System.Windows.Forms.CheckBox();
+            this.checkBox12 = new System.Windows.Forms.CheckBox();
+            this.checkBox11 = new System.Windows.Forms.CheckBox();
+            this.checkBox10 = new System.Windows.Forms.CheckBox();
+            this.checkBox9 = new System.Windows.Forms.CheckBox();
+            this.checkBox8 = new System.Windows.Forms.CheckBox();
+            this.checkBox7 = new System.Windows.Forms.CheckBox();
+            this.checkBox6 = new System.Windows.Forms.CheckBox();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -201,6 +201,15 @@
             this.textBox4.TabIndex = 3;
             this.textBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // textBox5
+            // 
+            this.textBox5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox5.Location = new System.Drawing.Point(587, 3);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(143, 20);
+            this.textBox5.TabIndex = 4;
+            this.textBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // textBox6
             // 
             this.textBox6.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -236,6 +245,15 @@
             this.textBox9.Size = new System.Drawing.Size(140, 20);
             this.textBox9.TabIndex = 8;
             this.textBox9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBox10
+            // 
+            this.textBox10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox10.Location = new System.Drawing.Point(587, 252);
+            this.textBox10.Name = "textBox10";
+            this.textBox10.Size = new System.Drawing.Size(143, 20);
+            this.textBox10.TabIndex = 9;
+            this.textBox10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox11
             // 
@@ -273,6 +291,15 @@
             this.textBox14.TabIndex = 13;
             this.textBox14.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // textBox15
+            // 
+            this.textBox15.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox15.Location = new System.Drawing.Point(587, 280);
+            this.textBox15.Name = "textBox15";
+            this.textBox15.Size = new System.Drawing.Size(143, 20);
+            this.textBox15.TabIndex = 14;
+            this.textBox15.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // textBox16
             // 
             this.textBox16.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -308,6 +335,15 @@
             this.textBox19.Size = new System.Drawing.Size(140, 20);
             this.textBox19.TabIndex = 18;
             this.textBox19.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBox20
+            // 
+            this.textBox20.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox20.Location = new System.Drawing.Point(587, 305);
+            this.textBox20.Name = "textBox20";
+            this.textBox20.Size = new System.Drawing.Size(143, 20);
+            this.textBox20.TabIndex = 19;
+            this.textBox20.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox21
             // 
@@ -345,6 +381,15 @@
             this.textBox24.TabIndex = 23;
             this.textBox24.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // textBox25
+            // 
+            this.textBox25.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox25.Location = new System.Drawing.Point(587, 330);
+            this.textBox25.Name = "textBox25";
+            this.textBox25.Size = new System.Drawing.Size(143, 20);
+            this.textBox25.TabIndex = 24;
+            this.textBox25.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // textBox26
             // 
             this.textBox26.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -380,6 +425,15 @@
             this.textBox29.Size = new System.Drawing.Size(140, 20);
             this.textBox29.TabIndex = 28;
             this.textBox29.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBox30
+            // 
+            this.textBox30.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox30.Location = new System.Drawing.Point(587, 354);
+            this.textBox30.Name = "textBox30";
+            this.textBox30.Size = new System.Drawing.Size(143, 20);
+            this.textBox30.TabIndex = 29;
+            this.textBox30.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox31
             // 
@@ -417,6 +471,15 @@
             this.textBox34.TabIndex = 33;
             this.textBox34.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // textBox35
+            // 
+            this.textBox35.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox35.Location = new System.Drawing.Point(587, 380);
+            this.textBox35.Name = "textBox35";
+            this.textBox35.Size = new System.Drawing.Size(143, 20);
+            this.textBox35.TabIndex = 34;
+            this.textBox35.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // textBox36
             // 
             this.textBox36.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -453,6 +516,15 @@
             this.textBox39.TabIndex = 38;
             this.textBox39.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // textBox40
+            // 
+            this.textBox40.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox40.Location = new System.Drawing.Point(587, 407);
+            this.textBox40.Name = "textBox40";
+            this.textBox40.Size = new System.Drawing.Size(143, 20);
+            this.textBox40.TabIndex = 39;
+            this.textBox40.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // textBox41
             // 
             this.textBox41.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -488,6 +560,15 @@
             this.textBox44.Size = new System.Drawing.Size(140, 20);
             this.textBox44.TabIndex = 43;
             this.textBox44.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBox45
+            // 
+            this.textBox45.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox45.Location = new System.Drawing.Point(587, 431);
+            this.textBox45.Name = "textBox45";
+            this.textBox45.Size = new System.Drawing.Size(143, 20);
+            this.textBox45.TabIndex = 44;
+            this.textBox45.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox46
             // 
@@ -534,87 +615,6 @@
             this.textBox50.TabIndex = 49;
             this.textBox50.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox45
-            // 
-            this.textBox45.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox45.Location = new System.Drawing.Point(587, 431);
-            this.textBox45.Name = "textBox45";
-            this.textBox45.Size = new System.Drawing.Size(143, 20);
-            this.textBox45.TabIndex = 44;
-            this.textBox45.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // textBox40
-            // 
-            this.textBox40.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox40.Location = new System.Drawing.Point(587, 407);
-            this.textBox40.Name = "textBox40";
-            this.textBox40.Size = new System.Drawing.Size(143, 20);
-            this.textBox40.TabIndex = 39;
-            this.textBox40.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // textBox35
-            // 
-            this.textBox35.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox35.Location = new System.Drawing.Point(587, 380);
-            this.textBox35.Name = "textBox35";
-            this.textBox35.Size = new System.Drawing.Size(143, 20);
-            this.textBox35.TabIndex = 34;
-            this.textBox35.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // textBox30
-            // 
-            this.textBox30.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox30.Location = new System.Drawing.Point(587, 354);
-            this.textBox30.Name = "textBox30";
-            this.textBox30.Size = new System.Drawing.Size(143, 20);
-            this.textBox30.TabIndex = 29;
-            this.textBox30.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // textBox25
-            // 
-            this.textBox25.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox25.Location = new System.Drawing.Point(587, 330);
-            this.textBox25.Name = "textBox25";
-            this.textBox25.Size = new System.Drawing.Size(143, 20);
-            this.textBox25.TabIndex = 24;
-            this.textBox25.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // textBox20
-            // 
-            this.textBox20.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox20.Location = new System.Drawing.Point(587, 305);
-            this.textBox20.Name = "textBox20";
-            this.textBox20.Size = new System.Drawing.Size(143, 20);
-            this.textBox20.TabIndex = 19;
-            this.textBox20.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // textBox15
-            // 
-            this.textBox15.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox15.Location = new System.Drawing.Point(587, 280);
-            this.textBox15.Name = "textBox15";
-            this.textBox15.Size = new System.Drawing.Size(143, 20);
-            this.textBox15.TabIndex = 14;
-            this.textBox15.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // textBox10
-            // 
-            this.textBox10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox10.Location = new System.Drawing.Point(587, 252);
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(143, 20);
-            this.textBox10.TabIndex = 9;
-            this.textBox10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // textBox5
-            // 
-            this.textBox5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox5.Location = new System.Drawing.Point(587, 3);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(143, 20);
-            this.textBox5.TabIndex = 4;
-            this.textBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // panel1
             // 
             this.panel1.AutoScroll = true;
@@ -640,162 +640,21 @@
             this.panel1.Size = new System.Drawing.Size(163, 243);
             this.panel1.TabIndex = 50;
             // 
-            // checkBox1
+            // checkBox16
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkBox1.Location = new System.Drawing.Point(0, 0);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(146, 17);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "checkBox1";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkBox2.Location = new System.Drawing.Point(0, 17);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(146, 17);
-            this.checkBox2.TabIndex = 1;
-            this.checkBox2.Text = "checkBox2";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkBox3.Location = new System.Drawing.Point(0, 34);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(146, 17);
-            this.checkBox3.TabIndex = 2;
-            this.checkBox3.Text = "checkBox3";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            // 
-            // checkBox4
-            // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkBox4.Location = new System.Drawing.Point(0, 51);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(146, 17);
-            this.checkBox4.TabIndex = 3;
-            this.checkBox4.Text = "checkBox4";
-            this.checkBox4.UseVisualStyleBackColor = true;
-            // 
-            // checkBox5
-            // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkBox5.Location = new System.Drawing.Point(0, 68);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(146, 17);
-            this.checkBox5.TabIndex = 4;
-            this.checkBox5.Text = "checkBox5";
-            this.checkBox5.UseVisualStyleBackColor = true;
-            // 
-            // checkBox6
-            // 
-            this.checkBox6.AutoSize = true;
-            this.checkBox6.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkBox6.Location = new System.Drawing.Point(0, 85);
-            this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(146, 17);
-            this.checkBox6.TabIndex = 5;
-            this.checkBox6.Text = "checkBox6";
-            this.checkBox6.UseVisualStyleBackColor = true;
-            // 
-            // checkBox7
-            // 
-            this.checkBox7.AutoSize = true;
-            this.checkBox7.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkBox7.Location = new System.Drawing.Point(0, 102);
-            this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(146, 17);
-            this.checkBox7.TabIndex = 6;
-            this.checkBox7.Text = "checkBox7";
-            this.checkBox7.UseVisualStyleBackColor = true;
-            // 
-            // checkBox8
-            // 
-            this.checkBox8.AutoSize = true;
-            this.checkBox8.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkBox8.Location = new System.Drawing.Point(0, 119);
-            this.checkBox8.Name = "checkBox8";
-            this.checkBox8.Size = new System.Drawing.Size(146, 17);
-            this.checkBox8.TabIndex = 7;
-            this.checkBox8.Text = "checkBox8";
-            this.checkBox8.UseVisualStyleBackColor = true;
-            // 
-            // checkBox9
-            // 
-            this.checkBox9.AutoSize = true;
-            this.checkBox9.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkBox9.Location = new System.Drawing.Point(0, 136);
-            this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(146, 17);
-            this.checkBox9.TabIndex = 8;
-            this.checkBox9.Text = "checkBox9";
-            this.checkBox9.UseVisualStyleBackColor = true;
-            // 
-            // checkBox10
-            // 
-            this.checkBox10.AutoSize = true;
-            this.checkBox10.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkBox10.Location = new System.Drawing.Point(0, 153);
-            this.checkBox10.Name = "checkBox10";
-            this.checkBox10.Size = new System.Drawing.Size(146, 17);
-            this.checkBox10.TabIndex = 9;
-            this.checkBox10.Text = "checkBox10";
-            this.checkBox10.UseVisualStyleBackColor = true;
-            // 
-            // checkBox11
-            // 
-            this.checkBox11.AutoSize = true;
-            this.checkBox11.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkBox11.Location = new System.Drawing.Point(0, 170);
-            this.checkBox11.Name = "checkBox11";
-            this.checkBox11.Size = new System.Drawing.Size(146, 17);
-            this.checkBox11.TabIndex = 10;
-            this.checkBox11.Text = "checkBox11";
-            this.checkBox11.UseVisualStyleBackColor = true;
-            // 
-            // checkBox12
-            // 
-            this.checkBox12.AutoSize = true;
-            this.checkBox12.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkBox12.Location = new System.Drawing.Point(0, 187);
-            this.checkBox12.Name = "checkBox12";
-            this.checkBox12.Size = new System.Drawing.Size(146, 17);
-            this.checkBox12.TabIndex = 11;
-            this.checkBox12.Text = "checkBox12";
-            this.checkBox12.UseVisualStyleBackColor = true;
-            // 
-            // checkBox13
-            // 
-            this.checkBox13.AutoSize = true;
-            this.checkBox13.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkBox13.Location = new System.Drawing.Point(0, 204);
-            this.checkBox13.Name = "checkBox13";
-            this.checkBox13.Size = new System.Drawing.Size(146, 17);
-            this.checkBox13.TabIndex = 12;
-            this.checkBox13.Text = "checkBox13";
-            this.checkBox13.UseVisualStyleBackColor = true;
-            // 
-            // checkBox14
-            // 
-            this.checkBox14.AutoSize = true;
-            this.checkBox14.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkBox14.Location = new System.Drawing.Point(0, 221);
-            this.checkBox14.Name = "checkBox14";
-            this.checkBox14.Size = new System.Drawing.Size(146, 17);
-            this.checkBox14.TabIndex = 13;
-            this.checkBox14.Text = "checkBox14";
-            this.checkBox14.UseVisualStyleBackColor = true;
+            this.checkBox16.AutoCheck = false;
+            this.checkBox16.AutoSize = true;
+            this.checkBox16.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBox16.Location = new System.Drawing.Point(0, 255);
+            this.checkBox16.Name = "checkBox16";
+            this.checkBox16.Size = new System.Drawing.Size(146, 17);
+            this.checkBox16.TabIndex = 15;
+            this.checkBox16.Text = "checkBox16";
+            this.checkBox16.UseVisualStyleBackColor = true;
             // 
             // checkBox15
             // 
+            this.checkBox15.AutoCheck = false;
             this.checkBox15.AutoSize = true;
             this.checkBox15.Dock = System.Windows.Forms.DockStyle.Top;
             this.checkBox15.Location = new System.Drawing.Point(0, 238);
@@ -805,16 +664,173 @@
             this.checkBox15.Text = "checkBox15";
             this.checkBox15.UseVisualStyleBackColor = true;
             // 
-            // checkBox16
+            // checkBox14
             // 
-            this.checkBox16.AutoSize = true;
-            this.checkBox16.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkBox16.Location = new System.Drawing.Point(0, 255);
-            this.checkBox16.Name = "checkBox16";
-            this.checkBox16.Size = new System.Drawing.Size(146, 17);
-            this.checkBox16.TabIndex = 15;
-            this.checkBox16.Text = "checkBox16";
-            this.checkBox16.UseVisualStyleBackColor = true;
+            this.checkBox14.AutoCheck = false;
+            this.checkBox14.AutoSize = true;
+            this.checkBox14.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBox14.Location = new System.Drawing.Point(0, 221);
+            this.checkBox14.Name = "checkBox14";
+            this.checkBox14.Size = new System.Drawing.Size(146, 17);
+            this.checkBox14.TabIndex = 13;
+            this.checkBox14.Text = "checkBox14";
+            this.checkBox14.UseVisualStyleBackColor = true;
+            // 
+            // checkBox13
+            // 
+            this.checkBox13.AutoCheck = false;
+            this.checkBox13.AutoSize = true;
+            this.checkBox13.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBox13.Location = new System.Drawing.Point(0, 204);
+            this.checkBox13.Name = "checkBox13";
+            this.checkBox13.Size = new System.Drawing.Size(146, 17);
+            this.checkBox13.TabIndex = 12;
+            this.checkBox13.Text = "checkBox13";
+            this.checkBox13.UseVisualStyleBackColor = true;
+            // 
+            // checkBox12
+            // 
+            this.checkBox12.AutoCheck = false;
+            this.checkBox12.AutoSize = true;
+            this.checkBox12.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBox12.Location = new System.Drawing.Point(0, 187);
+            this.checkBox12.Name = "checkBox12";
+            this.checkBox12.Size = new System.Drawing.Size(146, 17);
+            this.checkBox12.TabIndex = 11;
+            this.checkBox12.Text = "checkBox12";
+            this.checkBox12.UseVisualStyleBackColor = true;
+            // 
+            // checkBox11
+            // 
+            this.checkBox11.AutoCheck = false;
+            this.checkBox11.AutoSize = true;
+            this.checkBox11.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBox11.Location = new System.Drawing.Point(0, 170);
+            this.checkBox11.Name = "checkBox11";
+            this.checkBox11.Size = new System.Drawing.Size(146, 17);
+            this.checkBox11.TabIndex = 10;
+            this.checkBox11.Text = "checkBox11";
+            this.checkBox11.UseVisualStyleBackColor = true;
+            // 
+            // checkBox10
+            // 
+            this.checkBox10.AutoCheck = false;
+            this.checkBox10.AutoSize = true;
+            this.checkBox10.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBox10.Location = new System.Drawing.Point(0, 153);
+            this.checkBox10.Name = "checkBox10";
+            this.checkBox10.Size = new System.Drawing.Size(146, 17);
+            this.checkBox10.TabIndex = 9;
+            this.checkBox10.Text = "checkBox10";
+            this.checkBox10.UseVisualStyleBackColor = true;
+            // 
+            // checkBox9
+            // 
+            this.checkBox9.AutoCheck = false;
+            this.checkBox9.AutoSize = true;
+            this.checkBox9.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBox9.Location = new System.Drawing.Point(0, 136);
+            this.checkBox9.Name = "checkBox9";
+            this.checkBox9.Size = new System.Drawing.Size(146, 17);
+            this.checkBox9.TabIndex = 8;
+            this.checkBox9.Text = "checkBox9";
+            this.checkBox9.UseVisualStyleBackColor = true;
+            // 
+            // checkBox8
+            // 
+            this.checkBox8.AutoCheck = false;
+            this.checkBox8.AutoSize = true;
+            this.checkBox8.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBox8.Location = new System.Drawing.Point(0, 119);
+            this.checkBox8.Name = "checkBox8";
+            this.checkBox8.Size = new System.Drawing.Size(146, 17);
+            this.checkBox8.TabIndex = 7;
+            this.checkBox8.Text = "checkBox8";
+            this.checkBox8.UseVisualStyleBackColor = true;
+            // 
+            // checkBox7
+            // 
+            this.checkBox7.AutoCheck = false;
+            this.checkBox7.AutoSize = true;
+            this.checkBox7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBox7.Location = new System.Drawing.Point(0, 102);
+            this.checkBox7.Name = "checkBox7";
+            this.checkBox7.Size = new System.Drawing.Size(146, 17);
+            this.checkBox7.TabIndex = 6;
+            this.checkBox7.Text = "checkBox7";
+            this.checkBox7.UseVisualStyleBackColor = true;
+            // 
+            // checkBox6
+            // 
+            this.checkBox6.AutoCheck = false;
+            this.checkBox6.AutoSize = true;
+            this.checkBox6.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBox6.Location = new System.Drawing.Point(0, 85);
+            this.checkBox6.Name = "checkBox6";
+            this.checkBox6.Size = new System.Drawing.Size(146, 17);
+            this.checkBox6.TabIndex = 5;
+            this.checkBox6.Text = "checkBox6";
+            this.checkBox6.UseVisualStyleBackColor = true;
+            // 
+            // checkBox5
+            // 
+            this.checkBox5.AutoCheck = false;
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBox5.Location = new System.Drawing.Point(0, 68);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(146, 17);
+            this.checkBox5.TabIndex = 4;
+            this.checkBox5.Text = "checkBox5";
+            this.checkBox5.UseVisualStyleBackColor = true;
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoCheck = false;
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBox4.Location = new System.Drawing.Point(0, 51);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(146, 17);
+            this.checkBox4.TabIndex = 3;
+            this.checkBox4.Text = "checkBox4";
+            this.checkBox4.UseVisualStyleBackColor = true;
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoCheck = false;
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBox3.Location = new System.Drawing.Point(0, 34);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(146, 17);
+            this.checkBox3.TabIndex = 2;
+            this.checkBox3.Text = "checkBox3";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoCheck = false;
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBox2.Location = new System.Drawing.Point(0, 17);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(146, 17);
+            this.checkBox2.TabIndex = 1;
+            this.checkBox2.Text = "checkBox2";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoCheck = false;
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBox1.Location = new System.Drawing.Point(0, 0);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(146, 17);
+            this.checkBox1.TabIndex = 0;
+            this.checkBox1.Text = "checkBox1";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // TestSEDeviceCtrl
             // 
