@@ -6,5 +6,9 @@ namespace DataLogic.Emulator
 {
     internal class DataLogicServer
     {
+        public DataLogicServer()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
