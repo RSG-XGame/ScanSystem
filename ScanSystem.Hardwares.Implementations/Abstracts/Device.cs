@@ -37,6 +37,7 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
 
         public virtual void Initialization(IDeviceInitializationParams initParams)
         {
+            CheckDisposed();
             pollingTimeout = initParams.Settings.PollingTimeout;
             if (pollingTimeout < 1)
             {
@@ -48,6 +49,7 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
         }
         public void Reinitialization(IDeviceInitializationParams initParams)
         {
+            CheckDisposed();
             if (Settings.Equals(initParams))
             {
                 bool isBusy = Busy;
@@ -65,6 +67,7 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
 
         public bool Open()
         {
+            CheckDisposed();
             bool result = false;
             try
             {
@@ -89,6 +92,7 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
         }
         private void OpenClient()
         {
+            CheckDisposed();
             if (client == null)
             {
                 client = new TcpClient();
@@ -111,6 +115,7 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
         }
         public bool Close()
         {
+            CheckDisposed();
             bool result = false;
             if (Busy)
             {
@@ -120,6 +125,7 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
         }
         private void Disconnection(bool stopListen = true)
         {
+            CheckDisposed();
             DeviceDisconnecting?.Invoke(this);
             Disconnect();
             client?.Close();
@@ -131,6 +137,7 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
 
         private bool StartListen()
         {
+            CheckDisposed();
             bool result = false;
             cancelToken = new CancellationTokenSource();
             Task.Run(() => { Listen(cancelToken.Token); });
@@ -139,6 +146,7 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
         }
         private bool StopListen()
         {
+            CheckDisposed();
             bool result = false;
             cancelToken?.Cancel();
             resetWait.WaitOne();
@@ -149,11 +157,13 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
 
         protected void InvokeDeviceError(IDeviceEventArgs e)
         {
+            CheckDisposed();
             DeviceError?.Invoke(this, e);
         }
 
         protected void SendRequest(byte[] request)
         {
+            CheckDisposed();
             lock (lockerClient)
             {
                 var stream = client.GetStream();
@@ -163,6 +173,7 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
 
         private void Listen(CancellationToken token)
         {
+            CheckDisposed();
             DeviceStateEventArgs state = new DeviceStateEventArgs { IsEnabled = true };
             resetWait.Reset();
             NetworkStream stream = client.Connected ? client.GetStream() : null;
@@ -224,6 +235,12 @@ namespace ScanSystem.Hardwares.Implementations.Abstracts
                 Thread.Sleep(pollingTimeout);
             }
             resetWait.Set();
+        }
+
+        protected void CheckDisposed()
+        {
+            if (disposedValue)
+                throw new ObjectDisposedException($"Device id: {DeviceId}");
         }
         
 

@@ -837,6 +837,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
+            this.DoubleBuffered = true;
             this.Name = "TestSEDeviceCtrl";
             this.Size = new System.Drawing.Size(733, 482);
             this.tableLayoutPanel1.ResumeLayout(false);

@@ -20,14 +20,14 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
 
         private readonly Dictionary<ModbusDataTypes, Func<ModbusVariableParams, IVariable>> dictCreateVariables;
         private List<ModbusPackage> packages;
-        private List<IVariable> variables;
+        private Dictionary<string, IVariable> variables;
         private int maxLifeTime = 30000;
 
-        public IVariable this[int index]
+        public IVariable this[string variableName]
         {
             get
             {
-                return variables[index];
+                return variables[variableName];
             }
         }
 
@@ -44,7 +44,7 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
             requestes = new List<ModbusRequest>();
             helper = new ModbusHelper();
             dictCreateVariables = new Dictionary<ModbusDataTypes, Func<ModbusVariableParams, IVariable>>();
-            variables = new List<IVariable>();
+            variables = new Dictionary<string, IVariable>();
 
             InitializationDictCreateVariables();
         }
@@ -61,6 +61,7 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
         }
         protected override void PollingRequests()
         {
+            CheckDisposed();
             CheckRequestsLifeTime();
             int index = 0;
             foreach (var package in packages)
@@ -99,6 +100,7 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
         }
         public override void Initialization(IDeviceInitializationParams initParams)
         {
+            CheckDisposed();
             base.Initialization(initParams);
             helper.UnitId = (initParams.Settings as SEDeviceSettings).UnitId;
             packages.Clear();
@@ -108,6 +110,7 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
 
         public override bool SendRequest(IDeviceRequest request)
         {
+            CheckDisposed();
             bool result = false;
             result = Add(request as ModbusRequest);
             if (result)
@@ -125,6 +128,7 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
 
         protected override IDeviceEventArgs RecivedData(byte[] data, int length)
         {
+            CheckDisposed();
             SEDeviceEventArgs result = new SEDeviceEventArgs();
             byte[] temp = new byte[length];
             Array.Copy(data, 0, temp, 0, length);
@@ -185,8 +189,8 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
         #region initialize variables
         private ModbusPackage[] CreatePackages(ModbusVariableParams[] variableDescriptions)
         {
-            variables.AddRange(CreateVariables(variableDescriptions));
-            ModbusPackage[] packages = helper.PackagingVariables(variables.ToArray());
+            CreateVariables(variableDescriptions).ToList().ForEach(x => { variables.Add(x.Name, x); });
+            ModbusPackage[] packages = helper.PackagingVariables(variables.Select(x => x.Value).ToArray());
             return packages;
         }
         private IVariable[] CreateVariables(ModbusVariableParams[] variableDescriptions)
@@ -313,7 +317,7 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
 
         public IEnumerator<IVariable> GetEnumerator()
         {
-            return variables.GetEnumerator();
+            return variables.Select(x => x.Value).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
