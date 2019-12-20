@@ -6,7 +6,7 @@ using System.Text;
 
 namespace OnionApp.Domain.Core.Entities.Accounts
 {
-    [Table(nameof(Rule), Schema = "accounts")]
+    [Table(name: "Rules", Schema = "accounts")]
     public class Rule : Entity<Guid>
     {
         public int SysFunctionId { get; set; }

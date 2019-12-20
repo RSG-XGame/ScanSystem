@@ -7,11 +7,11 @@ using System.Text;
 
 namespace OnionApp.Domain.Core.Entities.Processing
 {
-    [Table(nameof(Change), Schema = "processing")]
+    [Table(name: "Changes", Schema = "processing")]
     public class Change : Entity<Guid>
     {
         public DateTime OpenDate { get; set; }
-        public DateTime CloseDate { get; set; }
+        public DateTime? CloseDate { get; set; }
         public int ChangeStateId { get; set; }
 
         public ChangeState ChangeState { get; set; }

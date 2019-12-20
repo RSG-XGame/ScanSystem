@@ -7,10 +7,8 @@
   <ItemGroup>
     <ProjectReference Include="..\OnionApp.Domain.Core\OnionApp.Domain.Core.csproj" />
     <ProjectReference Include="..\OnionApp.Domain.Interfaces\OnionApp.Domain.Interfaces.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Changes\" />
+    <ProjectReference Include="..\ScanSystem.Hardwares.Implementations\ScanSystem.Hardwares.Implementations.csproj" />
+    <ProjectReference Include="..\ScanSystem.Hardwares.Interfaces\ScanSystem.Hardwares.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

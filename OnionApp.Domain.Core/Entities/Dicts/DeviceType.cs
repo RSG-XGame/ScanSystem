@@ -8,7 +8,7 @@ using System.Text;
 
 namespace OnionApp.Domain.Core.Entities.Dict
 {
-    [Table(nameof(DeviceType), Schema = "dicts")]
+    [Table(name: "DeviceTypes", Schema = "dicts")]
     public class DeviceType : Entity<int>
     {
         [MaxLength(64)]

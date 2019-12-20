@@ -7,6 +7,8 @@ using OnionApp.Domain.Core.Entities;
 using OnionApp.Domain.Core.Entities.Accounts;
 using OnionApp.Domain.Core.Entities.Devices;
 using OnionApp.Domain.Core.Entities.Dict;
+using OnionApp.Domain.Core.Entities.Dicts;
+using OnionApp.Domain.Core.Entities.Logs;
 using OnionApp.Domain.Core.Entities.Processing;
 using OnionApp.Domain.Core.IEntities;
 
@@ -14,18 +16,25 @@ namespace OnionApp.Infrastructure.Data
 {
     public sealed class ScanContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Rule> Rules { get; set; }
         public DbSet<SysFunction> SysFunctions { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<UserMessage> UserMessages { get; set; }
         public DbSet<Device> Devices { get; set; }
+        public DbSet<ChangeState> ChangeStates { get; set; }
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<ClientType> ClientTypes { get; set; }
         public DbSet<DeviceType> DeviceTypes { get; set; }
+        public DbSet<OrderStatus> OrderStatuses { get; set; }
+        public DbSet<ReasonCompletion> ReasonCompletions { get; set; }
+        public DbSet<Log> Logs { get; set; }
+        public DbSet<LogType> LogTypes { get; set; }
         public DbSet<Change> Changes { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderPosition> OrderPositions { get; set; }
-        public DbSet<OrderStatus> OrderStatuses { get; set; }
         public DbSet<SAPBarcode> SAPBarcodes { get; set; }
+        public DbSet<WorkMonitoring> WorkMonitorings { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

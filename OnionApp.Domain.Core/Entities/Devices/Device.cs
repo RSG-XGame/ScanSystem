@@ -7,7 +7,7 @@ using System.Text;
 
 namespace OnionApp.Domain.Core.Entities.Devices
 {
-    [Table(nameof(Device), Schema = "devices")]
+    [Table(name: "Devices", Schema = "devices")]
     public class Device : Entity<Guid>
     {
         [Column(name: nameof(DeviceSettings), TypeName = "json")]
