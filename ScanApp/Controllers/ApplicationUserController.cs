@@ -86,7 +86,7 @@ namespace WebAPI.Controllers
                 return Ok(new { token });
             }
 
-            return BadRequest("Неверный логин или пароль!");
+            return BadRequest(new { message = "Неверный логин или пароль!" });
         }
     }
 }

@@ -31,9 +31,25 @@ div.form-group.required>label:first-child:after{
     padding-left: 5px;
 }
 
-/*#toast-container > div {
+#toast-container > div {
     opacity:1;
-}*/
+}
+
+#toast-container > .toast-success {
+    background-color: #51A351;
+}
+
+#toast-container > .toast-error {
+    background-color: #BD362F;
+}
+
+#toast-container > .toast-info {
+    background-color: #2F96B4;
+}
+
+#toast-container > .toast-warning {
+    background-color: #F89406;
+}
 
 .wrapper {
     display: flex;
