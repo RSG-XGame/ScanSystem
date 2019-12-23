@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using OnionApp.Domain.Core.Entities.Accounts;
+using OnionApp.Domain.Interfaces;
 using WebAPI.Models;
 
 namespace WebAPI.Controllers
@@ -14,23 +16,30 @@ namespace WebAPI.Controllers
     [ApiController]
     public class UserProfileController : ControllerBase
     {
-        private UserManager<ApplicationUser> _userManager;
-        public UserProfileController(UserManager<ApplicationUser> userManager)
+        private readonly IRepository Repository;
+        public UserProfileController(IRepository repository)
         {
-            _userManager = userManager;
+            Repository = repository;
         }
 
         [HttpGet]
         [Authorize]
         //GET : /api/UserProfile
-        public async Task<Object> GetUserProfile() {
-            string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            var user = await _userManager.FindByIdAsync(userId);
+        public async Task<object> GetUserProfile()
+        {
+            User user = null;
+            if (int.TryParse(User.Claims.First(c => c.Type == "UserID").Value, out int userId))
+            {
+                user = await Repository.GetFirstAsync<User>(x => x.Id == userId);
+                if (user != null)
+                    user.Role = await Repository.GetFirstAsync<Role>(x => x.Id == user.RoleId);
+            }
+
             return new
             {
-                 user.FullName,
-                 user.Email,
-                 user.UserName
+                user?.UserName,
+                user?.Login,
+                user?.Role?.RoleName
             };
         }
     }

@@ -3,7 +3,7 @@ using OnionApp.Domain.Core.IEntities;
 
 namespace OnionApp.Domain.Interfaces
 {
-    public interface IRepository
+    public interface IRepository: IReadOnlyRepository
     {
         void Create<TEntity>(TEntity entity, int createdBy = 1)
             where TEntity : class, IEntity;
