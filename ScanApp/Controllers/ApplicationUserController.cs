@@ -69,7 +69,7 @@ namespace WebAPI.Controllers
             {
                 if (user.IsDeleted)
                 {
-                    return BadRequest("Пользователь заблокирован!");
+                    return BadRequest(new { message = "Пользователь заблокирован!" });
                 }
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
