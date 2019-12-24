@@ -7,7 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\styles\styles.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="scr\app\auth\auth.guard.ts" />
+    <None Remove="scr\app\model\loginUser.ts" />
+    <None Remove="scr\app\model\User.ts" />
     <None Remove="scr\main.ts" />
     <None Remove="scr\app\user\user.component.ts" />
   </ItemGroup>
@@ -31,9 +37,11 @@
     <None Include="wwwroot\assets\img\add_user.png" />
     <None Include="wwwroot\assets\img\single_user.png" />
     <None Include="wwwroot\index.html" />
+    <None Include="wwwroot\styles\styles.css" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="scr\app\home\menu\" />
     <Folder Include="wwwroot\dist\" />
   </ItemGroup>
 

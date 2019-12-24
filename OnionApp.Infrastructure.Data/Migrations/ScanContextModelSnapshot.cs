@@ -16,7 +16,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("OnionApp.Domain.Core.Entities.Accounts.Role", b =>
@@ -51,7 +51,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
                         {
                             Id = 1,
                             CreatedBy = 1,
-                            CreatedDate = new DateTime(2019, 12, 5, 14, 58, 23, 504, DateTimeKind.Local).AddTicks(4253),
+                            CreatedDate = new DateTime(2019, 12, 22, 14, 4, 42, 585, DateTimeKind.Local).AddTicks(9499),
                             IsDeleted = true,
                             RoleName = "admin",
                             RowVersion = 0u
@@ -60,7 +60,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
                         {
                             Id = 2,
                             CreatedBy = 1,
-                            CreatedDate = new DateTime(2019, 12, 5, 14, 58, 23, 505, DateTimeKind.Local).AddTicks(8367),
+                            CreatedDate = new DateTime(2019, 12, 22, 14, 4, 42, 594, DateTimeKind.Local).AddTicks(4504),
                             IsDeleted = true,
                             RoleName = "user",
                             RowVersion = 0u
@@ -98,7 +98,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("SysFunctionId");
 
-                    b.ToTable("Rule","accounts");
+                    b.ToTable("Rules","accounts");
                 });
 
             modelBuilder.Entity("OnionApp.Domain.Core.Entities.Accounts.SysFunction", b =>
@@ -126,7 +126,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SysFunction","accounts");
+                    b.ToTable("SysFunctions","accounts");
                 });
 
             modelBuilder.Entity("OnionApp.Domain.Core.Entities.Accounts.User", b =>
@@ -169,7 +169,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
                         {
                             Id = 1,
                             CreatedBy = 1,
-                            CreatedDate = new DateTime(2019, 12, 5, 14, 58, 23, 505, DateTimeKind.Local).AddTicks(8989),
+                            CreatedDate = new DateTime(2019, 12, 22, 14, 4, 42, 594, DateTimeKind.Local).AddTicks(5278),
                             IsDeleted = true,
                             Login = "admin@mail.ru",
                             Password = "123456",
@@ -180,7 +180,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
                         {
                             Id = 2,
                             CreatedBy = 1,
-                            CreatedDate = new DateTime(2019, 12, 5, 14, 58, 23, 506, DateTimeKind.Local).AddTicks(1611),
+                            CreatedDate = new DateTime(2019, 12, 22, 14, 4, 42, 594, DateTimeKind.Local).AddTicks(7923),
                             IsDeleted = true,
                             Login = "tom@mail.ru",
                             Password = "123456",
@@ -191,7 +191,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
                         {
                             Id = 3,
                             CreatedBy = 1,
-                            CreatedDate = new DateTime(2019, 12, 5, 14, 58, 23, 506, DateTimeKind.Local).AddTicks(1633),
+                            CreatedDate = new DateTime(2019, 12, 22, 14, 4, 42, 594, DateTimeKind.Local).AddTicks(7951),
                             IsDeleted = true,
                             Login = "bob@mail.ru",
                             Password = "123456",
@@ -202,7 +202,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
                         {
                             Id = 4,
                             CreatedBy = 1,
-                            CreatedDate = new DateTime(2019, 12, 5, 14, 58, 23, 506, DateTimeKind.Local).AddTicks(1634),
+                            CreatedDate = new DateTime(2019, 12, 22, 14, 4, 42, 594, DateTimeKind.Local).AddTicks(7953),
                             IsDeleted = true,
                             Login = "sam@mail.ru",
                             Password = "123456",
@@ -244,7 +244,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("ToUserId");
 
-                    b.ToTable("UserMessage","accounts");
+                    b.ToTable("UserMessages","accounts");
                 });
 
             modelBuilder.Entity("OnionApp.Domain.Core.Entities.Devices.Device", b =>
@@ -278,7 +278,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("DeviceTypeId");
 
-                    b.ToTable("Device","devices");
+                    b.ToTable("Devices","devices");
                 });
 
             modelBuilder.Entity("OnionApp.Domain.Core.Entities.Dict.ChangeState", b =>
@@ -307,7 +307,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ChangeState","dict");
+                    b.ToTable("ChangeStates","dicts");
                 });
 
             modelBuilder.Entity("OnionApp.Domain.Core.Entities.Dict.DeviceType", b =>
@@ -338,7 +338,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DeviceType","dict");
+                    b.ToTable("DeviceTypes","dicts");
                 });
 
             modelBuilder.Entity("OnionApp.Domain.Core.Entities.Dict.OrderStatus", b =>
@@ -368,7 +368,166 @@ namespace OnionApp.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderStatus","dict");
+                    b.ToTable("OrderStatuses","dicts");
+                });
+
+            modelBuilder.Entity("OnionApp.Domain.Core.Entities.Dict.ReasonCompletion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<int?>("ModifiedBy");
+
+                    b.Property<DateTime?>("ModifiedDate");
+
+                    b.Property<string>("ReasonDescription")
+                        .HasColumnName("ReasonDescription")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ReasonName")
+                        .HasMaxLength(64);
+
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnName("xmin")
+                        .HasColumnType("xid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReasonCompletions","dicts");
+                });
+
+            modelBuilder.Entity("OnionApp.Domain.Core.Entities.Dicts.Client", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ClientTypeId");
+
+                    b.Property<int>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<int?>("ModifiedBy");
+
+                    b.Property<DateTime?>("ModifiedDate");
+
+                    b.Property<string>("Name");
+
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnName("xmin")
+                        .HasColumnType("xid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientTypeId");
+
+                    b.ToTable("Clients","dicts");
+                });
+
+            modelBuilder.Entity("OnionApp.Domain.Core.Entities.Dicts.ClientType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<int?>("ModifiedBy");
+
+                    b.Property<DateTime?>("ModifiedDate");
+
+                    b.Property<string>("Name");
+
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnName("xmin")
+                        .HasColumnType("xid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ClientTypes","dicts");
+                });
+
+            modelBuilder.Entity("OnionApp.Domain.Core.Entities.Logs.Log", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ClassName");
+
+                    b.Property<int>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<int>("LogTypeId");
+
+                    b.Property<string>("Message");
+
+                    b.Property<string>("MethodName");
+
+                    b.Property<int?>("ModifiedBy");
+
+                    b.Property<DateTime?>("ModifiedDate");
+
+                    b.Property<string>("ModuleName");
+
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnName("xmin")
+                        .HasColumnType("xid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LogTypeId");
+
+                    b.ToTable("Logs","logger");
+                });
+
+            modelBuilder.Entity("OnionApp.Domain.Core.Entities.Logs.LogType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<int?>("ModifiedBy");
+
+                    b.Property<DateTime?>("ModifiedDate");
+
+                    b.Property<string>("Name");
+
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnName("xmin")
+                        .HasColumnType("xid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LogTypes","logger");
                 });
 
             modelBuilder.Entity("OnionApp.Domain.Core.Entities.Processing.Change", b =>
@@ -378,7 +537,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
 
                     b.Property<int>("ChangeStateId");
 
-                    b.Property<DateTime>("CloseDate");
+                    b.Property<DateTime?>("CloseDate");
 
                     b.Property<int>("CreatedBy");
 
@@ -402,7 +561,7 @@ namespace OnionApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("ChangeStateId");
 
-                    b.ToTable("Change","processing");
+                    b.ToTable("Changes","processing");
                 });
 
             modelBuilder.Entity("OnionApp.Domain.Core.Entities.Processing.Order", b =>
@@ -411,6 +570,10 @@ namespace OnionApp.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<Guid?>("ChangeId");
+
+                    b.Property<Guid>("ClientId");
+
+                    b.Property<int>("CountPositions");
 
                     b.Property<int>("CreatedBy");
 
@@ -438,11 +601,13 @@ namespace OnionApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("ChangeId");
 
+                    b.HasIndex("ClientId");
+
                     b.HasIndex("OrderId");
 
                     b.HasIndex("OrderStatusId");
 
-                    b.ToTable("Order","processing");
+                    b.ToTable("Orders","processing");
                 });
 
             modelBuilder.Entity("OnionApp.Domain.Core.Entities.Processing.OrderPosition", b =>
@@ -506,7 +671,47 @@ namespace OnionApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("SAPBarcode","processing");
+                    b.ToTable("SAPBarcodes","processing");
+                });
+
+            modelBuilder.Entity("OnionApp.Domain.Core.Entities.Processing.WorkMonitoring", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AdditionalInformation")
+                        .HasColumnName("AdditionalInformation")
+                        .HasColumnType("text");
+
+                    b.Property<int>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<int?>("ModifiedBy");
+
+                    b.Property<DateTime?>("ModifiedDate");
+
+                    b.Property<Guid>("OrderId");
+
+                    b.Property<int>("ReasonComplationId");
+
+                    b.Property<int?>("ReasonCompletionId");
+
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnName("xmin")
+                        .HasColumnType("xid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ReasonCompletionId");
+
+                    b.ToTable("WorkMonitorings","processing");
                 });
 
             modelBuilder.Entity("OnionApp.Domain.Core.Entities.Accounts.Rule", b =>
@@ -546,6 +751,22 @@ namespace OnionApp.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
+            modelBuilder.Entity("OnionApp.Domain.Core.Entities.Dicts.Client", b =>
+                {
+                    b.HasOne("OnionApp.Domain.Core.Entities.Dicts.ClientType", "ClientType")
+                        .WithMany("Clients")
+                        .HasForeignKey("ClientTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("OnionApp.Domain.Core.Entities.Logs.Log", b =>
+                {
+                    b.HasOne("OnionApp.Domain.Core.Entities.Logs.LogType", "LogType")
+                        .WithMany("Logs")
+                        .HasForeignKey("LogTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("OnionApp.Domain.Core.Entities.Processing.Change", b =>
                 {
                     b.HasOne("OnionApp.Domain.Core.Entities.Dict.ChangeState", "ChangeState")
@@ -559,6 +780,11 @@ namespace OnionApp.Infrastructure.Data.Migrations
                     b.HasOne("OnionApp.Domain.Core.Entities.Processing.Change", "Change")
                         .WithMany("Orders")
                         .HasForeignKey("ChangeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("OnionApp.Domain.Core.Entities.Dicts.Client", "Client")
+                        .WithMany("Orders")
+                        .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("OnionApp.Domain.Core.Entities.Processing.Order")
@@ -585,6 +811,19 @@ namespace OnionApp.Infrastructure.Data.Migrations
                     b.HasOne("OnionApp.Domain.Core.Entities.Processing.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("OnionApp.Domain.Core.Entities.Processing.WorkMonitoring", b =>
+                {
+                    b.HasOne("OnionApp.Domain.Core.Entities.Processing.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("OnionApp.Domain.Core.Entities.Dict.ReasonCompletion", "ReasonCompletion")
+                        .WithMany("WorkMonitorings")
+                        .HasForeignKey("ReasonCompletionId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
