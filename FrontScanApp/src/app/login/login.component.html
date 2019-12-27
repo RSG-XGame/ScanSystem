@@ -1,0 +1,13 @@
+<form #form='ngForm' class="mb-4" autocomplete="off" (submit)="onSubmit(form)">
+  <mat-card>
+      <mat-form-field apperance="legacy">
+        <mat-icon matPrefix>account_circle</mat-icon>
+        <input matInput placeholder="Введите логин:" #UserName="ngModel" name="UserName" [(ngModel)]="formModel.UserName" required>       
+      </mat-form-field>
+      <mat-form-field>
+        <mat-icon matPrefix>vpn_key</mat-icon>
+        <input matInput placeholder="Введите пароль:" type="password" #Password="ngModel" name="Password" [(ngModel)]="formModel.Password" required>
+      </mat-form-field>
+      <button type="submit" [disabled]="form.invalid" mat-raised-button color="primary">Войти</button>
+  </mat-card>
+</form>
