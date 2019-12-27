@@ -2750,7 +2750,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<form #form='ngForm' class=\"mb-4\" autocomplete=\"off\" (submit)=\"onSubmit(form)\">\n  <mat-card>\n      <mat-form-field apperance=\"legacy\">\n        <mat-icon matPrefix>account_circle</mat-icon>\n        <input matInput placeholder=\"Введите логин:\" #UserName=\"ngModel\" name=\"UserName\" [(ngModel)]=\"formModel.UserName\" required>       \n      </mat-form-field>\n      <mat-form-field>\n        <mat-icon matPrefix>vpn_key</mat-icon>\n        <input matInput placeholder=\"Введите пароль:\" type=\"password\" #Password=\"ngModel\" name=\"Password\" [(ngModel)]=\"formModel.Password\" required>\n      </mat-form-field>\n      <button type=\"submit\" [disabled]=\"form.invalid\" mat-raised-button color=\"primary\">Войти</button>\n  </mat-card>\n</form>";
+    __webpack_exports__["default"] = "<form #form='ngForm' class=\"mb-4\" autocomplete=\"off\" (submit)=\"onSubmit(form)\">\n  <mat-card>\n    <mat-card-header>\n      <mat-card-title>Авторизация</mat-card-title>\n    </mat-card-header>\n      <mat-form-field hintLabel=\"От 6 до 20 символов\">\n        <mat-icon matPrefix>account_circle</mat-icon>\n        <input matInput minlength=6 maxlength=20 placeholder=\"Введите логин:\" #UserName=\"ngModel\" name=\"UserName\" [(ngModel)]=\"formModel.UserName\" required>     \n        <mat-hint align=\"end\">{{UserName.value?.length || 0}}/20</mat-hint>\n      </mat-form-field>\n      <mat-form-field hintLabel=\"От 6 до 20 символов\">\n        <mat-icon matPrefix>vpn_key</mat-icon>\n        <input matInput minlength=6 maxlength=20 placeholder=\"Введите пароль:\" #Password=\"ngModel\" name=\"Password\" [(ngModel)]=\"formModel.Password\" required type=\"password\">\n        <mat-hint align=\"end\">{{Password.value?.length || 0}}/20</mat-hint>\n      </mat-form-field>\n      <button type=\"submit\" [disabled]=\"form.invalid\" mat-raised-button color=\"primary\">Войти</button>\n  </mat-card>\n</form>";
     /***/
   },
 
@@ -6914,86 +6914,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
   },
 
   /***/
-  "./src/app/app-routing.module.ts":
-  /*!***************************************!*\
-    !*** ./src/app/app-routing.module.ts ***!
-    \***************************************/
-
-  /*! exports provided: AppRoutingModule */
-
-  /***/
-  function srcAppAppRoutingModuleTs(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-
-    __webpack_require__.r(__webpack_exports__);
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "AppRoutingModule", function () {
-      return AppRoutingModule;
-    });
-    /* harmony import */
-
-
-    var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-    /*! tslib */
-    "./node_modules/tslib/tslib.es6.js");
-    /* harmony import */
-
-
-    var _auth_auth_guard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-    /*! ./auth/auth.guard */
-    "./src/app/auth/auth.guard.ts");
-    /* harmony import */
-
-
-    var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-    /*! @angular/core */
-    "./node_modules/@angular/core/fesm2015/core.js");
-    /* harmony import */
-
-
-    var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-    /*! @angular/router */
-    "./node_modules/@angular/router/fesm2015/router.js");
-    /* harmony import */
-
-
-    var _login_login_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
-    /*! ./login/login.component */
-    "./src/app/login/login.component.ts");
-    /* harmony import */
-
-
-    var _home_home_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
-    /*! ./home/home.component */
-    "./src/app/home/home.component.ts");
-
-    var routes = [{
-      path: '',
-      redirectTo: '/login',
-      pathMatch: 'full'
-    }, {
-      path: 'login',
-      component: _login_login_component__WEBPACK_IMPORTED_MODULE_4__["LoginComponent"]
-    }, {
-      path: 'home',
-      component: _home_home_component__WEBPACK_IMPORTED_MODULE_5__["HomeComponent"],
-      canActivate: [_auth_auth_guard__WEBPACK_IMPORTED_MODULE_1__["AuthGuard"]]
-    }];
-
-    var AppRoutingModule = function AppRoutingModule() {
-      _classCallCheck(this, AppRoutingModule);
-    };
-
-    AppRoutingModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
-      imports: [_angular_router__WEBPACK_IMPORTED_MODULE_3__["RouterModule"].forRoot(routes)],
-      exports: [_angular_router__WEBPACK_IMPORTED_MODULE_3__["RouterModule"]]
-    })], AppRoutingModule);
-    /***/
-  },
-
-  /***/
   "./src/app/app.component.ts":
   /*!**********************************!*\
     !*** ./src/app/app.component.ts ***!
@@ -7028,7 +6948,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     var AppComponent = function AppComponent() {
       _classCallCheck(this, AppComponent);
 
-      this.title = 'Angular7';
+      this.title = 'fff';
     };
 
     AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -7068,57 +6988,57 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /* harmony import */
 
 
-    var _material_material_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-    /*! ./material/material.module */
-    "./src/app/material/material.module.ts");
-    /* harmony import */
-
-
-    var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
     /*! @angular/platform-browser */
     "./node_modules/@angular/platform-browser/fesm2015/platform-browser.js");
     /* harmony import */
 
 
-    var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+    var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
     /*! @angular/core */
     "./node_modules/@angular/core/fesm2015/core.js");
     /* harmony import */
 
 
-    var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+    var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
     /*! @angular/forms */
     "./node_modules/@angular/forms/fesm2015/forms.js");
     /* harmony import */
 
 
-    var _angular_common_http__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+    var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
     /*! @angular/common/http */
     "./node_modules/@angular/common/fesm2015/http.js");
     /* harmony import */
 
 
-    var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
+    var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
     /*! @angular/platform-browser/animations */
     "./node_modules/@angular/platform-browser/fesm2015/animations.js");
     /* harmony import */
 
 
-    var ngx_toastr__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
+    var ngx_toastr__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
     /*! ngx-toastr */
     "./node_modules/ngx-toastr/fesm2015/ngx-toastr.js");
     /* harmony import */
 
 
-    var _app_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
-    /*! ./app.component */
-    "./src/app/app.component.ts");
+    var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
+    /*! @angular/router */
+    "./node_modules/@angular/router/fesm2015/router.js");
     /* harmony import */
 
 
-    var _app_routing_module__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(
-    /*! ./app-routing.module */
-    "./src/app/app-routing.module.ts");
+    var _auth_auth_guard__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
+    /*! ./auth/auth.guard */
+    "./src/app/auth/auth.guard.ts");
+    /* harmony import */
+
+
+    var _app_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(
+    /*! ./app.component */
+    "./src/app/app.component.ts");
     /* harmony import */
 
 
@@ -7143,21 +7063,48 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     var _auth_auth_interceptor__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(
     /*! ./auth/auth.interceptor */
     "./src/app/auth/auth.interceptor.ts");
+    /* harmony import */
+
+
+    var _angular_common__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(
+    /*! @angular/common */
+    "./node_modules/@angular/common/fesm2015/common.js");
+    /* harmony import */
+
+
+    var _angular_material__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(
+    /*! @angular/material */
+    "./node_modules/@angular/material/esm2015/material.js");
+
+    var routes = [{
+      path: '',
+      redirectTo: '/login',
+      pathMatch: 'full'
+    }, {
+      path: 'login',
+      component: _login_login_component__WEBPACK_IMPORTED_MODULE_11__["LoginComponent"]
+    }, {
+      path: 'home',
+      component: _home_home_component__WEBPACK_IMPORTED_MODULE_12__["HomeComponent"],
+      canActivate: [_auth_auth_guard__WEBPACK_IMPORTED_MODULE_8__["AuthGuard"]]
+    }];
 
     var AppModule = function AppModule() {
       _classCallCheck(this, AppModule);
     };
 
-    AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["NgModule"])({
-      declarations: [_app_component__WEBPACK_IMPORTED_MODULE_8__["AppComponent"], _login_login_component__WEBPACK_IMPORTED_MODULE_11__["LoginComponent"], _home_home_component__WEBPACK_IMPORTED_MODULE_12__["HomeComponent"]],
-      imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["BrowserModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_9__["AppRoutingModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HttpClientModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_6__["BrowserAnimationsModule"], _material_material_module__WEBPACK_IMPORTED_MODULE_1__["MaterialModule"], ngx_toastr__WEBPACK_IMPORTED_MODULE_7__["ToastrModule"].forRoot({
+    AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
+      declarations: [_app_component__WEBPACK_IMPORTED_MODULE_9__["AppComponent"], _login_login_component__WEBPACK_IMPORTED_MODULE_11__["LoginComponent"], _home_home_component__WEBPACK_IMPORTED_MODULE_12__["HomeComponent"]],
+      imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__["ReactiveFormsModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_4__["HttpClientModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_5__["BrowserAnimationsModule"], ngx_toastr__WEBPACK_IMPORTED_MODULE_6__["ToastrModule"].forRoot({
         progressBar: true
-      }), _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormsModule"]],
+      }), [_angular_router__WEBPACK_IMPORTED_MODULE_7__["RouterModule"].forRoot(routes)], _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"], _angular_common__WEBPACK_IMPORTED_MODULE_14__["CommonModule"], _angular_material__WEBPACK_IMPORTED_MODULE_15__["MatToolbarModule"], _angular_material__WEBPACK_IMPORTED_MODULE_15__["MatGridListModule"], _angular_material__WEBPACK_IMPORTED_MODULE_15__["MatFormFieldModule"], _angular_material__WEBPACK_IMPORTED_MODULE_15__["MatInputModule"], _angular_material__WEBPACK_IMPORTED_MODULE_15__["MatButtonModule"], _angular_material__WEBPACK_IMPORTED_MODULE_15__["MatCardModule"], _angular_material__WEBPACK_IMPORTED_MODULE_15__["MatIconModule"]],
+      exports: [[_angular_router__WEBPACK_IMPORTED_MODULE_7__["RouterModule"]], _angular_material__WEBPACK_IMPORTED_MODULE_15__["MatToolbarModule"], _angular_material__WEBPACK_IMPORTED_MODULE_15__["MatGridListModule"], _angular_material__WEBPACK_IMPORTED_MODULE_15__["MatFormFieldModule"], _angular_material__WEBPACK_IMPORTED_MODULE_15__["MatInputModule"], _angular_material__WEBPACK_IMPORTED_MODULE_15__["MatButtonModule"], _angular_material__WEBPACK_IMPORTED_MODULE_15__["MatCardModule"], _angular_material__WEBPACK_IMPORTED_MODULE_15__["MatIconModule"]],
       providers: [_shared_user_service__WEBPACK_IMPORTED_MODULE_10__["UserService"], {
-        provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HTTP_INTERCEPTORS"],
+        provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_4__["HTTP_INTERCEPTORS"],
         useClass: _auth_auth_interceptor__WEBPACK_IMPORTED_MODULE_13__["AuthInterceptor"],
         multi: true
-      }]
+      }],
+      bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_9__["AppComponent"]]
     })], AppModule);
     /***/
   },
@@ -7502,6 +7449,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           }, function (err) {
             if (err.status === 400) {
               _this5.toastr.error('Incorrect username or password.', 'Authentication failed.');
+            } else if (err.status === 0) {
+              _this5.toastr.error('Сервер недоступен!', 'Аутентификация');
             } else {
               console.log(err);
             }
@@ -7528,62 +7477,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       /*! raw-loader!./login.component.html */
       "./node_modules/raw-loader/dist/cjs.js!./src/app/login/login.component.html"))["default"]
     })], LoginComponent);
-    /***/
-  },
-
-  /***/
-  "./src/app/material/material.module.ts":
-  /*!*********************************************!*\
-    !*** ./src/app/material/material.module.ts ***!
-    \*********************************************/
-
-  /*! exports provided: MaterialModule */
-
-  /***/
-  function srcAppMaterialMaterialModuleTs(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-
-    __webpack_require__.r(__webpack_exports__);
-    /* harmony export (binding) */
-
-
-    __webpack_require__.d(__webpack_exports__, "MaterialModule", function () {
-      return MaterialModule;
-    });
-    /* harmony import */
-
-
-    var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-    /*! tslib */
-    "./node_modules/tslib/tslib.es6.js");
-    /* harmony import */
-
-
-    var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-    /*! @angular/core */
-    "./node_modules/@angular/core/fesm2015/core.js");
-    /* harmony import */
-
-
-    var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-    /*! @angular/common */
-    "./node_modules/@angular/common/fesm2015/common.js");
-    /* harmony import */
-
-
-    var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-    /*! @angular/material */
-    "./node_modules/@angular/material/esm2015/material.js");
-
-    var MaterialModule = function MaterialModule() {
-      _classCallCheck(this, MaterialModule);
-    };
-
-    MaterialModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
-      imports: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatToolbarModule"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatGridListModule"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatFormFieldModule"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatInputModule"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatButtonModule"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatCardModule"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatIconModule"]],
-      exports: [_angular_material__WEBPACK_IMPORTED_MODULE_3__["MatToolbarModule"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatGridListModule"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatFormFieldModule"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatInputModule"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatButtonModule"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatCardModule"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatIconModule"]],
-      declarations: []
-    })], MaterialModule);
     /***/
   },
 
