@@ -39,7 +39,7 @@ namespace OnionApp.Infrastructure.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
         #if DEBUG
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=ScanDb;Username=postgres;Password=Jgbpl.kznjh666");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=ScanDb;Username=postgres;Password=123456");
         #else
             optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=ScanDb;Username=postgres;Password=123456");
         #endif

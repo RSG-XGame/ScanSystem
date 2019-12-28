@@ -2730,7 +2730,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<nav class=\"navbar navbar-dark bg-dark\">\n  <a class=\"navbar-brand text-white\">JWT Auth System</a>\n  <button class=\"btn btn-danger my-2 my-sm-0\" (click)=\"onLogout()\">Logout</button>\n</nav>\n\n<div class=\"card m-5\" style=\"width:18rem\" *ngIf=\"userDetails\">\n  <ul class=\"list-group\">\n    <li class=\"list-group-item\"><strong>Username : </strong>{{userDetails.userName}}</li>\n    <li class=\"list-group-item\"><strong>FullName : </strong>{{userDetails.fullName}}</li>\n    <li class=\"list-group-item\"><strong>Email : </strong>{{userDetails.email}}</li>\n  </ul>\n</div>";
+    __webpack_exports__["default"] = "<nav class=\"navbar navbar-dark bg-dark\">\r\n  <a class=\"navbar-brand text-white\">JWT Auth System</a>\r\n  <button class=\"btn btn-danger my-2 my-sm-0\" (click)=\"onLogout()\">Logout</button>\r\n</nav>\r\n\r\n<div class=\"card m-5\" style=\"width:18rem\" *ngIf=\"userDetails\">\r\n  <ul class=\"list-group\">\r\n    <li class=\"list-group-item\"><strong>Username : </strong>{{userDetails.userName}}</li>\r\n    <li class=\"list-group-item\"><strong>FullName : </strong>{{userDetails.fullName}}</li>\r\n    <li class=\"list-group-item\"><strong>Email : </strong>{{userDetails.email}}</li>\r\n  </ul>\r\n</div>";
     /***/
   },
 
@@ -2750,7 +2750,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<form #form='ngForm' class=\"mb-4\" autocomplete=\"off\" (submit)=\"onSubmit(form)\">\n  <mat-card>\n    <mat-card-header>\n      <mat-card-title>Авторизация</mat-card-title>\n    </mat-card-header>\n      <mat-form-field hintLabel=\"От 6 до 20 символов\">\n        <mat-icon matPrefix>account_circle</mat-icon>\n        <input matInput minlength=6 maxlength=20 placeholder=\"Введите логин:\" #UserName=\"ngModel\" name=\"UserName\" [(ngModel)]=\"formModel.UserName\" required>     \n        <mat-hint align=\"end\">{{UserName.value?.length || 0}}/20</mat-hint>\n      </mat-form-field>\n      <mat-form-field hintLabel=\"От 6 до 20 символов\">\n        <mat-icon matPrefix>vpn_key</mat-icon>\n        <input matInput minlength=6 maxlength=20 placeholder=\"Введите пароль:\" #Password=\"ngModel\" name=\"Password\" [(ngModel)]=\"formModel.Password\" required type=\"password\">\n        <mat-hint align=\"end\">{{Password.value?.length || 0}}/20</mat-hint>\n      </mat-form-field>\n      <button type=\"submit\" [disabled]=\"form.invalid\" mat-raised-button color=\"primary\">Войти</button>\n  </mat-card>\n</form>";
+    __webpack_exports__["default"] = "<form #form='ngForm' class=\"mb-4\" autocomplete=\"off\" (submit)=\"onSubmit(form)\">\r\n  <mat-card>\r\n    <mat-card-header>\r\n      <mat-card-title>Авторизация</mat-card-title>\r\n    </mat-card-header>\r\n      <mat-form-field hintLabel=\"От 6 до 20 символов\">\r\n        <mat-icon matPrefix>account_circle</mat-icon>\r\n        <input matInput minlength=6 maxlength=20 placeholder=\"Введите логин:\" #UserName=\"ngModel\" name=\"UserName\" [(ngModel)]=\"formModel.UserName\" required>     \r\n        <mat-hint align=\"end\">{{UserName.value?.length || 0}}/20</mat-hint>\r\n      </mat-form-field>\r\n      <mat-form-field hintLabel=\"От 6 до 20 символов\">\r\n        <mat-icon matPrefix>vpn_key</mat-icon>\r\n        <input matInput minlength=6 maxlength=20 placeholder=\"Введите пароль:\" #Password=\"ngModel\" name=\"Password\" [(ngModel)]=\"formModel.Password\" required type=\"password\">\r\n        <mat-hint align=\"end\">{{Password.value?.length || 0}}/20</mat-hint>\r\n      </mat-form-field>\r\n      <button type=\"submit\" [disabled]=\"form.invalid\" mat-raised-button color=\"primary\">Войти</button>\r\n  </mat-card>\r\n</form>";
     /***/
   },
 
@@ -7448,7 +7448,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             _this5.router.navigateByUrl('/home');
           }, function (err) {
             if (err.status === 400) {
-              _this5.toastr.error('Incorrect username or password.', 'Authentication failed.');
+              _this5.toastr.error('Неверный логин или пароль!', 'Аутентификация');
             } else if (err.status === 0) {
               _this5.toastr.error('Сервер недоступен!', 'Аутентификация');
             } else {
@@ -7532,7 +7532,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
         this.fb = fb;
         this.http = http;
-        this.BaseURI = 'http://localhost:54277/api';
+        this.BaseURI = 'http://localhost:54516/api';
         this.formModel = this.fb.group({
           UserName: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
           Email: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].email],
@@ -7772,7 +7772,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
   /***/
   function _(module, exports, __webpack_require__) {
     module.exports = __webpack_require__(
-    /*! C:\Work\ScanSystem\FrontScanApp\src\main.ts */
+    /*! D:\Work\ScanSystem\ScanSystem\FrontScanApp\src\main.ts */
     "./src/main.ts");
     /***/
   }

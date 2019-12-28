@@ -2,9 +2,9 @@
 /* @import "~@angular/material/prebuilt-themes/purple-green.css"; */
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
-/* body{
-    background-color: whitesmoke;
-} */
+body{
+    background-color: #Dabdab
+}
 
 .mat-card {
   display: flex;

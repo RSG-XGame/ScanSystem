@@ -29,10 +29,11 @@ export class LoginComponent implements OnInit {
       (res: any) => {
         localStorage.setItem('token', res.token);
         this.router.navigateByUrl('/home');
+        this.toastr.success("Успешно", 'Аутентификация');
       },
       err => {
         if (err.status === 400) {
-          this.toastr.error('Неверный логин или пароль!', 'Аутентификация');
+          this.toastr.error(err.error.message, 'Аутентификация');
         } else if (err.status === 0) {
           this.toastr.error('Сервер недоступен!', 'Аутентификация');
         } else {
