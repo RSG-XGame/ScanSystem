@@ -16,6 +16,9 @@ import { AuthInterceptor } from './auth/auth.interceptor';
 import { CommonModule } from '@angular/common';
 import * as Material from '@angular/material';
 
+import { LayoutModule } from '@angular/cdk/layout';
+import { BlockUIModule } from 'ng-block-ui';
+
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
@@ -26,7 +29,7 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,15 +38,21 @@ const routes: Routes = [
     BrowserAnimationsModule,
     ToastrModule.forRoot({ progressBar: true }),
     [RouterModule.forRoot(routes)],
+    BlockUIModule.forRoot(),
     FormsModule,
     CommonModule,
+    LayoutModule,
     Material.MatToolbarModule,
     Material.MatGridListModule,
     Material.MatFormFieldModule,
     Material.MatInputModule,
     Material.MatButtonModule,
     Material.MatCardModule,
-    Material.MatIconModule
+    Material.MatIconModule,
+    Material.MatSidenavModule,
+    Material.MatSelectModule,
+    Material.MatListModule,
+
   ],
   exports: [
     [RouterModule],
@@ -53,7 +62,10 @@ const routes: Routes = [
     Material.MatInputModule,
     Material.MatButtonModule,
     Material.MatCardModule,
-    Material.MatIconModule
+    Material.MatIconModule,
+    Material.MatSidenavModule,
+    Material.MatSelectModule,
+    Material.MatListModule,
   ],
   providers: [UserService, {
     provide: HTTP_INTERCEPTORS,
