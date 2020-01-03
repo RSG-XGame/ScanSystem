@@ -8897,23 +8897,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppComponent", function() { return AppComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-/* harmony import */ var ng_block_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ng-block-ui */ "./node_modules/ng-block-ui/index.js");
-/* harmony import */ var ng_block_ui__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(ng_block_ui__WEBPACK_IMPORTED_MODULE_2__);
-
 
 
 let AppComponent = class AppComponent {
-    constructor() { }
-    toggleBlocking(message) {
-        this.blockUI.start(message);
-        setTimeout(() => {
-            this.blockUI.stop();
-        }, 2500);
-    }
 };
-tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-    Object(ng_block_ui__WEBPACK_IMPORTED_MODULE_2__["BlockUI"])()
-], AppComponent.prototype, "blockUI", void 0);
 AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
         selector: 'app-root',
@@ -9220,6 +9207,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_user_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../shared/user.service */ "./src/app/shared/user.service.ts");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
+/* harmony import */ var ng_block_ui__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ng-block-ui */ "./node_modules/ng-block-ui/index.js");
+/* harmony import */ var ng_block_ui__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(ng_block_ui__WEBPACK_IMPORTED_MODULE_5__);
+
 
 
 
@@ -9242,21 +9232,31 @@ let LoginComponent = class LoginComponent {
         }
     }
     onSubmit(form) {
-        this.service.login(form.value).subscribe((res) => {
-            localStorage.setItem('token', res.token);
-            this.router.navigateByUrl('/home');
-            this.toastr.success("Успешно", 'Аутентификация');
-        }, err => {
-            if (err.status === 400) {
-                this.toastr.error(err.error.message, 'Аутентификация');
-            }
-            else if (err.status === 0) {
-                this.toastr.error('Сервер недоступен!', 'Аутентификация');
-            }
-            else {
-                console.log(err);
-            }
-        });
+        this.service.login(form.value);
+        // this.blockUI.start('Авторизация');
+        // this.service.login(form.value).pipe(
+        //     timeout(5000),
+        //   finalize(() => {
+        //     this.blockUI.stop();
+        //   }))
+        //   .subscribe(
+        //   (res: any) => {
+        //     localStorage.setItem('token', res.token);
+        //     this.router.navigateByUrl('/home');
+        //     this.toastr.success("Успешно", 'Аутентификация');
+        //     this.blockUI.stop();
+        //   },
+        //   err => {
+        //     if (err.status === 400) {
+        //       this.toastr.error(err.error.message, 'Аутентификация');
+        //     } else if (err.status === 0) {
+        //       this.toastr.error('Сервер недоступен!', 'Аутентификация');
+        //     } else if (err.name === "TimeoutError" ) {
+        //       this.toastr.error('Превышен лимит ожидания!', 'Аутентификация');
+        //     } else {
+        //       console.log(err);
+        //     }
+        //   });
     }
 };
 LoginComponent.ctorParameters = () => [
@@ -9264,6 +9264,9 @@ LoginComponent.ctorParameters = () => [
     { type: _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"] },
     { type: ngx_toastr__WEBPACK_IMPORTED_MODULE_1__["ToastrService"] }
 ];
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(ng_block_ui__WEBPACK_IMPORTED_MODULE_5__["BlockUI"])()
+], LoginComponent.prototype, "blockUI", void 0);
 LoginComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"])({
         selector: 'app-login',
@@ -9290,25 +9293,37 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm2015/forms.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
+/* harmony import */ var ng_block_ui__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ng-block-ui */ "./node_modules/ng-block-ui/index.js");
+/* harmony import */ var ng_block_ui__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(ng_block_ui__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
+/* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ngx-toastr */ "./node_modules/ngx-toastr/fesm2015/ngx-toastr.js");
+
+
+
+
+
 
 
 
 
 let UserService = class UserService {
-    constructor(fb, http) {
+    constructor(fb, http, router, toastr) {
         this.fb = fb;
         this.http = http;
-        this.BaseURI = 'http://localhost:54516/api';
-        this.formModel = this.fb.group({
-            UserName: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
-            Email: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].email],
-            FullName: [''],
-            Passwords: this.fb.group({
-                Password: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(6)]],
-                ConfirmPassword: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]
-            }, { validator: this.comparePasswords })
-        });
+        this.router = router;
+        this.toastr = toastr;
+        this.BaseURI = 'http://localhost:5000/api';
     }
+    // formModel = this.fb.group({
+    //   UserName: ['', Validators.required],
+    //   Email: ['', Validators.email],
+    //   FullName: [''],
+    //   Passwords: this.fb.group({
+    //     Password: ['', [Validators.required, Validators.minLength(6)]],
+    //     ConfirmPassword: ['', Validators.required]
+    //   }, { validator: this.comparePasswords })
+    // });
     comparePasswords(fb) {
         const confirmPswrdCtrl = fb.get('ConfirmPassword');
         // passwordMismatch
@@ -9325,17 +9340,41 @@ let UserService = class UserService {
             }
         }
     }
-    register() {
-        const body = {
-            UserName: this.formModel.value.UserName,
-            Email: this.formModel.value.Email,
-            FullName: this.formModel.value.FullName,
-            Password: this.formModel.value.Passwords.Password
-        };
-        return this.http.post(this.BaseURI + '/ApplicationUser/Register', body);
-    }
+    // register() {
+    //   const body = {
+    //     UserName: this.formModel.value.UserName,
+    //     Email: this.formModel.value.Email,
+    //     FullName: this.formModel.value.FullName,
+    //     Password: this.formModel.value.Passwords.Password
+    //   };
+    //   return this.http.post(this.BaseURI + '/ApplicationUser/Register', body);
+    // }
     login(formData) {
-        return this.http.post(this.BaseURI + '/ApplicationUser/Login', formData);
+        this.blockUI.start("Loading...");
+        return this.http.post(this.BaseURI + '/ApplicationUser/Login', formData)
+            .pipe(
+        // this.blockUI.start("Loading..."),
+        Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["timeout"])(5000), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["finalize"])(() => {
+            this.blockUI.stop();
+        }))
+            .subscribe((res) => {
+            localStorage.setItem('token', res.token);
+            this.router.navigateByUrl('/home');
+            this.toastr.success("Успешно", 'Аутентификация');
+        }, err => {
+            if (err.status === 400) {
+                this.toastr.error(err.error.message, 'Аутентификация');
+            }
+            else if (err.status === 0) {
+                this.toastr.error('Сервер недоступен!', 'Аутентификация');
+            }
+            else if (err.name === "TimeoutError") {
+                this.toastr.error('Превышен лимит ожидания!', 'Аутентификация');
+            }
+            else {
+                console.log(err);
+            }
+        });
     }
     getUserProfile() {
         return this.http.get(this.BaseURI + '/UserProfile');
@@ -9343,8 +9382,13 @@ let UserService = class UserService {
 };
 UserService.ctorParameters = () => [
     { type: _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"] },
-    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"] }
+    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"] },
+    { type: _angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"] },
+    { type: ngx_toastr__WEBPACK_IMPORTED_MODULE_7__["ToastrService"] }
 ];
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(ng_block_ui__WEBPACK_IMPORTED_MODULE_5__["BlockUI"])()
+], UserService.prototype, "blockUI", void 0);
 UserService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
         providedIn: 'root'

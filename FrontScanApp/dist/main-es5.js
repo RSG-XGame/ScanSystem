@@ -11264,42 +11264,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
     /*! @angular/core */
     "./node_modules/@angular/core/fesm2015/core.js");
-    /* harmony import */
 
+    var AppComponent = function AppComponent() {
+      _classCallCheck(this, AppComponent);
+    };
 
-    var ng_block_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-    /*! ng-block-ui */
-    "./node_modules/ng-block-ui/index.js");
-    /* harmony import */
-
-
-    var ng_block_ui__WEBPACK_IMPORTED_MODULE_2___default =
-    /*#__PURE__*/
-    __webpack_require__.n(ng_block_ui__WEBPACK_IMPORTED_MODULE_2__);
-
-    var AppComponent =
-    /*#__PURE__*/
-    function () {
-      function AppComponent() {
-        _classCallCheck(this, AppComponent);
-      }
-
-      _createClass(AppComponent, [{
-        key: "toggleBlocking",
-        value: function toggleBlocking(message) {
-          var _this3 = this;
-
-          this.blockUI.start(message);
-          setTimeout(function () {
-            _this3.blockUI.stop();
-          }, 2500);
-        }
-      }]);
-
-      return AppComponent;
-    }();
-
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(ng_block_ui__WEBPACK_IMPORTED_MODULE_2__["BlockUI"])()], AppComponent.prototype, "blockUI", void 0);
     AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
       selector: 'app-root',
       template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(
@@ -11609,7 +11578,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       _createClass(AuthInterceptor, [{
         key: "intercept",
         value: function intercept(req, next) {
-          var _this4 = this;
+          var _this3 = this;
 
           if (localStorage.getItem('token') != null) {
             var clonedReq = req.clone({
@@ -11619,7 +11588,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
               if (err.status === 401) {
                 localStorage.removeItem('token');
 
-                _this4.router.navigateByUrl('/login');
+                _this3.router.navigateByUrl('/login');
               }
             }));
           } else {
@@ -11718,10 +11687,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       _createClass(HomeComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this5 = this;
+          var _this4 = this;
 
           this.service.getUserProfile().subscribe(function (res) {
-            _this5.userDetails = res;
+            _this4.userDetails = res;
           }, function (err) {
             console.log(err);
           });
@@ -11826,6 +11795,18 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
     /*! @angular/router */
     "./node_modules/@angular/router/fesm2015/router.js");
+    /* harmony import */
+
+
+    var ng_block_ui__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+    /*! ng-block-ui */
+    "./node_modules/ng-block-ui/index.js");
+    /* harmony import */
+
+
+    var ng_block_ui__WEBPACK_IMPORTED_MODULE_5___default =
+    /*#__PURE__*/
+    __webpack_require__.n(ng_block_ui__WEBPACK_IMPORTED_MODULE_5__);
 
     var LoginComponent =
     /*#__PURE__*/
@@ -11853,23 +11834,30 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "onSubmit",
         value: function onSubmit(form) {
-          var _this6 = this;
-
-          this.service.login(form.value).subscribe(function (res) {
-            localStorage.setItem('token', res.token);
-
-            _this6.router.navigateByUrl('/home');
-
-            _this6.toastr.success("Успешно", 'Аутентификация');
-          }, function (err) {
-            if (err.status === 400) {
-              _this6.toastr.error(err.error.message, 'Аутентификация');
-            } else if (err.status === 0) {
-              _this6.toastr.error('Сервер недоступен!', 'Аутентификация');
-            } else {
-              console.log(err);
-            }
-          });
+          this.service.login(form.value); // this.blockUI.start('Авторизация');
+          // this.service.login(form.value).pipe(
+          //     timeout(5000),
+          //   finalize(() => {
+          //     this.blockUI.stop();
+          //   }))
+          //   .subscribe(
+          //   (res: any) => {
+          //     localStorage.setItem('token', res.token);
+          //     this.router.navigateByUrl('/home');
+          //     this.toastr.success("Успешно", 'Аутентификация');
+          //     this.blockUI.stop();
+          //   },
+          //   err => {
+          //     if (err.status === 400) {
+          //       this.toastr.error(err.error.message, 'Аутентификация');
+          //     } else if (err.status === 0) {
+          //       this.toastr.error('Сервер недоступен!', 'Аутентификация');
+          //     } else if (err.name === "TimeoutError" ) {
+          //       this.toastr.error('Превышен лимит ожидания!', 'Аутентификация');
+          //     } else {
+          //       console.log(err);
+          //     }
+          //   });
         }
       }]);
 
@@ -11886,6 +11874,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }];
     };
 
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(ng_block_ui__WEBPACK_IMPORTED_MODULE_5__["BlockUI"])()], LoginComponent.prototype, "blockUI", void 0);
     LoginComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"])({
       selector: 'app-login',
       template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(
@@ -11941,28 +11930,58 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
     /*! @angular/common/http */
     "./node_modules/@angular/common/fesm2015/http.js");
+    /* harmony import */
+
+
+    var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+    /*! rxjs/operators */
+    "./node_modules/rxjs/_esm2015/operators/index.js");
+    /* harmony import */
+
+
+    var ng_block_ui__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+    /*! ng-block-ui */
+    "./node_modules/ng-block-ui/index.js");
+    /* harmony import */
+
+
+    var ng_block_ui__WEBPACK_IMPORTED_MODULE_5___default =
+    /*#__PURE__*/
+    __webpack_require__.n(ng_block_ui__WEBPACK_IMPORTED_MODULE_5__);
+    /* harmony import */
+
+
+    var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
+    /*! @angular/router */
+    "./node_modules/@angular/router/fesm2015/router.js");
+    /* harmony import */
+
+
+    var ngx_toastr__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
+    /*! ngx-toastr */
+    "./node_modules/ngx-toastr/fesm2015/ngx-toastr.js");
 
     var UserService =
     /*#__PURE__*/
     function () {
-      function UserService(fb, http) {
+      function UserService(fb, http, router, toastr) {
         _classCallCheck(this, UserService);
 
         this.fb = fb;
         this.http = http;
-        this.BaseURI = 'http://localhost:54516/api';
-        this.formModel = this.fb.group({
-          UserName: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
-          Email: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].email],
-          FullName: [''],
-          Passwords: this.fb.group({
-            Password: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(6)]],
-            ConfirmPassword: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]
-          }, {
-            validator: this.comparePasswords
-          })
-        });
-      }
+        this.router = router;
+        this.toastr = toastr;
+        this.BaseURI = 'http://localhost:5000/api';
+      } // formModel = this.fb.group({
+      //   UserName: ['', Validators.required],
+      //   Email: ['', Validators.email],
+      //   FullName: [''],
+      //   Passwords: this.fb.group({
+      //     Password: ['', [Validators.required, Validators.minLength(6)]],
+      //     ConfirmPassword: ['', Validators.required]
+      //   }, { validator: this.comparePasswords })
+      // });
+
 
       _createClass(UserService, [{
         key: "comparePasswords",
@@ -11983,22 +12002,42 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
               }
             }
           }
-        }
-      }, {
-        key: "register",
-        value: function register() {
-          var body = {
-            UserName: this.formModel.value.UserName,
-            Email: this.formModel.value.Email,
-            FullName: this.formModel.value.FullName,
-            Password: this.formModel.value.Passwords.Password
-          };
-          return this.http.post(this.BaseURI + '/ApplicationUser/Register', body);
-        }
+        } // register() {
+        //   const body = {
+        //     UserName: this.formModel.value.UserName,
+        //     Email: this.formModel.value.Email,
+        //     FullName: this.formModel.value.FullName,
+        //     Password: this.formModel.value.Passwords.Password
+        //   };
+        //   return this.http.post(this.BaseURI + '/ApplicationUser/Register', body);
+        // }
+
       }, {
         key: "login",
         value: function login(formData) {
-          return this.http.post(this.BaseURI + '/ApplicationUser/Login', formData);
+          var _this5 = this;
+
+          this.blockUI.start("Loading...");
+          return this.http.post(this.BaseURI + '/ApplicationUser/Login', formData).pipe( // this.blockUI.start("Loading..."),
+          Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["timeout"])(5000), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["finalize"])(function () {
+            _this5.blockUI.stop();
+          })).subscribe(function (res) {
+            localStorage.setItem('token', res.token);
+
+            _this5.router.navigateByUrl('/home');
+
+            _this5.toastr.success("Успешно", 'Аутентификация');
+          }, function (err) {
+            if (err.status === 400) {
+              _this5.toastr.error(err.error.message, 'Аутентификация');
+            } else if (err.status === 0) {
+              _this5.toastr.error('Сервер недоступен!', 'Аутентификация');
+            } else if (err.name === "TimeoutError") {
+              _this5.toastr.error('Превышен лимит ожидания!', 'Аутентификация');
+            } else {
+              console.log(err);
+            }
+          });
         }
       }, {
         key: "getUserProfile",
@@ -12015,9 +12054,14 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         type: _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"]
       }, {
         type: _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"]
+      }, {
+        type: _angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"]
+      }, {
+        type: ngx_toastr__WEBPACK_IMPORTED_MODULE_7__["ToastrService"]
       }];
     };
 
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(ng_block_ui__WEBPACK_IMPORTED_MODULE_5__["BlockUI"])()], UserService.prototype, "blockUI", void 0);
     UserService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
       providedIn: 'root'
     })], UserService);

@@ -15,7 +15,7 @@ export class UserService {
   constructor(private fb: FormBuilder, private http: HttpClient, private router: Router, private toastr: ToastrService) { }
 
   @BlockUI() blockUI: NgBlockUI;
-  readonly BaseURI = 'http://localhost:54516/api';
+  readonly BaseURI = 'http://localhost:5000/api';
 
   // formModel = this.fb.group({
   //   UserName: ['', Validators.required],
