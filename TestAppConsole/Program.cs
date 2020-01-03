@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using System.Net.Sockets;
 using System.Threading;
 using System.Timers;
@@ -189,9 +192,16 @@ namespace TestAppConsole
             
         }
 
+        class Customer
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+        }
+
         static void Main(string[] args)
         {
-
+            #region ddd
+            /*
             System.Timers.Timer t = new System.Timers.Timer();
             //t.Enabled = true;
             t.Interval = 50;
@@ -215,7 +225,7 @@ namespace TestAppConsole
                 device.Dispose();
             }
 
-            devices.Clear();
+            devices.Clear();*/
             //ModbusVariable<bool> v1 = new ModbusVariable<bool>(); v1.Initialize(nameof(v1), "%MX0.0");
             //ModbusVariable<bool> v2 = new ModbusVariable<bool>(); v2.Initialize(nameof(v2), "%MX0.3");
             //ModbusVariable<bool> v3 = new ModbusVariable<bool>(); v3.Initialize(nameof(v3), "%MX0.4");
@@ -283,6 +293,7 @@ namespace TestAppConsole
             //    client.Dispose();
             //    client = null;
             //}
+            #endregion
         }
 
         private static void T_Elapsed(object sender, ElapsedEventArgs e)
