@@ -1,11 +1,7 @@
-import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../shared/user.service';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { timeout } from 'rxjs/operators';
-import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -14,13 +10,14 @@ import { finalize } from 'rxjs/operators';
 })
 
 export class LoginComponent implements OnInit {
-  @BlockUI() blockUI: NgBlockUI;
-  title = 'Авторизация';
+
+  constructor(private service: UserService, private router: Router) { }
+
   formModel = {
     UserName: '',
     Password: ''
   };
-  constructor(private service: UserService, private router: Router, private toastr: ToastrService) { }
+
 
   ngOnInit() {
     if (localStorage.getItem('token') != null) {

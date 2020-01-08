@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OnionApp.Domain.Core.Entities.Accounts;
 using OnionApp.Domain.Interfaces;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 using WebAPI.Models;
 
 namespace WebAPI.Controllers
@@ -27,36 +23,6 @@ namespace WebAPI.Controllers
         {
             Repository = repository;
             AppSettings = appSettings.Value;
-        }
-
-        [HttpPost]
-        [Route("Register")]
-        //POST : /api/ApplicationUser/Register
-        public async Task<object> PostApplicationUser(ApplicationUserModel model)
-        {
-            //return Ok(new { message = "Пока здесь, но потом перенести!" });
-            //var user = new User
-            //{
-
-            //};
-            //Repository.Create<User>();
-            //var applicationUser = new ApplicationUser() {
-            //    UserName = model.UserName,
-            //    Email = model.Email,
-            //    FullName = model.FullName
-            //};
-
-            //try
-            //{
-            var result = await Repository.GetFirstAsync<User>(x => x.Id == 1);//_userManager.CreateAsync(applicationUser, model.Password);
-            return Ok(result);
-            //    return Ok(result);
-            //}
-            //catch (Exception ex)
-            //{
-
-            //    throw ex;
-            //}
         }
 
         [HttpPost]

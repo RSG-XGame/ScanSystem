@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using OnionApp.Domain.Core.IEntities;
 
 namespace OnionApp.Domain.Interfaces
@@ -11,7 +12,10 @@ namespace OnionApp.Domain.Interfaces
         void Update<TEntity>(TEntity entity, int? modifiedBy = null)
             where TEntity : class, IEntity;
 
-        void Delete<TEntity>(object id, int? modifiedBy = null)
+        void Delete<TEntity>(int id, int? modifiedBy = null)
+            where TEntity : class, IEntity;
+
+        void Delete<TEntity>(Guid id, int? modifiedBy = null)
             where TEntity : class, IEntity;
 
         void Delete<TEntity>(TEntity entity, int? modifiedBy = null)

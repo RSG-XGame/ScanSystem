@@ -5562,7 +5562,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<mat-sidenav-container class=\"sidenav-container\">\r\n  <mat-sidenav #drawer class=\"sidenav\" hasBackdrop=\"true\" mode=\"over\">\r\n    <mat-toolbar>Меню</mat-toolbar>\r\n    <mat-nav-list>\r\n      <a mat-list-item href=\"#\">Начать заказ</a>\r\n      <a mat-list-item href=\"#\">История заказов</a>\r\n      <a mat-list-item href=\"#\">Администрирование</a>\r\n    </mat-nav-list>\r\n  </mat-sidenav>\r\n  <mat-sidenav-content hasBackdrop=\"true\">\r\n    <mat-toolbar color=\"primary\">\r\n      <button type=\"button\" mat-icon-button (click)=\"drawer.toggle()\">\r\n        <mat-icon>menu</mat-icon>\r\n      </button>\r\n      <button mat-raised-button color=\"warn\" (click)=\"onLogout()\" style=\"position: absolute; right: 0; margin-right: 15px;\">Выйти</button >\r\n    </mat-toolbar>\r\n    <div class=\"card m-5\" style=\"width:18rem\" *ngIf=\"userDetails\">\r\n      <ul class=\"list-group\">\r\n        <li class=\"list-group-item\"><strong>ФИО : </strong>{{userDetails.userName}}</li>\r\n        <li class=\"list-group-item\"><strong>Логин : </strong>{{userDetails.login}}</li>\r\n        <li class=\"list-group-item\"><strong>Роль : </strong>{{userDetails.roleName}}</li>\r\n      </ul>\r\n    </div>\r\n    <router-outlet></router-outlet>\r\n  </mat-sidenav-content>\r\n</mat-sidenav-container>");
+/* harmony default export */ __webpack_exports__["default"] = ("<mat-sidenav-container class=\"sidenav-container\">\r\n  <mat-sidenav #drawer class=\"sidenav\" hasBackdrop=\"true\" mode=\"over\">\r\n    <mat-toolbar>\r\n      <button type=\"button\" mat-icon-button (click)=\"drawer.toggle()\">\r\n        <mat-icon>menu</mat-icon>\r\n      </button>\r\n       <label style=\"margin-left: 5px;\">Меню</label>\r\n    </mat-toolbar>\r\n    <mat-nav-list>\r\n      <a mat-list-item href=\"#\">Главная</a>\r\n      <a mat-list-item href=\"#\">Отчеты</a>\r\n      <a mat-list-item href=\"#\">Администрирование</a>\r\n    </mat-nav-list>\r\n  </mat-sidenav>\r\n  <mat-sidenav-content hasBackdrop=\"true\">\r\n    <mat-toolbar color=\"primary\">\r\n      <button type=\"button\" mat-icon-button (click)=\"drawer.toggle()\">\r\n        <mat-icon>menu</mat-icon>\r\n      </button>\r\n      <button mat-raised-button color=\"warn\" (click)=\"onLogout()\" style=\"position: absolute; right: 0; margin-right: 15px;\">Выйти</button >\r\n    </mat-toolbar>\r\n    <img src=\"assets/img/1.png\" alt=\"lorem\">\r\n    <!-- <div class=\"card m-5\" style=\"width:18rem\" *ngIf=\"user\">\r\n      <ul class=\"list-group\">\r\n        <li class=\"list-group-item\"><strong>ФИО : </strong>{{user.userName}}</li>\r\n        <li class=\"list-group-item\"><strong>Логин : </strong>{{user.login}}</li>\r\n        <li class=\"list-group-item\"><strong>Роль : </strong>{{user.role.roleName}}</li>\r\n      </ul>\r\n    </div> -->\r\n    <router-outlet></router-outlet>\r\n  </mat-sidenav-content>\r\n</mat-sidenav-container>");
 
 /***/ }),
 
@@ -9153,7 +9153,7 @@ let HomeComponent = class HomeComponent {
     }
     ngOnInit() {
         this.service.getUserProfile().subscribe((res) => {
-            this.userDetails = res;
+            this.user = res;
         }, (err) => {
             console.log(err);
         });
@@ -9203,24 +9203,17 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginComponent", function() { return LoginComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ngx-toastr */ "./node_modules/ngx-toastr/fesm2015/ngx-toastr.js");
-/* harmony import */ var _shared_user_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../shared/user.service */ "./src/app/shared/user.service.ts");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
-/* harmony import */ var ng_block_ui__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ng-block-ui */ "./node_modules/ng-block-ui/index.js");
-/* harmony import */ var ng_block_ui__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(ng_block_ui__WEBPACK_IMPORTED_MODULE_5__);
-
-
+/* harmony import */ var _shared_user_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../shared/user.service */ "./src/app/shared/user.service.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
 
 
 
 
 let LoginComponent = class LoginComponent {
-    constructor(service, router, toastr) {
+    constructor(service, router) {
         this.service = service;
         this.router = router;
-        this.toastr = toastr;
-        this.title = 'Авторизация';
         this.formModel = {
             UserName: '',
             Password: ''
@@ -9260,15 +9253,11 @@ let LoginComponent = class LoginComponent {
     }
 };
 LoginComponent.ctorParameters = () => [
-    { type: _shared_user_service__WEBPACK_IMPORTED_MODULE_2__["UserService"] },
-    { type: _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"] },
-    { type: ngx_toastr__WEBPACK_IMPORTED_MODULE_1__["ToastrService"] }
+    { type: _shared_user_service__WEBPACK_IMPORTED_MODULE_1__["UserService"] },
+    { type: _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"] }
 ];
-tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-    Object(ng_block_ui__WEBPACK_IMPORTED_MODULE_5__["BlockUI"])()
-], LoginComponent.prototype, "blockUI", void 0);
 LoginComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"])({
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Component"])({
         selector: 'app-login',
         template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./login.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/login/login.component.html")).default,
         styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./login.component.scss */ "./src/app/login/login.component.scss")).default]

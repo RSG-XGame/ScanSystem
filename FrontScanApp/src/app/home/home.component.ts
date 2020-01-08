@@ -8,16 +8,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  userDetails: any;
+  user : any;
 
   constructor(private router: Router, private service: UserService) { }
 
   ngOnInit() {
     this.service.getUserProfile().subscribe(
-      (      res: any) => {
-        this.userDetails = res;
+      (res: any) => {
+        this.user = res;
       },
-      (      err: any) => {
+      (err: any) => {
         console.log(err);
       },
     );

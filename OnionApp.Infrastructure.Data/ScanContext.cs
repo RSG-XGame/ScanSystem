@@ -37,16 +37,17 @@ namespace OnionApp.Infrastructure.Data
         public DbSet<WorkMonitoring> WorkMonitorings { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-        #if DEBUG
+        {           
+#if DEBUG
             optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=ScanDb;Username=postgres;Password=123456");
-        #else
+#else
             optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=ScanDb;Username=postgres;Password=123456");
-        #endif
+#endif
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
             var adminRole = new Role {Id = 1, RoleName = "admin"};
             var userRole = new Role {Id = 2, RoleName = "user"};
             var adminUser1 = new User {Id = 1, Login = "admin@mail.ru", Password = "123456", RoleId = adminRole.Id};
