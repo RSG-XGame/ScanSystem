@@ -25,7 +25,14 @@ namespace OnionApp.Infrastructure.Data
             Context.Entry(entity).State = EntityState.Modified;
         }
 
-        public virtual void Delete<TEntity>(object id, int? modifiedBy = null)
+        public virtual void Delete<TEntity>(int id, int? modifiedBy = null)
+            where TEntity : class, IEntity
+        {
+            TEntity entity = Context.Set<TEntity>().Find(id);
+            Delete(entity, modifiedBy);
+        }
+
+        public virtual void Delete<TEntity>(Guid id, int? modifiedBy = null)
             where TEntity : class, IEntity
         {
             TEntity entity = Context.Set<TEntity>().Find(id);

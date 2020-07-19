@@ -30,6 +30,13 @@ namespace ScanSystem.Hardwares.Implementations.SchneiderElectric
                 return variables[variableName];
             }
         }
+        public IVariable this[int index]
+        {
+            get
+            {
+                return variables.Values.ElementAt(index);
+            }
+        }
 
         private ModbusHelper helper;
 

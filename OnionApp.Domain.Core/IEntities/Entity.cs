@@ -29,7 +29,7 @@ namespace OnionApp.Domain.Core.IEntities
         [Column(name: "xmin", TypeName = "xid")]
         public long RowVersion { get; set; }
 
-        public bool IsDeleted { get; set; } = true;
+        public bool IsDeleted { get; set; } = false;
 
     }
 }
